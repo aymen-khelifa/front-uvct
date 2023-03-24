@@ -1,0 +1,80 @@
+.profil{
+    display: flex;
+    
+}
+.title-profil{
+margin-top: 26px;
+margin-left: 30px;
+font-style:normal ; 
+font-weight: 500;
+font-size: 28px;
+line-height: 34px;
+margin-bottom: 30px;
+}
+.content-profil{
+margin-left: 30px;
+background: #FFFFFF;
+border: 1px solid #CBD5E1;
+box-sizing: border-box;
+border-radius: 2px;
+box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+width: 85%;
+margin-bottom: 80PX;
+}
+.title-photo{
+margin-left: 20px;
+flex-wrap: wrap;
+font-weight: 600;
+font-size: 16px;
+color: #1E293B;
+}
+.form-profil{
+    width: 60%;
+    padding: 20px;
+}
+.btn-sauvg{
+background: #20384D;
+border-color: #20384D;
+border-radius: 2px;
+margin-bottom: 20px;
+}
+.btn-sauvg:hover{
+    background: #20384D;
+    border-color: #20384D;
+}
+.content-button{
+    display: flex;
+    justify-content: flex-end;
+}
+.profil-avatar{
+border: 0.5px solid #999999;
+}
+.label{
+font-style: normal;
+font-weight: 600;
+font-size: 16px;
+color: #1E293B;
+display: flex;
+justify-content: space-between;
+}
+.profile-pic-div{
+   position: relative;
+   margin: auto;
+}
+.uploadBtn{
+    position: absolute;
+    cursor: pointer;
+    bottom: 0;
+    right: 0;
+    width: 80%;
+}
+.avatar-img{
+    width: 30%;
+    border-radius: 50%;
+    border:0.5px solid #999999;
+    padding:5px;  
+}
+.icon-camera{
+    cursor: pointer;
+    color: #20384D;
+}

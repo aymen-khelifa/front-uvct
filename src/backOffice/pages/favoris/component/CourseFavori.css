@@ -1,0 +1,27 @@
+.course-card{
+    width: 30%;
+    position: relative!important;
+    margin-right: 26px!important;
+    margin-bottom: 64px!important;
+    border-radius: 10px!important;
+    overflow: hidden;
+}
+.course-title{
+    font-size: 18px;
+    font-weight: 500;
+    color: black;
+}
+.course-creator{
+    font-size: 15px;
+    font-weight: 400;
+    color: gray;
+}
+.course-stars{
+    font-size: 13px;
+    font-weight: 400;
+    color: gray;
+}
+.course-detl{
+    display: flex;
+    justify-content: space-between;
+}

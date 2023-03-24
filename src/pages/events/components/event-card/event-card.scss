@@ -1,0 +1,69 @@
+$greenText: #10B981;
+
+.event-card {
+  //overriding antd-body padding
+  .ant-card-body{
+    padding: 0 !important;
+  }
+  width: 365px;
+  position: relative!important;
+  margin-right: 26px!important;
+  margin-bottom: 64px!important;
+  border-radius: 10px!important;
+  overflow: hidden;
+  .event-date-type-text {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 15px;
+    color: $greenText;
+    padding-bottom: 16px;
+    padding-block-start: 16px;
+    padding-inline-start: 16px;
+  }
+  .title{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    color: #1D1D1D;
+    padding-inline-start: 16px;
+  }
+  .content-creator{
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    padding-block: 4px;
+    /* identical to box height */
+    color: #64748B;
+    padding-inline-start: 16px;
+    padding-bottom: 16px;
+  }
+  .card-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    min-width: 365px;
+    height: 72px;
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 0 0 10px 10px;
+    .event-details-info{
+      background: #454545;
+      border-radius: 8px;
+      min-width: 277px;
+      height: 40px;
+      color: white;
+    }
+    .price-details-info{
+      background: white;
+      border-radius: 8px;
+      width: 40px;
+      height: 40px;
+      margin-left: 16px;
+      color: #454545;
+    }
+  }
+}

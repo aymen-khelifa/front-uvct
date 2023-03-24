@@ -1,0 +1,264 @@
+.poster{
+   background-color: rgb(173, 181, 181); 
+   background-image: url('../bannerSection/banner4.jpg');  
+   background-blend-mode: multiply;
+   background-size: cover;
+}
+
+
+
+
+ .poster2 {
+    background-color: rgb(173, 181, 181); 
+    background-blend-mode: multiply;
+    // background-size: cover;
+    animation-name: transition;
+    animation-duration: 5s;
+    animation-direction:alternate-reverse ; 
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+
+  }
+  
+  @keyframes transition {
+    0% {
+      background-image: url('../bannerSection/banner4.jpg');
+    }
+    33% {
+      background-image: url('../bannerSection/banner2.jpg');
+    }
+    66% {
+        background-image: url('../bannerSection/banner9.jpg'); 
+    }
+    100% {
+      background-image: url('../bannerSection/banner6.jpg');
+    }
+  }
+
+
+
+
+.carousel-poster {
+    margin-top: -60px;
+    display: flex;
+}
+
+.navbar-poster {
+    z-index: 999;
+    background: none;
+    border: 0;
+    border-radius: 0;
+    font-size: large;
+}
+
+.title-carousel {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 64px;
+    line-height: 132%;
+    padding-top: 133px;
+    margin-left: 133px;
+    color: #ffffff;
+    margin-bottom: 50px;
+    max-width: 719px;
+    text-align: left;
+    cursor: pointer; 
+    animation-name: moveRight; 
+    animation-duration: 1.5s; 
+      
+}
+
+.title-carousel2 {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 64px;
+    line-height: 132%;
+    padding-top: -33px;
+    margin-left: 133px;
+    color: #ffffff;
+    margin-bottom: 40px;
+    max-width: 719px;
+    text-align: left;
+    cursor: pointer; 
+    animation-name: moveLeft; 
+    animation-duration: 3s; 
+    margin-top: -50px;
+    z-index: 5;
+      
+}
+
+.title-carousel3 {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 64px;
+    line-height: 132%;
+    //padding-top: -33px;
+    margin-left: 133px;
+    color: #ffffff;
+    margin-bottom: 40px;
+    max-width: 719px;
+    text-align: left;
+    cursor: pointer; 
+    margin-top: -50px;
+    z-index: 5;
+      
+}
+
+
+.caption-poster {
+    display: flex;
+    flex-direction: column;
+    height: 1000px;
+}
+
+.caption-rect {
+    width: 340px;
+    height: 120px;
+    background: #000000;
+    opacity: 0.8;
+    border-radius: 5px;
+    margin-inline: 5px;
+    padding: 16px;
+    display: flex;
+    flex-direction: row;
+    transform: scale(1);
+    transition: transform 330ms ease-in-out;
+    cursor: pointer;
+    margin-top: 95px; 
+    position: relative; 
+    bottom: 30px;
+}
+
+.caption-rect:hover {
+    opacity: 1;
+    transition: opacity 330ms ease-in-out;
+}
+
+.caption-rect:hover .captionTitle {
+    /*do anything with this child*/
+    transform: scale(1.1) !important;
+    transition: transform 330ms ease-in-out;
+}
+
+.caption-rect:hover .captionIcon {
+    /*do anything with this child*/
+    transform: scale(1.1) !important;
+    transition: transform 330ms ease-in-out;
+}
+
+.captionIcon {
+    margin-right: 25px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 90px !important;
+    line-height: 140%;
+    /* or 22px */
+    color: #F59E0B;
+}
+
+.captionTitle {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 140%;
+    /* or 22px */
+    color: #FFFFFF;
+}
+
+.link-rect {
+    border: 0;
+    border-radius: 0;
+    text-transform: uppercase;
+    padding: 0;
+    margin-top: 0;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+
+    color: #F59E0B;
+}
+
+.link-rect:hover {
+    color: #F59E0B;
+}
+
+.description-carousel {
+    animation: slidein;
+    animation-duration: 2s;
+    user-select: none;
+    max-width: 622px;
+    text-align: left;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 160%;
+    /* or 38px */
+    color: #FFFFFF;
+    margin-left: 133px;
+}
+
+.explore-courses-button {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    /* identical to box height */
+    width: 240px !important;
+    height: 50px !important;
+    background: #F59E0B !important;
+    border-radius: 2px !important;
+    color: #000000 !important;
+    border: none !important;
+    margin-left: 133px; 
+    margin-top: 12px;
+    animation-name: moveTop; 
+    animation-duration: 3s;
+    p{
+    font-size: 20px;
+    font-style:oblique ; 
+    margin-top: 4px;
+   }
+}
+
+
+
+
+@keyframes slidein {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes moveTop {
+    0% {
+        opacity: 0; 
+        transform: translateY(50px); 
+    }
+    100%{
+        opacity: 1;
+        transform: translate(0px);  
+    }
+}
+
+@keyframes moveLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-150px); 
+    }
+    100%{
+        opacity: 1;
+        transform: translate(0);  
+    }
+}
+
+.poster {
+    .ant-carousel .slick-list .slick-slide>div>div {
+        height: 800px;
+        padding-right: 133px;
+    }
+}
+

@@ -1,0 +1,161 @@
+.formation{
+    margin-left: 30px;
+    margin-top: 20px;
+    margin-right: 50px;
+}
+.formTitleContainer{
+    display: flex;
+    justify-content:space-between;
+
+ }
+.search{
+    display:flex;
+    width: 400px;
+}
+.ajout-formation{
+    padding: 20px;
+}
+
+.scrolltab{
+    background: white;
+}
+.coupon{
+    padding: 20px;
+}
+.content-chapitre{
+    border: 1px solid #CBD5E1;
+    padding: 20px;
+    margin: 20px;
+
+}
+.btn-add-lecon{
+    background-color: white;
+    border-color: white;
+    color:#10B981;
+}
+.btn-add-lecon:hover{
+    background-color: white;
+    border-color: white;
+    color:#10B981;
+}
+.btn-event{
+    background: #FFFFFF;
+    border: 1px solid #20384D;
+    box-sizing: border-box;
+    border-radius: 2px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    color: #20384D;
+    margin-right: 20px;
+ }
+ .btn-event:hover{
+     background: #20384D;
+     border-color: #20384D;
+     color:white;
+ }
+.miniature{
+    width: 65%;
+}
+.status-formation1{
+width: 58px;
+height: 31px;
+background: #A7F3D0;
+border-radius: 2px;
+display: flex;
+justify-content: center;
+}
+.status-formation2{
+    width: 58px;
+    height: 31px;
+    background: #FECACA;
+    border-radius: 2px;
+    display: flex;
+    justify-content: center;
+    }
+.p-formation{
+    color:#454545;
+}
+.btn-action{
+    background: white;
+    border-color: white;
+    color:#454545;
+    font-size: 20px;
+}
+.btn-action:hover{
+    background: white;
+    border-color: white;
+    color:#454545;
+    font-size: 20px;
+}
+.actionNav{
+    color:#0F172A;
+}
+.actionNav:hover{
+    background-color: #20384D;
+    color: white;
+}
+.affiche-img{
+    width: 50%;
+}
+.btn-lecon{
+    background-color: white;
+    border-color: #20384D;
+    border: 1px solid #20384D;
+    box-sizing: border-box;
+    border-radius: 2px;
+    color:#20384D;
+    margin-right: 20px;
+}
+.btn-lecon:hover{
+    background-color: #20384D;
+    border-color: #20384D;
+    border-radius: 2px;
+    color:white;
+}
+.content-lecon{
+    margin-top: 50px;
+}
+.dynamic-delete-button {
+    position: relative;
+    top: 4px;
+    margin: 0 8px;
+    color: #999;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .dynamic-delete-button:hover {
+    color: #777;
+  }
+  .dynamic-delete-button[disabled] {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+  .tableau{
+     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+     width: 100%;
+     background:white;
+     margin-top:20px;
+  }
+  .addFormation{
+    display: flex;
+    justify-content:space-between;
+    margin-bottom: 20px;
+    margin-left: 30px;
+    margin-right: 50px;
+}
+.header-formation{
+    display: flex;
+    justify-content: space-between;
+}
+.btn-edit-formation{
+    background-color: white;
+    border-color: #20384D;
+    border: 1px solid #20384D;
+    box-sizing: border-box;
+    border-radius: 2px;
+    color:#20384D;
+    height: 40px;
+    font-size: 16px;
+}

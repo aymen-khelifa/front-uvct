@@ -1,0 +1,23 @@
+.nav-menu-link{
+    color:white;
+    transition: all ease-in-out 250ms;
+    
+    }
+    .nav-menu-link::after {
+        content: "";
+        position: absolute;
+        display: block;
+        height: 0.2em;
+        width: 0%;
+        background-color:#20384D;
+        bottom: -0.1em;
+        transition: all ease-in-out 250ms;
+      }
+    
+      .nav-menu-link:hover::after {
+        width: 9%;
+      }
+    
+      .nav-menu-link:hover {
+        color:#20384D;
+      }

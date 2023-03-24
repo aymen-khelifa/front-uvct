@@ -1,0 +1,45 @@
+.btn-add-categorie{
+    background-color: white;
+    color:#0F172A;
+    font-size: 14px;
+    border: 1px solid #20384D;
+    border-radius: 2px; 
+}
+.btn-add-categorie:hover{
+    background-color:#0F172A;
+    color:white;
+    border-color: #0F172A;
+    font-size: 14px;
+}
+.dynamic-delete-button {
+    position: relative;
+    top: 4px;
+    margin: 0 8px;
+    color: #999;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+.dynamic-delete-button:hover {
+    color: #777;
+}
+.dynamic-delete-button[disabled] {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+.addSousCatg{
+  margin-left: 300px;
+}
+.content-categorie{
+    border: 1px solid #20384D;
+    background-color:white;
+    padding: 0px;
+    margin: 20px;
+}
+.table-categorie{
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    width: 100%;
+    background-color: white;
+    height: 550px;
+}
+  

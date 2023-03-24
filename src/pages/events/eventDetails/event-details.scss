@@ -1,0 +1,103 @@
+.event-container{
+    background-color: #E0E0E066;
+    min-height: 100vh;
+    height: 100%;
+    .event-details{
+      padding-top: 80px;
+      padding-inline: 133px;
+      .date{
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 17px;
+        /* identical to box height */
+        color: #0F172A;
+        padding-bottom: 6px;
+      }
+      .title{
+        font-style: normal;
+        font-weight: 600;
+        font-size: 32px;
+        line-height: 39px;
+        /* identical to box height */
+        color: #0F172A;
+        padding-bottom: 40px;
+      }
+    }
+    .details-container{
+      padding-top: 54px;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      padding-inline: 133px;
+      .event-details-container{
+        max-width: 45.83333333333333vw;
+        width: 45.83333333333333vw;
+        .instructor-image{
+          width: 45.83333333333333vw;
+          height: 374px;
+          object-fit: cover;
+          border-radius: 2px;
+        }
+        .event-description{
+          font-style: normal;
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 140%;
+          color: #1D1D1D;
+          max-width: 660px;
+        }
+        .event-title{
+          font-style: normal;
+          font-weight: 500;
+          font-size: 20px;
+          line-height: 24px;
+          color: #0F172A;
+          padding-top: 16px;
+          padding-bottom: 24px;
+        }
+      }
+      .event-time-actions-container{
+        margin-left: 7.777777777777778vw;
+        .event-time-card{
+          box-sizing: border-box;
+          width: 348px;
+          background: #FFFFFF;
+          border: 1px solid #E2E8F0;
+          border-radius: 8px;
+          padding-inline: 22px;
+          padding-top: 22px;
+          .date-time{
+            padding-left: 22px;
+            padding-bottom: 20px;
+          }
+        }
+        .event-time-button{
+          border-radius: 8px;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          padding-top: 16px;
+          width: 100%;
+          .event-time-button-share{
+            box-sizing: border-box;
+            width: 152px;
+            height: 48px;
+            background: #FFFFFF;
+            border: 1px solid #8D1630;
+            border-radius: 8px;
+            color: #8D1630;
+          }
+          .event-time-button-booking{
+            width: 172px;
+            height: 48px;
+            color: white;
+            background: #8D1630;
+            border-radius: 8px;
+          }
+        }
+      }
+    }
+  
+  }

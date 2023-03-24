@@ -1,0 +1,30 @@
+
+.how-does-it-work{
+    height: 687px;
+    width: 100%;
+    background: url("https://i.ibb.co/FgrxkV8/background-Instr2.jpg") no-repeat;
+  filter: grayscale(50%);
+  background-size: cover;
+    padding-left: 497px;
+    padding-top: 80px;
+    .title{
+      font-style: normal;
+      font-weight: 600;
+      font-size: 40px;
+      line-height: 48px;
+      max-width: 582px;
+      color: #FFFFFF;
+      padding-bottom: 40px;
+    }
+    .subtitle{
+      font-style: normal;
+      font-weight: 400;
+      font-size: 24px;
+      line-height: 160%;
+      max-width: 724px;
+      color: #FFFFFF;
+    }
+    ul li::before {
+      list-style-type: disc; /* Change the color */
+    }
+  }

@@ -1,0 +1,106 @@
+.admin{
+margin-top: 20px;
+margin-left: 40px;
+margin-right: 60px;
+}
+.header-admin{
+    display: flex;
+    justify-content:space-between;
+    margin-bottom: 20px;
+}
+.title-admin{
+    font-size: 28px;
+    color: #0F172A;
+}
+.btn-add-admin{
+    background-color: white;
+    color:#0F172A;
+    font-size: 14px;
+    border: 1px solid #20384D;
+    border-radius: 2px; 
+}
+.btn-add-admin:hover{
+    background-color:#0F172A;
+    color:white;
+    border-color: #0F172A;
+    font-size: 14px;
+}
+.add-icon{
+    margin-right: 10px;
+    cursor: pointer;
+}
+.status-admin1{
+    width: 58px;
+    height: 31px;
+    background: #A7F3D0;
+    border-radius: 2px;
+    display: flex;
+    justify-content: center;
+}
+.status-admin2{
+    width: 58px;
+    height: 31px;
+    background: #FECACA;
+    border-radius: 2px;
+    display: flex;
+    justify-content: center;
+}
+.p-admin{
+    color:#454545;
+}
+.add-admin{
+    margin-top: 20px;
+    margin-left:20px;
+}
+.content-admin{
+    margin-left: 20px;
+    background: #FFFFFF;
+    border: 1px solid #CBD5E1;
+    box-sizing: border-box;
+    border-radius: 2px;
+    margin-right: 100px;
+    padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.form-admin{
+    margin-left: 20px;
+    margin-right: 350px;
+}
+.ctn-btn-admin{
+display: flex;
+justify-content: flex-end;
+margin-bottom: 10px;
+}
+.btn-annuler{
+    border-radius: 2px;
+    margin-right: 10px;
+    font-size: 14px;
+    background-color: #999999;
+    border-color: #999999;
+    color:white
+}
+.btn-annuler:hover{
+    border-radius: 2px;
+    font-size: 14px;
+    background-color: rgb(208, 204, 204);
+    border-color: rgb(0, 0, 0);
+    color:#000000;
+    margin-right: 10px;
+}
+.btn-confirmer{
+    border-radius: 2px;
+    font-size: 14px;
+    background-color: #0F172A;
+    border-color: #0F172A;
+    color:white;
+}
+.btn-confirmer:hover{
+    border-radius: 2px;
+    font-size: 14px;
+    background-color: rgb(24, 23, 87);
+    border-color: rgb(0, 0, 0);
+    color:#ffffff
+}
+.icon-visible{
+    cursor: pointer;
+}

@@ -1,0 +1,92 @@
+.cours-page{
+  padding-left: 133px;
+  padding-right: 133px;
+  .filter-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-block: 64px;
+    justify-content: center;
+    .search-input-container{
+      display: flex;
+      padding-inline-end: 24px;
+      flex-direction: row;
+      .search-input{
+        background: #FFFFFF;
+        border: 1px solid #64748B;
+        border-radius: 2px;
+        width: calc(365px - 48px);
+        height: 48px;
+        outline: none;
+        padding: 16px;
+      }
+      .search-input-icon{
+        background: #20384D;
+        border-radius: 0 2px 2px 0;
+        height: 48px;
+        width: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+      }
+    }
+    .search-dropdown-container{
+      display: flex;
+      align-self: center;
+      flex-direction: row;
+      padding-inline-end: 24px;
+      .search-dropdown{
+        background: #FFFFFF;
+        border: 1px solid #64748B;
+        border-radius: 2px;
+        width: 365px;
+        outline: none;
+        .ant-select-selector{
+          height: 48px;
+          width: 330px;
+          outline: none;
+          padding: 10px;
+          background: #FFFFFF;
+          box-shadow: none ;
+          border: none;
+        }
+        .ant-select-focused .ant-select-selector,
+        .ant-select-selector:focus,
+        .ant-select-selector:active,
+        .ant-select-open .ant-select-selector {
+          .ant-select-selector {
+            border: none !important;
+            box-shadow: none !important;
+          }
+        }
+      }
+    }
+  }
+  .courses-container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  .pagination-container{
+    text-align: center;
+    padding-block: 50px;
+    .pagination {
+      display: block;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 19px;
+      text-align: center;
+
+      color: #1E293B;
+      transition: opacity 330ms ease-in-out;
+      :is(.ant-pagination-disabled) {
+        opacity: 0;
+      }
+      :is(.ant-pagination-item-active){
+        background: #F0F2F4;
+        border: 0.5px solid #94A3B8;
+      }
+    }
+  }
+}

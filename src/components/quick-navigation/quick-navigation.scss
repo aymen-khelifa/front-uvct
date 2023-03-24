@@ -1,0 +1,46 @@
+.quick-navigation{
+    padding-top: 24px;
+    .container{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 19px;
+      color: #454545;
+      
+      width: 750px;
+      .text{
+        padding-inline-end: 30px;
+        cursor: default;
+        display: inline-block;
+        position: relative;
+        
+      }
+      .text:after{
+        content: '';
+        position: absolute;
+        width: 15px;
+        transform: scaleX(0);
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: #20384D;
+        transform-origin: bottom right;
+        transition: transform 0.25s ease-out;
+        
+      }
+      .text:hover:after {
+        transform: scaleX(1.1);
+        transform-origin: bottom left;
+        color:#20384D;
+      
+      }
+      .text:hover {
+        color:#20384D;
+        cursor: pointer;
+      }
+    }
+  }

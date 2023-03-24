@@ -1,0 +1,22 @@
+.rating-component{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-bottom: 100px;
+  .total-rating{
+    font-style: normal;
+    font-weight: 400;
+    font-size: 100px;
+    line-height: 121px;
+    /* identical to box height */
+    letter-spacing: 0.01em;
+    color: #333333;
+  }
+  .total-rating-count{
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    color: #666666;
+  }
+}

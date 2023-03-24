@@ -1,0 +1,77 @@
+.parametres{
+    background:  #F3F4F6;
+
+}
+.title-parametres{
+    margin-top: 20px;
+    margin-left: 20px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 28px;
+    line-height: 34px;
+    color: #0F172A;
+}
+.scrollTab{
+    background: white;
+    border: 1px solid #CBD5E1;
+    box-sizing: border-box;
+    border-radius: 2px;
+    margin-left: 30px;
+    margin-right: 50px;
+    margin-top: 20px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+}
+.paiement{
+    background: white;
+    padding: 20px;
+}
+.btn-confirme{
+    background: #20384D;
+    border-color: #20384D;
+    border-radius: 2px;
+    cursor: pointer;
+}
+.btn-confirme:hover{
+    background: #20384D;
+    border-color: #20384D;
+    border-radius: 2px;
+}
+.content-button{
+    display: flex;
+    justify-content: flex-end;
+}
+.btn-compte{
+    background: white;
+    color:#20384D;
+    border-color: #20384D;
+    border-radius: 2px;
+}
+.btn-compte:hover{
+    background: white;
+    color:#20384D;
+    border-color: #20384D;
+    border-radius: 2px;
+}
+.btn-annnuler{
+    background: white;
+    border-color: #20384D;
+    color: #20384D;
+    border-radius: 2px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+.affiche-compte{
+    display: flex;
+    justify-content: space-between;
+}
+.icon-action{
+    margin-right: 10px;
+    cursor: pointer;
+    height: 20px;
+    width: 20px;
+}
+.motDePasse{
+    margin-left: 20px;
+    margin-top: 20px;
+}

@@ -1,0 +1,113 @@
+.devenir-instructeur-container{
+    background: #1D1D1D;
+    position: relative;
+    padding-block: 80px;
+    padding-left: 133px;
+    padding-right: 133px;
+    .become-instructor{
+        width: 540px;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 64px;
+        line-height: 140%;
+        color: #FFFFFF;
+    }
+    .devInst{
+        box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
+        width: 500px;
+        background: #FFFFFF;
+        border-radius: 2px;
+        padding: 50px;
+        margin-left: 250px;
+    }
+    .inputForm{
+        width: 400px;
+    }
+    .labelForm{
+        font-size: 20px;
+        font-weight: 400;
+        color: #20384D;
+    }
+    .btn-devInst{
+        background-color: #20384D;
+        color:white;
+        border-color:#20384D ;
+        border-radius: 2px;
+        cursor: pointer;
+        font-size: 15px;
+    }
+    .navbarHeaderInst{
+        display: flex;
+        justify-content: center;
+    }
+    .linkHeaderInst{
+        font-size: 16px;
+        font-weight: 500;
+        color:black;
+    }
+    .posterInstr{
+        display: flex;
+        margin-left: 200px;
+        margin-top: 20px;
+        margin-bottom: 40px;
+    }
+    .imgInstructeur{
+        margin-left: 200px;
+        width: 300px;
+        height: 350px;
+    }
+    .content2Inst{
+        background-image: url("../../../../public/images/backgroundInstr.jpg");
+        background-size: cover;
+        padding: 80px;
+    }
+    .contentTitle2{
+        font-size: 40px;
+        font-weight: 600;
+        color: white;
+    }
+    .contentTitle3{
+        font-size: 30px;
+        font-weight: 500;
+        color: white;
+    }
+    .content3Inst{
+        background-image: url("../../../../public/images/backgroundInstr2.jpg");
+        background-size: cover;
+        padding: 80px;
+        padding-left: 500px;
+    }
+    .contentTitle4{
+        color:white;
+    }
+    .content4Inst{
+        background-color: #1D1D1D;
+        display: flex;
+    }
+    .contentTitle5{
+        font-size: 40px;
+        font-weight: 600;
+        color:white;
+        padding: 100px;
+    }
+    .content5Inst{
+        display: flex;
+        justify-content: center;
+        padding: 50px;
+    }
+    .contentTitle6{
+        font-size: 20px;
+        font-weight: 500;
+        color:#20384D;
+        padding: 10px;
+        display: flex;
+    }
+    .arrow{
+        width: 374.94px;
+        height: 153.53px;
+        position: absolute;
+        left: 27.19%;
+        top: 50.74%;
+        object-fit: contain;
+    }
+}

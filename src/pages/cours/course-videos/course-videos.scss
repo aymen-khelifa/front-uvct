@@ -1,0 +1,84 @@
+.course-videos{
+  display: flex;
+  flex-direction: row;
+  .right-section{
+    padding-top: 24px;
+    padding-left: 24px;
+    .video{
+      height: 625px;
+      width: 986px;
+      margin-top: 16px;
+      margin-bottom: 26px;
+    }
+    .navigation-button{
+      width: 157px;
+      height: 48px;
+      background: #94A3B8;
+      border-radius: 2px;
+      color: white;
+    }
+    .course-section-title{
+      font-style: normal;
+      font-weight: 600;
+      font-size: 24px;
+      line-height: 29px;
+      /* identical to box height */
+      color: #334155;
+    }
+    .questions{
+      font-style: normal;
+      font-weight: 600;
+      font-size: 24px;
+      line-height: 29px;
+      /* identical to box height */
+      color: #334155;
+      padding-top: 48px;
+      padding-bottom: 16px;
+    }
+    .submit-button{
+      width: 157px;
+      background: #FFFFFF;
+      border: 1px solid #20384D;
+      color: black;
+      height: 48px;
+      border-radius: 2px;
+      float: right;
+      margin-top: 16px;
+      margin-bottom: 24px;
+    }
+    .RichTextEditor__editor___1QqIU{
+      min-height: 200px;
+    }
+  }
+  .left-section{
+    width: 400px;
+    height: 800px;
+    overflow-y: scroll;
+    .selected-video{
+      background: #CBD5E1!important;
+    }
+    .topic{
+      padding-left: 24px;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 19px;
+      color: #454545;
+      padding-bottom: 11px;
+      padding-top: 32px;
+    }
+    .subject{
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 17px;
+      /* identical to box height */
+      color: #334155;
+      padding-block: 13px;
+      width: 370px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}

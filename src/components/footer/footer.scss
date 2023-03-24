@@ -1,0 +1,120 @@
+.footer{
+    height: 352px;
+    width: 100%;
+    background: #1D1D1D;
+    color: white;
+    padding-inline: 133px;
+    padding-top: 48px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    .logo-description-container{
+      position: relative;
+      padding-right: 133px;margin-top: 40px;
+      height: 100%;
+      .logo{
+        height: 48px;
+        width: 200px;
+        object-fit: cover;
+      }
+      .site-description{
+        color: white;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 140%;
+        /* or 20px */
+        max-width: 340px;
+        padding-top: 26px;
+      }
+      .copyright{
+        position: absolute;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 12px;
+        width: 290px;
+        line-height: 15px;
+        bottom: 20px;
+        /* identical to box height */
+        color: #FFFFFF;
+      }
+    }
+    .enterprise-container{
+      max-width: 150px;
+      padding-top: 17px;
+      margin-right: 85px;
+      height: 100%;
+      .title{
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 19px;
+        letter-spacing: 0.01em;
+        color: #FFFFFF;
+        padding-bottom: 24px;
+      }
+      .site-description {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 19px;
+        color: #FFFFFF;
+        padding-bottom: 16px;
+      }
+    }
+    .links-container{
+      max-width: 150px;
+      padding-top: 17px;
+      margin-right: 110px;
+      height: 100%;
+      .title{
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 19px;
+        letter-spacing: 0.01em;
+        color: #FFFFFF;
+        padding-bottom: 24px;
+  
+      }
+      .site-description {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 19px;
+        color: #FFFFFF;
+        padding-bottom: 16px;
+      }
+    }
+    .social-links{
+      padding-top: 17px;
+      height: 100%;
+      .title{
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 19px;
+        letter-spacing: 0.01em;
+        color: #FFFFFF;
+        padding-bottom: 24px;
+  
+      }
+      .site-description {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 19px;
+        color: #FFFFFF;
+        padding-bottom: 16px;
+      }
+      .icons{
+        background: white;
+        color: black;
+        border-radius: 10px;
+        padding: 3px;
+        margin-right: 14px
+      }
+    }
+  
+  }

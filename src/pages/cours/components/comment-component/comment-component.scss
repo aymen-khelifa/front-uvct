@@ -1,0 +1,41 @@
+.comment-component{
+  display: flex;
+  flex-direction: row;
+  padding-block: 16px;
+    .avatar{
+      height: 48px;
+      width: 48px;
+      object-fit: cover;
+      border-radius: 24px;
+    }
+  .info-container{
+    padding-left: 24px;
+    .user-name{
+      font-style: normal;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 19px;
+      color: #454545;
+      padding-bottom: 9px;
+    }
+    .comment-text{
+      font-style: normal;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 160%;
+      /* or 19px */
+      max-width: 551px;
+      padding-top: 16px;
+      color: #454545;
+    }
+    .comment-date{
+      font-style: normal;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 15px;
+      /* identical to box height */
+      color: #94A3B8;
+    }
+  }
+
+}

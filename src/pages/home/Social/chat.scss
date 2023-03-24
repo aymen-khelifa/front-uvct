@@ -1,0 +1,252 @@
+.chat-icon {
+    background: #20384D;
+    color: rgb(255, 255, 255);
+    border-radius: 40px;
+    padding: 9px;
+    font-size: 30px;
+    position: fixed;
+    bottom: 5.5rem;
+    left: 90rem;
+    cursor: pointer;
+    z-index: 1;
+    box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
+}
+
+.chatBox {
+    height: 560px;
+    width: 360px;
+    border-radius: 0px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    position: fixed;
+    bottom: 4.8rem;
+    left: 71.5rem;
+    z-index: 1;
+
+
+    
+    .chatHeader {
+        height: 78px;
+        width: 360px;
+        left: 3532px;
+        top: -874px;
+        border-radius: 0px;
+        background: #20384D;
+
+        .logoChat {
+            color: white;
+            font-size: 40px;
+            position: absolute;
+            left: 1.5rem;
+        }
+
+        .titleChat {
+            font-family: Inter;
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 19px;
+            letter-spacing: 0em;
+            text-align: left;
+            position: absolute;
+            left: 4.6rem;
+            color: white;
+            margin-top: 19px;
+
+
+        }
+
+        .littleTitleChat {
+            font-family: Inter;
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 15px;
+            letter-spacing: 0em;
+            text-align: left;
+            position: absolute;
+            left: 4.6rem;
+            color: white;
+            margin-top: 22px;
+
+        }
+
+        .cancel {
+            color: rgb(159, 159, 159);
+            font-size: 15px;
+            position: absolute;
+            left: 21rem;
+            margin-top: -13px;
+            cursor: pointer;
+
+            :hover {
+                color: rgb(255, 255, 255);
+            }
+        }
+
+
+
+
+    }
+
+    .chatBody {
+        height: 400px;
+        width: 360px;
+        left: 3532px;
+        top: -874px;
+        border-radius: 0px;
+        background: #EDEFF1;
+        overflow-y: scroll;
+        
+        .Emojies{
+            position: absolute ; 
+            bottom: 3.7rem;
+            left:3.6rem ; 
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;       
+            z-index: 1;
+        }
+
+
+        .robotUnswer {
+            position: relative;
+            width: 251px;
+            height: 38px;
+            background: #20384D;
+            border-radius: 40px;
+            left: 1rem;
+            margin-top: 12px;
+
+            .robotUnswer-content {
+                position: relative;
+                width: 211px;
+                height: 15%;
+                left: 1rem;
+                top:0.8rem ; 
+                margin-top: 12px;
+                font-family: 'Inter';
+                font-style: normal;
+                font-weight: 400;
+                font-size: 12px;
+                line-height: 15px;
+                /* identical to box height */
+
+
+                color: #FFFFFF;
+
+            }
+        }
+
+        
+
+        .userText-content {
+            position: relative;
+            width: 251px;
+            // height: 38px;
+            background: #FFFFFF;
+            border-radius: 40px;
+            left: 3.3rem;
+            
+           
+            
+        } 
+
+        .chatSpinner{
+            position: relative;
+            right:14px ;
+            margin-bottom: 12px;       
+        }
+     
+
+    }
+
+
+
+
+
+    .chatFooter {
+        border-radius: 0px;
+        background: #ffffff;
+
+        .inputChat {
+            width: 300px;
+            height: 80px;
+            border: none;
+            background-color: transparent;
+            resize: none;
+            outline: none;
+
+        }
+
+      
+
+    }
+
+}
+
+.robotUnswer {
+    position: absolute;
+    width: 251px;
+    height: 38px;
+    background: #20384D;
+    border-radius: 40px;
+    left: 1rem;
+    margin-top: 12px;
+
+    .robotUnswer-content {
+        position: absolute;
+        width: 211px;
+        height: 15%;
+        left: 1rem;
+        margin-top: 12px;
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 15px;
+        /* identical to box height */
+
+
+        color: #FFFFFF;
+
+    }
+} 
+
+.robotUnswer2 {
+            position: absolute;
+            width: 251px;
+            height: 50px;
+            background: #20384D;
+            border-radius: 40px;
+            left: 1rem;
+            margin-top: 12px;
+
+            .robotUnswer-content2 {
+                position: absolute;
+                width: 211px;
+                height: 15%;
+                left: 1rem;
+                margin-top: 12px;
+                font-family: 'Inter';
+                font-style: normal;
+                font-weight: 400;
+                font-size: 12px;
+                line-height: 15px;
+                /* identical to box height */
+
+
+                color: #FFFFFF;
+
+            }
+        }
+.chat-whtsp {
+    background:
+        #67DA72;
+    color: rgb(255, 255, 255);
+    border-radius: 40px;
+    padding: 9px;
+    font-size: 30px;
+    position: fixed;
+    bottom: 1.5rem;
+    left: 90rem;
+    cursor: pointer;
+    z-index: 1;
+    box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
+}
+

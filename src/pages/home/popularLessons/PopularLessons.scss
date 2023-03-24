@@ -1,0 +1,158 @@
+// .lessons {
+//   background-color: rgb(220, 230, 230); 
+//   background-image: url('../popularLessons/cours2.jpg');  
+//   background-blend-mode: multiply;
+//   background-size: cover;
+//   height: 40rem; 
+  
+// }
+
+.home-sections{
+  padding: 100px;
+  
+}
+
+.lessons-wrapper{
+  margin-bottom: 58px;
+  .lessons-categories{
+    .list-categories{
+      padding: 0;
+      margin: 0;
+      display: flex;
+      .category-item{
+        list-style: none;
+        padding: 5px;
+        border-radius: 5px;
+        color: rgb(255, 255, 255);
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 12px;
+        text-align: center;
+        .category-link{
+          text-decoration: none;
+          color: inherit;
+          user-select: none;
+          cursor: pointer;
+        }
+        .category-selected{
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
+.lessons-card{
+
+    .lessons-swiper{
+      .lesson-card{
+     
+        width: 280px;
+        height: 350px;
+        overflow: hidden;
+        border-radius: 1px;
+        background: #ffffff; 
+        border-radius: 6px;
+        display: flex;
+         border: 0.1mm ridge #8a8e924e;
+        flex-direction: column;
+        .lc-header{
+          height: 140px;
+          position: relative;
+          .lesson-img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+          .lesson-teacher{
+            position: absolute;
+            bottom: -76px;
+            left: 0;
+            right: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100px;
+            .teacher-avatar{
+              width: 50px;
+              height: 50px;
+              border-radius: 50%;
+              cursor: pointer;
+            }
+            .teacher-name{
+              color: #6c7782;
+              font-family:Arial, Helvetica, sans-serif ; 
+            }
+            .teacher-info{
+              color: #20384D;
+              font-family:Arial, Helvetica, sans-serif ; 
+            }
+          }
+        }
+        .lc-body{
+          flex: 1;
+          padding-top: 70px;
+          .lesson-info{
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 100%;
+            p{
+              margin: auto;
+              font-size: 18px;
+              font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+              text-align: center; 
+              margin: 14px;
+            }
+          
+          }
+        }
+        .lc-footer{
+          padding: 10px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          .lesson-rate{
+            position: relative;
+            right: 4.56rem; 
+          }
+          .lesson-price{
+            position: relative;
+            left: 4.56rem;
+            .price-txt{
+              color:rgb(232, 53, 53) ; 
+              font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .voir-plus-lessons{
+    font-family:'fantasy' ; 
+    margin: auto;
+    color: #ffffff;
+    font-size: 20px;
+    text-align: center;
+    position: relative;
+    top: -20px; 
+    cursor: pointer; 
+    animation: zoom-in-zoom-out 2s ease-out infinite;
+  
+  }
+  
+  @keyframes zoom-in-zoom-out {
+    0% {
+      transform: scale(1, 1);
+    }
+    50% {
+      transform: scale(1.2, 1.2);
+    }
+    100% {
+      transform: scale(1, 1);
+    }
+  }
+
+
+  

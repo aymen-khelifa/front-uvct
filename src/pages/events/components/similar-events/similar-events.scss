@@ -1,0 +1,34 @@
+$greenText: #10B981;
+
+.similar-events{
+  padding-inline: 133px;
+  padding-top: 56px;
+  width: 100%;
+  .title-see-all-container{
+    padding-bottom: 31px;
+    justify-content: space-between;
+    .title{
+      font-style: normal;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 24px;
+      color: #0F172A;
+    }
+    .see-all{
+      font-style: normal;
+      font-weight: 400;
+      font-size: 18px;
+      line-height: 24px;
+      color: #8D1630;
+      margin-inline-end: 20px;
+    }
+  }
+
+  .similar-events-cards{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+}
+}

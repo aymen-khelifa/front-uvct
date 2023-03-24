@@ -1,0 +1,13 @@
+.messages{
+    background:  #F3F4F6;
+    margin-top: 20px;
+    margin-left: 40px;
+    margin-right: 80px;
+}
+.title-messages{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 28px;
+    line-height: 34px;
+    color: #0F172A;
+}

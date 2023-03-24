@@ -1,0 +1,41 @@
+.partner-page{
+    .container{
+     .header-section{
+       padding-inline: 133px;
+        padding-top: 104px;
+       padding-bottom: 126px;
+       justify-content: space-between;
+       .title{
+         font-style: normal;
+         font-weight: 600;
+         font-size: 64px;
+         line-height: 77px;
+         padding-top: 20px;
+         letter-spacing: 0.002em;
+         width:498px;
+         color: #1D1D1D;
+       }
+       .subtitle{
+         font-style: normal;
+         font-weight: 400;
+         font-size: 24px;
+         line-height: 160%;
+         width: 561px;
+         padding-top: 40px;
+         color: #1D1D1D;
+       }
+       .image{
+         object-fit: cover;
+         width: 446px;
+         height: 504px;
+       }
+       .become-instructor-btn{
+         background: #20384D;
+         border-radius: 2px;
+         color: white;
+         height: 40px;
+         margin-top: 60px;
+       }
+     }
+    }
+  }

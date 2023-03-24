@@ -1,0 +1,61 @@
+.addFormation{
+    background: #FFFFFF;
+    border: 1px solid #CBD5E1;
+    box-sizing: border-box;
+    border-radius: 2px;
+    margin-right: 100px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.content-formation{
+    margin-left: 20px;
+    margin-top: 20px;
+}
+.paragraphe{
+    font-size: 15px;  
+}
+.publier-content{
+        padding: 10px;
+}
+.icon-prog{
+    color: gray;
+    font-size: "small";
+    cursor: pointer;
+    margin-left: 2px;
+    margin-right: 2px;
+}
+.btn-add-session{
+    color:#10B981;
+    margin-top: 20px;
+    cursor: pointer;
+}
+.icon-add{
+    margin-right: 5px;
+    cursor: pointer;
+}
+.content-chapitre{
+    border: 1px solid #CBD5E1;
+    padding: 5px;
+    margin: 20px;
+}
+.content-type{
+    display: flex;
+    justify-content: center;
+}
+.type-content{
+    border: 1px solid #CBD5E1;
+    padding: 5px;
+    margin: 20px;
+    cursor: pointer;
+}
+.publier{
+    display:grid;
+}
+.affiche-session{
+    margin-top: 10px;
+}
+.content-section{
+    border: 1px solid #20384D;
+    background-color:white;
+    padding: 5px;
+    margin: 20px;
+}

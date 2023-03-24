@@ -1,0 +1,73 @@
+.instructor-wrapper{
+    .instructor-swiper{
+      .instructor-card{
+        height: 250px;
+        border-radius: 5px;
+        overflow: hidden;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        .card-content{
+          width: 100%;
+          height: 100%;
+          padding: 10px;
+          background: #161616;
+          .instructor-img{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            z-index: 1;
+          }
+          .instructor-header{
+            transform: rotateY(180deg);
+            display: flex;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            .instructor-name{
+              color: inherit;
+            }
+          }
+          .instructor-body{
+            transform: rotateY(180deg);
+            color: white;
+            font-size: 12px;
+            font-weight: 400;
+            .instructor-position{
+              color: inherit;
+            }
+          }
+        }
+    }
+}}
+.sectionInstructor{
+    background-color: #20384D;
+}
+.title-instrocteur{
+    color:white;
+    font-size: 32px;
+    font-weight: 600;
+}
+.instrocteur-desc{
+    color:white;
+    font-size: 16px;
+    font-weight: 400;
+}
+.btn-instrocteur{
+    color:#20384D;
+    background-color: white;
+    border-color: white;
+    border-radius: 2px;
+    font-size: 14px;
+    width: 40%;
+}
+.btn-instrocteur:hover{
+    color:#20384D;
+    background-color: white;
+    border-color: white;
+    border-radius: 2px;
+}

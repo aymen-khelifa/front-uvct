@@ -1,0 +1,65 @@
+.candidat{
+    background-color: white;
+    margin: 30px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    padding: 30px;
+    margin-right: 100px;
+}
+.name-candidat{
+    font-size: 30px;
+    font-weight: 500;
+    font-family: 'Times New Roman', Times, serif;
+}
+.content-candidat{
+    padding: 40px;
+}
+.icon-back{
+    color:black
+}
+.icon-details{
+    color:#20384D;
+    margin-right: 10px;
+}
+.btn-repond{
+    display: flex;
+    justify-content: flex-end;
+}
+.btn-refuser{
+    background-color: #EF4444;
+    border-color: #EF4444;
+    border-radius: 2px;
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+    margin-right: 10px;
+}
+.btn-refuser:hover{
+    background-color: #EF4444;
+    border-color: #EF4444;
+    border-radius: 2px;
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+    margin-right: 10px;
+}
+.btn-accepter{
+    background-color: #10B981;
+    border-color: #10B981;
+    border-radius: 2px;
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+}
+.btn-accepter:hover{
+    background-color: #10B981;
+    border-color: #10B981;
+    border-radius: 2px;
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+}
+.info-candidat{
+    font-size: 15px;
+    font-weight: 500;
+    color:#20384D
+}

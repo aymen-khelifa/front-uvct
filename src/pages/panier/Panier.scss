@@ -1,0 +1,64 @@
+.panier{
+    padding-left: 133px;
+    padding-right: 133px;
+    padding-top: 80px;
+    .title{
+        font-style: normal;
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 24px;
+        color: #1D1D1D;
+        padding-bottom: 32px;
+    }
+    .content-panier{
+        border: 1px solid #CBD5E1;
+        padding: 20px;
+        margin: 20px;
+    }
+    .btn-achat{
+        background:#20384D;
+        border: #20384D;
+        color:white;
+        font-size: 15px;
+        border-radius: 2px;
+    }
+    .promo-code{
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 19px;
+        color: #20384D;
+        padding-right: 40px;
+    }
+    .promo-code-input{
+        width: 286px;
+        border: 1px solid #20384D;
+        .ant-input {
+            background: #FFFFFF;
+            border-right: 1px solid #20384D;
+            border-radius: 2px;
+            height: 48px;
+            outline: none;
+        }
+    }
+    .total-price{
+        position: absolute;
+        right: 0;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 28px;
+        line-height: 34px;
+        /* identical to box height */
+        text-align: right;
+        color: #1D1D1D;
+    }
+    .pay-button{
+        width: 157px;
+        height: 48px;
+        background: #20384D;
+        border-radius: 2px;
+        color: white;
+        margin-bottom: 120px;
+        float: right;
+    }
+}

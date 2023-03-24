@@ -1,0 +1,25 @@
+.leftList{
+    background: #ffffff;
+    width: 20%;
+    height: 100%;
+    border-right: 1px solid #ffffff;
+
+}
+.children-content{
+    background:  #ffffff;;
+    flex-grow: 1;
+}
+.menu-item-left:hover{
+background-color: #ffffff;
+border-right: 4px solid #20384D;
+transition: 0.5s;
+}
+.menu-item-left{
+    display: flex;
+  justify-content: center;
+}
+.menu-title-item{
+color:#20384D;
+font-weight: 500;
+font-size: 16px;
+}

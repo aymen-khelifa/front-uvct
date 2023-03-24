@@ -1,0 +1,57 @@
+.instructor-details{
+  padding-left: 133px;
+  padding-right: 133px;
+  min-height: 100vh;
+  height: 100%;
+  .instructor-details-container{
+    padding-top: 100px;
+    display: flex;
+    flex-direction: row;
+    .instructorImageContainer{
+    width: 220px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 2px;
+    }
+    .info-instr{
+      padding-left: 24px;
+    }
+    .titles{
+      font-style: normal;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 160%;
+      /* or 26px */
+      color: black;
+      padding-block: 20px;
+    }
+    .sub-titles{
+      font-style: normal;
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 160%;
+      /* or 26px */
+      color: black;
+      opacity: .9;
+      padding-block: 10px;
+    }
+    .normal-text{
+      font-style: normal;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 160%;
+      /* or 26px */
+      color: #1D1D1D;
+    }
+  }
+  .formations-list{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 160%;
+    /* or 51px */
+    color: #20384D;
+    padding-top: 86px;
+    padding-bottom: 48px;
+  }
+}

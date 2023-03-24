@@ -1,0 +1,37 @@
+
+.btn-inscr{
+  background-color: #20384D;
+    color: white;
+    border-color:#20384D;
+    border-radius: 2px;
+}
+.btn-inscr:hover{
+    background-color: #20384D;
+
+} 
+.link{
+color:#20384D;
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+}
+.inscrire{
+  flex: 1;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  padding: 20px;
+  margin-right: 500px;
+  margin-left: 500px;
+  background-color: white;
+  margin-top: 60px; 
+}
+.btn-inscr{
+  background-color: #20384D;
+  color: white;
+  border-color: #20384D;
+  border-radius: 2px;
+
+}
+.inscrire:hover{
+  display: block;
+}
+.form{}

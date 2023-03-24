@@ -1,0 +1,264 @@
+.course-details{
+  .gray-container{
+    background: #F6F7F8;
+    .details-container{
+      display: flex;
+      padding-left: 133px;
+      padding-right: 133px;
+      padding-top: 80px;
+      justify-content: space-between;
+      .left-section{
+        .title{
+          font-style: normal;
+          font-weight: 600;
+          font-size: 32px;
+          line-height: 39px;
+          /* identical to box height */
+          letter-spacing: 0.01em;
+          color: #1D1D1D;
+        }
+        .price{
+          font-style: normal;
+          font-weight: 700;
+          font-size: 24px;
+          line-height: 29px;
+          /* identical to box height */
+          color: #20384D;
+          padding-left: 8px;
+        }
+        .stars-container{
+          display: flex;
+          align-items: center;
+          flex-direction: row;
+          padding-bottom: 20px;
+          padding-top: 15px;
+          .course-stars{
+            font-style: normal;
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 160%;
+            /* or 19px */
+            color: #454545;
+          }
+          .stars-count{
+            font-style: normal;
+            font-weight: 600;
+            font-size: 18px;
+            line-height: 22px;
+            /* identical to box height */
+            color: #F3CA8C;
+            padding-inline: 10px;
+          }
+        }
+        .created-by-label{
+          font-style: normal;
+          font-weight: 500;
+          font-size: 12px;
+          line-height: 160%;
+          /* or 19px */
+          color: #454545;
+          padding-bottom: 9px;
+        }
+        .user-avatar{
+          height: 25px;
+          width: 25px;
+          border-radius: 12.5px;
+          margin-bottom: 32px;
+        }
+        .user-name{
+          font-style: normal;
+          font-weight: 600;
+          font-size: 12px;
+          line-height: 15px;
+          /* identical to box height */
+          color: #8D1630;
+          padding-left: 8px;
+          margin-bottom: 32px;
+        }
+        .package-content-label{
+          font-style: normal;
+          font-weight: 500;
+          font-size: 12px;
+          line-height: 160%;
+          /* or 19px */
+          color: #454545;
+        }
+        ul{
+          padding-left: 1rem;
+        }
+        .package-content-item{
+          font-style: normal;
+          font-weight: 400;
+          font-size: 12px;
+          line-height: 160%;
+          /* or 19px */
+          color: #454545;
+        }
+        .if-you-have-finished-course{
+          font-style: normal;
+          font-weight: 400;
+          font-size: 12px;
+          line-height: 160%;
+          /* or 19px */
+          color: #454545;
+          .course{
+            font-style: normal;
+            font-weight: 600;
+            font-size: 12px;
+            line-height: 15px;
+            /* identical to box height */
+            color: #8D1630;
+          }
+        }
+      }
+      .right-section{
+        .buttons-container{
+          width: 419px;
+          display: flex;
+          align-items: center;
+          padding-top: 20px;
+          padding-bottom: 64px;
+          justify-content: space-between;
+          .add-to-cart{
+            width: 307px;
+            height: 48px;
+            /* Secondaire */
+            background: #8D1630;
+            border-radius: 2px;
+            color: white;
+          }
+          .share{
+            width: 48px;
+            height: 48px;
+            background: #FFFFFF;
+            border: 1px solid #8D1630;
+            border-radius: 4px;
+          }
+        }
+      }
+    }
+  }
+  .content-container{
+    padding-top: 80px;
+    padding-left: 133px;
+    padding-right: 133px;
+    .description{
+      font-style: normal;
+      font-weight: 600;
+      font-size: 20px;
+      line-height: 160%;
+      /* identical to box height, or 32px */
+      color: #1D1D1D;
+      padding-bottom: 8px;
+    }
+    .description-text{
+      font-style: normal;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 160%;
+      /* or 26px */
+      color: #454545;
+      max-width: 911px;
+      padding-bottom: 80px;
+    }
+    .program-details{
+      .accordions-title{
+        font-style: normal;
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 160%;
+        /* identical to box height, or 32px */
+        color: #1D1D1D;
+        padding-bottom: 40px;
+      }
+      .accordion{
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-bottom: 30px;
+        // overriding antd styles
+
+        .ant-collapse-header{
+          background: #FFFFFF;
+          border: 1px solid #CBD5E1;
+          border-bottom: none;
+          padding-inline: 40px;
+        }
+        .ant-collapse-content-active{
+          background: #FFFFFF;
+          border: 1px solid #CBD5E1;
+          border-bottom: none;
+        }
+
+        .ant-collapse-content > .ant-collapse-content-box{
+          padding-inline: 40px;
+        }
+        // end overriding
+        .collapse-title{
+          font-style: normal;
+          font-weight: 500;
+          font-size: 16px;
+          line-height: 19px;
+          color: #454545;
+        }
+        .collapse-hours{
+          font-style: normal;
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 19px;
+          text-align: right;
+          color: #64748B;
+        }
+        .section-duration{
+          font-style: normal;
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 17px;
+          /* identical to box height */
+          text-align: right;
+          color: #64748B;
+        }
+        .section-title{
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 17px;
+          /* identical to box height */
+          color: #334155;
+          padding-bottom: 16px;
+        }
+      }
+    }
+    .instructor{
+      padding-bottom: 83px;
+      .section-title{
+        font-style: normal;
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 160%;
+        /* identical to box height, or 32px */
+        color: #1D1D1D;
+      }
+    }
+    .ratings{
+      .section-title{
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 160%;
+        /* identical to box height, or 32px */
+        color: #1D1D1D;
+      }
+    }
+    .comments{
+      .load-more-comments{
+        width: 307px;
+        height: 48px;
+        background: #FFFFFF;
+        /* Secondaire */
+        border: 1px solid #8D1630;
+        border-radius: 2px;
+        color: #8D1630;
+        margin-block: 40px;
+        margin-left: 158px;
+      }
+    }
+  }
+}

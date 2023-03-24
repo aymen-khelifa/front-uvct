@@ -1,0 +1,58 @@
+.instructeur{
+    background:  #F3F4F6;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+.header-instructeur{
+        display: flex;
+        justify-content:space-between;
+        margin-bottom: 20px;
+        margin-left: 30px;
+        margin-right: 50px;
+ }
+.title-instructeur{
+        font-size: 28px;
+        color: #0F172A;
+ }
+.btn-add-instructeur{
+        background-color: white;
+        color:#0F172A;
+        font-size: 14px;
+        border: 1px solid #20384D;
+        border-radius: 2px; 
+}
+.btn-add-instructeur:hover{
+        background-color:#0F172A;
+        color:white;
+        border-color: #0F172A;
+        font-size: 14px;
+}
+.add-icon{
+        margin-right: 10px;
+}
+.action-candidat{
+    display: flex;
+    justify-content: space-between;
+}
+.icon-candidat1{
+    color:#0F172A;
+    margin-right: 5px;
+    cursor: pointer;
+}
+.icon-candidat2{
+    color:#10B981;
+    margin-right: 5px;
+    cursor: pointer;
+}
+.icon-candidat3{
+    color:#EF4444;
+    cursor: pointer;
+}
+.iconCheck{
+    color:#10B981;
+}
+.iconCancel{
+    color:#EF4444;
+}
+
+    

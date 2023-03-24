@@ -1,0 +1,81 @@
+.connection-page{
+    padding-left: 56px;
+    padding-right: 56px;
+    
+    .btn-conx:hover {
+        background-color: #20384D;
+    }
+
+    .labelForm {
+        font-style: normal;
+        font-weight: 500;
+        font-size: 16px;
+    }
+
+    .connexion {
+        flex: 1;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        padding: 20px;
+        margin-right: 450px;
+        margin-left: 450px;
+        margin-top: 40px;
+        background-color: white;
+    }
+
+    .btn-conx {
+        background-color: #20384D;
+        color: white;
+        border-color: #20384D;
+        border-radius: 2px;
+    }
+
+    .connexion:hover {
+        display: block;
+    }
+
+    .linkM {
+        color: #20384D;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        text-align: end;
+    }
+    .facebook-button{
+        width: 364px!important;
+        height: 68px!important;
+        box-shadow: none!important;
+        background: rgba(213, 59, 59, 0.6) !important;
+        border: 1px solid #333333!important;
+        border-radius: 2px!important;
+        color: #1D1D1D!important;
+        text-align: left;
+        padding-left: 36px!important;
+        opacity: 1!important;
+        font-style: normal!important;
+        font-weight: 600!important;
+        font-size: 14px!important;
+        line-height: 160% !important;
+        margin-block: 10px;
+    }
+    .google-button{
+        width: 364px!important;
+        height: 48px!important;
+        box-shadow: none!important;
+        background: rgba(255,255,255, 0.6) !important;
+        border: 1.2px solid #333333!important;
+        border-radius: 2px!important;
+        color: #1D1D1D!important;
+        text-align: left;
+        padding-left: 30px!important;
+        opacity: 1!important;
+        font-style: normal!important;
+        font-weight: 600!important;
+        font-size: 14px!important;
+        line-height: 160% !important;
+        /* or 22px */
+        div{
+            margin: 0 !important;
+            margin-right: 50px!important;
+        }
+    }
+}

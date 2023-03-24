@@ -1,0 +1,47 @@
+.ajout-event{
+    padding: 20px;
+}
+.content-ajout{
+    margin-left: 20px;
+    background: #FFFFFF;
+    border: 1px solid #CBD5E1;
+    box-sizing: border-box;
+    border-radius: 2px;
+    margin-right: 60px;
+    }
+.form-event{
+        margin-left: 20px;
+        margin-right: 300px;
+        margin-top: 30px;
+    }
+.label{
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+        color: #1E293B;
+        }
+.content-btn{
+display: flex;
+justify-content: flex-end;
+margin-bottom: 20px;
+} 
+.btn-annnuler{
+    background: white;
+    border-color: #20384D;
+    color: #20384D;
+    border-radius: 2px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+.content-affiche{
+    background: #FFFFFF;
+border: 1px dashed #94A3B8;
+box-sizing: border-box;
+border-radius: 2px;
+display: flex;
+justify-content: center;
+padding: 3px;
+}
+.affiche-img{
+    width: 50%;
+}
