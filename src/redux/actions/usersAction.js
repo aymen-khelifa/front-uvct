@@ -12,7 +12,7 @@ export const fetchAllUsers = async (token) => {
     return res
 }
 export const fetchAllCond = async (token) => {
-    const res = await axios.get('http://localhost:5000/instructeur/formateurs', {
+    const res = await axios.get('http://localhost:5000/users/formateurs', {
     },{
         headers: {'X-Requested-With': 'XMLHttpRequest', 
         "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
@@ -22,7 +22,7 @@ export const fetchAllCond = async (token) => {
     return res
 }
 export const fetchAllInstr = async (token) => {
-    const res = await axios.get('http://localhost:5000/instructeur/getinstr', {
+    const res = await axios.get('http://localhost:5000/users/getinstr', {
     },{
         headers: {'X-Requested-With': 'XMLHttpRequest', 
         "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
@@ -66,7 +66,7 @@ export const dispatchGetAllInstr= (res) => {
     return {
         type: ACTIONS.GET_ALL_INSTR,
         payload: res.data,
-        isInstr: res.data.role === "instructeur" ? true : false ,
+        //isInstr: res.data.role === "instructeur" ? true : false ,
     }
 }
 

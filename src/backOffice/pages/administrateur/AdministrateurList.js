@@ -14,6 +14,9 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import AddIcon from '@material-ui/icons/Add';
 import Table from '../../components/table/Table';
 import SnackbarErr from '../../components/Snackbar/SnackbarErr';
+import {Snackbar,Alert} from "@mui/material";
+import { Link } from 'react-router-dom';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 
 const { confirm } = Modal;
 const initialState = {
@@ -35,7 +38,9 @@ function AdministrateurList() {
     const users = useSelector(state => state.users)
     const [callback, setCallback] = useState(false)
     const [data, setData] =useState(initialState);
-    const {err} =data
+    const [err , setErr] = useState("");
+    const [success , setSuccess] = useState("");
+    //const {err} =data
     //const [administrateur, setAdministrateurs] = useState([]);
     const dispatch = useDispatch()
     const [open2, setOpen2] = React.useState(false);
@@ -46,7 +51,8 @@ function AdministrateurList() {
         email:user.email,
         tele  :user.tel,
         message:user.message,
-        date:user.createdAt,         
+        date:user.createdAt,  
+        status:user.status,       
           //avatar:user.avatar,
          
           
@@ -59,6 +65,50 @@ function AdministrateurList() {
       const handleClose1 = () => {
         setAnchorEl(null);
       };
+      const handleactive = async (id) => {
+        try {
+            
+                    await axios.patch(`http://localhost:5000/users/activeradmin/${id}`, {
+                      headers: {'X-Requested-With': 'XMLHttpRequest', 
+                      "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
+                      "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
+                     "withCredentials": true 
+                    
+                  }).then((response) => {
+                    const message = response.data.message;console.log(message)
+                    if (message==='administrateur activé !')
+                          {setSuccess('administrateur activé !');}
+                          if (message==='activation echouée')
+                          {setErr('activation echouée');}
+                          else{setErr("erreur");}})
+                } catch (err) {
+                  setErr("activation echouée");
+                 // setData({...data, err: err.response.data.msg , success: ''})
+           // setOpen2(true)
+          }
+        }
+      const handlebloque = async (id) => {
+        try {
+            
+                    await axios.patch(`http://localhost:5000/users/bloqueradmin/${id}`, {
+                      headers: {'X-Requested-With': 'XMLHttpRequest', 
+                      "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
+                      "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
+                     "withCredentials": true 
+                    
+                  }).then((response) => {
+                    const message = response.data.message;console.log(message)
+                    if (message==='administrateur bloqué !')
+                          {setSuccess('administrateur bloqué !');}
+                          if (message==='bloquation echouée')
+                          {setErr('opération echouée');}
+                          else{setErr("erreur");}})
+                } catch (err) {
+                  setErr("opération echouée");
+                 // setData({...data, err: err.response.data.msg , success: ''})
+           // setOpen2(true)
+          }
+        }
 
       useEffect(() => {
         
@@ -76,10 +126,10 @@ function AdministrateurList() {
       setAdministrateurs(response.data);
      }*/
 
-    const handleDelete = async (email) => {
+    const handleDelete = async (id) => {
       try {
           
-                  await axios.delete('http://localhost:5000/users/supprimerAdmin/${user.email}', {
+                  await axios.get(`http://localhost:5000/users/supprimerAdmin/${id}`, {
                    
                     
                   },{
@@ -87,13 +137,21 @@ function AdministrateurList() {
                        "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
                        "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
                       "withCredentials": true 
-                    })
-                  //setCallback(!callback)
+                    }).then((response) => {
+                      const message = response.data.message;console.log(message)
+                      if (message==='administrateur supprimé !')
+                            {setSuccess('administrateur supprimé !');}
+                            if (message==='suppression echouée')
+                            {setErr('suppression echouée');}
+                            else{setErr("erreur");}})
+                    //setSuccess('administrateur supprimé !');
+                  setCallback(!callback)
           
           
       } catch (err) {
-          setData({...data, err: err.response.data.msg , success: ''})
-          setOpen2(true);
+        setErr('suppression echouée');
+         // setData({...data, err: err.response.data.msg , success: ''})
+          //setOpen2(true);
       }
     }
 
@@ -133,20 +191,10 @@ function AdministrateurList() {
           }
         },
         {
-            field: 'statut',
-            headerName: 'Statut',
+            field: 'status',
+            headerName: 'Status',
             flex:1,
-            renderCell: (params) =>{
-                return(
-                  <div className={`${params.row.status ? "status-admin2" : "status-admin1"}`}> 
-                  {
-                    params.row.status ? 
-                    <p className='p-admin'>BLOQUÉ</p>:
-                    <p className='p-admin'>ACTIVÉ</p> 
-                  }
-                  </div>
-                )
-              }
+            
           },
         {
             field: 'action',
@@ -155,12 +203,11 @@ function AdministrateurList() {
             renderCell: (params) =>{
               function showDeleteConfirm() {
                 confirm({
-                  title: 'Êtes-vous sûr de vouloir supprimer ce compte apprenant?',
+                  title: 'Êtes-vous sûr de vouloir supprimer ce compte instructeur?',
                   icon: <ExclamationCircleOutlined />,
                   okText: 'Supprimer',
                   okType: 'danger',
                   cancelText: 'Annuler',
-                  closable:true,
                   onOk() {
                     handleDelete(params.row.id)
                   },
@@ -169,11 +216,40 @@ function AdministrateurList() {
                   },
                 });
               }
+              function showbloquerConfirm() {
+                confirm({
+                  title: 'Êtes-vous sûr de vouloir bloquer ce compte administrateur?',
+                  icon: <ExclamationCircleOutlined />,
+                  okText: 'Bloquer',
+                  okType: 'danger',
+                  cancelText: 'Annuler',
+                  onOk() {
+                    handlebloque(params.row.id)
+                  },
+                  onCancel() {
+                    console.log('Cancel');
+                  },
+                });
+              }function showactiverConfirm() {
+                confirm({
+                  title:'Êtes-vous sûr de vouloir activer ce administrateur?',
+                  icon: <CheckCircleOutlineIcon className="iconCheck"/>,
+                  okText: 'Bloquer',
+                  okType: 'primary',
+                  cancelText: 'Annuler',
+                  onOk() {
+                    handleactive(params.row.id) 
+                  },
+                  onCancel() {
+                    console.log('Cancel');
+                  },
+                });
+              }
               return(
                 <>
-                <a href={`/admin/${params.row.id}`}>
+                <Link to={`/admin/${params.row.id}`}>
                 <VisibilityIcon className='icon-action'/>
-                </a>
+                </Link>
                 <Button aria-describedby={id} className="btn-action" onClick={handleClick}>⋮</Button>
                     <Popover
                           id={id}
@@ -189,7 +265,9 @@ function AdministrateurList() {
                             horizontal: 'center',
                           }}
                         >
-                        <Nav.Link className="actionNav">Bloqué administrateur</Nav.Link>
+                        <Nav.Link className="actionNav" onClick={showbloquerConfirm}>Bloqué administrateur</Nav.Link>
+                        <Divider />
+                        <Nav.Link className="actionNav" onClick={showactiverConfirm}>Activer administrateur</Nav.Link>
                         <Divider />
                         <Nav.Link className="actionNav" onClick={showDeleteConfirm}>Supprimer administrateur</Nav.Link>
                     </Popover> 
@@ -203,9 +281,7 @@ function AdministrateurList() {
   return (
       <div className='admin'>
         <div className="header-admin">
-        <Button className='btn-add-admin' /*onClick={() => getAdministrateurs()}*/>
-            voir
-          </Button>
+        
           <h1 className='title-admin'>Liste administrateurs</h1>
           <Button className='btn-add-admin' href="/addAdmin">
             <AddIcon />Administrateur
@@ -214,7 +290,20 @@ function AdministrateurList() {
         <div style={{ height: 550}}  className="tableau">
         <Table row={rowData} columns={columns}/>
         </div> 
-    <SnackbarErr err={err} open2={open2}/>
+        <Snackbar autoHideDuration={2500} open={ err === "" ? false : true } onClose={()=>{ setErr("") }}  >
+        <Alert variant="filled" severity="error" onClose={()=>{ setErr("") }} >
+          {
+            err
+          }
+        </Alert>
+      </Snackbar>
+      <Snackbar autoHideDuration={2500} open={ success === "" ? false : true } onClose={()=>{ setSuccess("") }}  >
+        <Alert variant="filled" severity="success" onClose={()=>{ setSuccess("") }} >
+          {
+            success
+          }
+        </Alert>
+      </Snackbar>
       </div>
   )
 }

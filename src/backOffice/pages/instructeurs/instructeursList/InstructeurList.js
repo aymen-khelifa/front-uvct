@@ -14,6 +14,8 @@ import Table from '../../../components/table/Table';
 import SnackbarErr from '../../../components/Snackbar/SnackbarErr';
 import { Link } from 'react-router-dom';
 import { isEmpty } from '../../../../Utils';
+import {Snackbar,Alert} from "@mui/material";
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 
 const { confirm } = Modal;
 
@@ -28,9 +30,11 @@ function InstructeurList() {
    // const [users,setUsers] = useState([]) ; 
     const [callback, setCallback] = useState(false)
     const [data, setData] =useState([]);
-    const {err} = data
+    //const {err} = data
     const dispatch = useDispatch()
     const [open2, setOpen2] = React.useState(false);
+    const [err , setErr] = useState("");
+    const [success , setSuccess] = useState("");
    
 
   /*  useEffect(()=>{
@@ -62,8 +66,10 @@ function InstructeurList() {
           avatar:user.avatar,
           name:user.name,
           email:user.email,
+          specialite:user.speciality,
           date:user.createdAt,
           tele:user.tel,
+          status:user.status,
       }
      })
     
@@ -85,23 +91,77 @@ function InstructeurList() {
        // ,isAdmin, isSuperAdmin
       const handleDelete = async (id) => {
           try {
-              if(user._id !== id){
-                      await axios.delete(`/user/delete/${id}`, {
-                          headers: {Authorization: token}
-                      })
-                      setCallback(!callback)
-                    }
+              
+                      await axios.get(`http://localhost:5000/users/supprimerinstr/${id}`, {
+                        headers: {'X-Requested-With': 'XMLHttpRequest', 
+                        "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
+                        "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
+                       "withCredentials": true 
+                      
+                    }).then((response) => {
+                      const message = response.data.message;console.log(message)
+                      if (message==='instructeur supprimé !')
+                            {setSuccess('instructeur supprimé !');}
+                            if (message==='suppression echouée')
+                            {setErr('suppression echouée');}
+                            else{setErr("erreur");}})
                   } catch (err) {
-              setData({...data, err: err.response.data.msg , success: ''})
-              setOpen2(true)
+                    setErr("suppression echouée");
+                   // setData({...data, err: err.response.data.msg , success: ''})
+             // setOpen2(true)
             }
           }
-
+          
+          const handleactive = async (id) => {
+            try {
+                
+                        await axios.patch(`http://localhost:5000/users/activerinstr/${id}`, {
+                          headers: {'X-Requested-With': 'XMLHttpRequest', 
+                          "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
+                          "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
+                         "withCredentials": true 
+                        
+                      }).then((response) => {
+                        const message = response.data.message;console.log(message)
+                        if (message==='instructeur activé !')
+                              {setSuccess('instructeur activé !');}
+                              if (message==='activation echouée')
+                              {setErr('activation echouée');}
+                              else{setErr("erreur");}})
+                    } catch (err) {
+                      setErr("activation echouée");
+                     // setData({...data, err: err.response.data.msg , success: ''})
+               // setOpen2(true)
+              }
+            }
+          const handlebloque = async (id) => {
+            try {
+                
+                        await axios.patch(`http://localhost:5000/users/bloquerinstr/${id}`, {
+                          headers: {'X-Requested-With': 'XMLHttpRequest', 
+                          "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
+                          "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
+                         "withCredentials": true 
+                        
+                      }).then((response) => {
+                        const message = response.data.message;console.log(message)
+                        if (message==='instructeur bloqué !')
+                              {setSuccess('instructeur bloqué !');}
+                              if (message==='bloquation echouée')
+                              {setErr('opération echouée');}
+                              else{setErr("erreur");}})
+                    } catch (err) {
+                      setErr("opération echouée");
+                     // setData({...data, err: err.response.data.msg , success: ''})
+               // setOpen2(true)
+              }
+            }
+  
       const columns = [
         {
           field: 'avatar',
           headerName: 'Nom',
-          flex:2,
+          flex:1.7,
           renderCell(params){
             return(
               <div className='userList'>
@@ -115,7 +175,12 @@ function InstructeurList() {
           field: 'email',
           headerName: 'Email',
           type: 'email',
-          flex:2,
+          flex:1.7,
+        },
+        {
+          field: 'specialite',
+          headerName: 'Spécialité',
+          flex:1.5,
         },
         {
             field: 'tele',
@@ -133,20 +198,13 @@ function InstructeurList() {
           }
         },
         {
-            field: 'statut',
-            headerName: 'Statut',
+            field: 'status',
+            headerName: 'Status',
+           
             flex:1,
-            renderCell: (params) =>{
-                return(
-                  <div className={`${params.row.status ? "status-admin2" : "status-admin1"}`}> 
-                  {
-                    params.row.status ? 
-                    <p className='p-admin'>BLOQUÉ</p>:
-                    <p className='p-admin'>ACTIVÉ</p> 
-                  }
-                  </div>
-                )
-              }
+           
+              
+            
           },
         {
             field: 'action',
@@ -168,6 +226,36 @@ function InstructeurList() {
                   },
                 });
               }
+              function showbloquerConfirm() {
+                confirm({
+                  title: 'Êtes-vous sûr de vouloir bloquer ce compte instructeur?',
+                  icon: <ExclamationCircleOutlined />,
+                  okText: 'Bloquer',
+                  okType: 'danger',
+                  cancelText: 'Annuler',
+                  onOk() {
+                    handlebloque(params.row.id)
+                  },
+                  onCancel() {
+                    console.log('Cancel');
+                  },
+                });
+              }function showactiverConfirm() {
+                confirm({
+                  title:'Êtes-vous sûr de vouloir activer ce compte instructeur?',
+                  icon: <CheckCircleOutlineIcon className="iconCheck"/>,
+                  okText: 'Bloquer',
+                  okType: 'primary',
+                  cancelText: 'Annuler',
+                  onOk() {
+                    handleactive(params.row.id) 
+                  },
+                  onCancel() {
+                    console.log('Cancel');
+                  },
+                });
+              }
+              
               return(
                 <>
                  <Link to={`/instructeur/${params.row.id}`}>
@@ -188,7 +276,9 @@ function InstructeurList() {
                                 horizontal: 'center',
                               }}
                             >
-                            <Nav.Link className="actionNav">Bloqué instructeur</Nav.Link>
+                            <Nav.Link className="actionNav" onClick={showbloquerConfirm}>Bloquer instructeur</Nav.Link>
+                            <Divider />
+                            <Nav.Link className="actionNav" onClick={showactiverConfirm}>Activer instructeur</Nav.Link>
                             <Divider />
                             <Nav.Link className="actionNav" onClick={showDeleteConfirm}>Supprimer instructeur</Nav.Link>
                         </Popover> 
@@ -202,7 +292,20 @@ function InstructeurList() {
   return (
     <div style={{ height: 550, width: '100%' }} >
       <Table row={rowData} columns={columns}/>
-      <SnackbarErr err={err} open2={open2}/>
+      <Snackbar autoHideDuration={2500} open={ err === "" ? false : true } onClose={()=>{ setErr("") }}  >
+        <Alert variant="filled" severity="error" onClose={()=>{ setErr("") }} >
+          {
+            err
+          }
+        </Alert>
+      </Snackbar>
+      <Snackbar autoHideDuration={2500} open={ success === "" ? false : true } onClose={()=>{ setSuccess("") }}  >
+        <Alert variant="filled" severity="success" onClose={()=>{ setSuccess("") }} >
+          {
+            success
+          }
+        </Alert>
+      </Snackbar>
     </div>  
   )
 }

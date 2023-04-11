@@ -9,7 +9,9 @@ import BreadcrumbHeader from '../../components/breadcrumb/BreadcrumbHeader';
 import SnackbarSuccess from '../../components/Snackbar/SnackbarSuccess';
 import SnackbarErr from '../../components/Snackbar/SnackbarErr';
 import {Snackbar,Alert} from "@mui/material";
-
+import IconButton from '@mui/material/IconButton';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
  
 
 function AddAdmin() {
@@ -63,7 +65,9 @@ function AddAdmin() {
             //setOpen(true);
   
       
-      
+            const [showPassword, setShowPassword] = React.useState(false);
+
+            const handleClickShowPassword = () => setShowPassword((show) => !show);
       const isFormValid = () => {
         // add validation rules here
         return name !== '' && email !== '' && tel !== '' && password !== ''  && !nameError && !emailError && !telError && !passwordError ;
@@ -96,10 +100,10 @@ function AddAdmin() {
         setTelError(!/^\d{8}$/.test(value));
       };
   return (
-      <div className='add-admin' style={{marginLeft:'200px',marginBottom:'50px'}}>
-        <BreadcrumbHeader item="Administrateur" link="administrateurs" active="Ajouter Administrateur"/>
+      <div className='add-admin' style={{marginLeft:'100px',marginBottom:'50px'}}>
+        <BreadcrumbHeader item="Administrateur" link="/administrateurs" active="Ajouter Administrateur"/>
         <div className='content-admin' style={{width:'800px'}}>
-          <Form onSubmit={handleSubmit} className='form-admin' style={{width:'97%'}}>
+          <Form  className='form-admin' style={{width:'97%'}}>
             <Form.Group className="mb-3" >
                 <Form.Label className="label">Nom complet</Form.Label>
                   <Form.Control type="text" placeholder="Entrer nom et prénom" 
@@ -150,7 +154,7 @@ function AddAdmin() {
                      
                     
                     
-                  ><option>entrez votre genre</option>
+                  >
                 <option value="Homme">Homme</option>
                 <option value="Femme">Femme</option>
                 </Form.Select>
@@ -161,7 +165,7 @@ function AddAdmin() {
            
             <Form.Group className="mb-3" >
                 <Form.Label className="label">Mot de passe</Form.Label>
-                  <Form.Control type="password" placeholder="Entrez mot de passe" 
+                  <Form.Control type={showPassword ? 'text' : 'password'} placeholder="Entrez mot de passe" 
                     name="password"
                     value={password}
                     onChange={handlePasswordChange} 
@@ -169,7 +173,9 @@ function AddAdmin() {
                     error={passwordError}
                      isInvalid={passwordError} 
                     
-                  /><Form.Control.Feedback type="invalid">
+                  /><IconButton className='eye' style={{position:'absolute',marginLeft:'655px',marginTop:'-39px'}} variant="outline-secondary" onClick={handleClickShowPassword}>
+        {showPassword ? <VisibilityOff /> : <Visibility />}
+      </IconButton><Form.Control.Feedback type="invalid">
               password contient 8 caracteres
                </Form.Control.Feedback>
             </Form.Group>
@@ -177,7 +183,7 @@ function AddAdmin() {
             <Button type='reset' className='btn-annuler' size="lg" >
                 Annuler
             </Button>
-            <Button disabled={!isFormValid()} className='btn-confirmer' type="submit" size="lg" >
+            <Button disabled={!isFormValid()} onClick={handleSubmit} className='btn-confirmer' type="submit" size="lg" >
                 confirmer
             </Button>
             </div>

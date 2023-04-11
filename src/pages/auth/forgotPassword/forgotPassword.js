@@ -37,9 +37,9 @@ function ForgotPassword() {
         return  email !== ''  && !emailError ;
       };
 
-    const forgotPassword = async () => {
-       if(!isEmail(email))
-            return setData({...data, err: 'Invalid emails.', success: ''})
+    const forgotPassword = async (e) => {
+      e.preventDefault();
+       
             
       
          await axios.post('http://localhost:5000/users/getmail', {
@@ -52,12 +52,12 @@ function ForgotPassword() {
                    "withCredentials": true 
                 }
                 
-                ).then(response => {
+                ).then((response) => {
                   const message = response.data.message;console.log(message)
                   if (message==='Mail sent successfully check your inbox')
                         {setSuccess('Mail sent successfully check your inbox');}
-                        if (message==='utilisateur non trouvé')
-                        {setErr('Password and Confirmation Password does not match');}
+                        if (message==='user non trouve')
+                        {setErr('utilisateur non trouvé');}
                         else{setErr("erreur");}})
                 //setSuccess('Mail sent successfully check your inbox')
                // setData({ ...data, err: "", success: "Candidat accepté!" });
@@ -65,18 +65,19 @@ function ForgotPassword() {
                   //const msg = res.data.message;
                 
         .catch( (err)=> {
-          setErr('utilisateur non trouvé')
+          setErr('verifier le champs')
          // setData({ ...data, err: err.response.data.msg, success: "" });
           //setOpen1(true);
         
         })
     }
     
+    
     return (
         <div className="fg_pass">
             <h2>Forgot Your Password?</h2>
                 
-                <Form onSubmit={forgotPassword}>
+                <Form >
   <Form.Group className="mb-3" controlId="formBasicEmail">
   <Form.Label className="labelForm" >Adresse E-mail</Form.Label>
     <Form.Control type="email" 
@@ -91,36 +92,32 @@ function ForgotPassword() {
                </Form.Control.Feedback>
   </Form.Group>
   <button
-            type="submit" 
-            fullWidth disabled={!isFormValid()} //onClick={forgotPassword}
+           
+             disabled={!isFormValid()} onClick={forgotPassword}
             variant="contained" style={{marginLeft:'30%', borderRadius:'5px', color:"white",backgroundColor:"#20384D",width:'170px',height:'35px'}}
             sx={{ mt: 3, mb: 2 }} className="connexion"
           >
             Verify your email
           </button>
-  </Form>
-  <Snackbar
-        open={open}
-        autoHideDuration={3000}
-        
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-      >
-        <Alert  severity="success">
-          {success}
+         
+  </Form> 
+  <Snackbar autoHideDuration={2500} open={ err === "" ? false : true } onClose={()=>{ setErr("") }}  >
+        <Alert variant="filled" severity="error" onClose={()=>{ setErr("") }} >
+          {
+            err
+          }
         </Alert>
       </Snackbar>
-      <Snackbar
-        open={open1}
-        autoHideDuration={3000}
-        
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-      >
-        <Alert severity="error">
-          {err}
+      <Snackbar autoHideDuration={2500} open={ success === "" ? false : true } onClose={()=>{ setSuccess("") }}  >
+        <Alert variant="filled" severity="success" onClose={()=>{ setSuccess("") }} >
+          {
+            success
+          }
         </Alert>
       </Snackbar>
+  
         </div>
     )
 }
 
-export default ForgotPassword
+export default ForgotPassword;

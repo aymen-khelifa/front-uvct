@@ -5,7 +5,7 @@ import {
   dispatchGetUserDetails,
 } from "../../../../redux/actions/authAction";
 import { isEmail } from "../../../../components/utils/validation/Validation";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import PhoneIcon from "@material-ui/icons/Phone";
 import WorkOutlineIcon from "@material-ui/icons/WorkOutline";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
@@ -17,22 +17,62 @@ import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import axios from "axios";
 import MailOutlineIcon from "@material-ui/icons/MailOutline";
-
-function Alert(props) {
+import {Alert} from "@mui/material";
+import {  useNavigate } from "react-router-dom";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { Modal } from 'antd';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+/*function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
-
+}*/
+import CancelIcon from '@mui/icons-material/Cancel';
+const { confirm } = Modal;
 function Candidat() {
   const auth = useSelector((state) => state.auth);
   const token = useSelector((state) => state.token);
-  const { admin } = auth;
+  //const  candidat  = auth;
+  const {candidat} = auth
+
   const [open, setOpen] = React.useState(false);
   const [open1, setOpen1] = React.useState(false);
-  const [callback, ] = useState(false);
+  const [callback] = useState(false);
   const dispatch = useDispatch();
   const { id } = useParams();
   const [data, setData] = useState([]);
-  const { err, success } = data;
+  //const { err, success } = data;
+  const [err , setErr] = useState("");
+  const [success , setSuccess] = useState("");
+  const navigate = useNavigate();
+  function showAccepte() {
+    confirm({
+      title:'Êtes-vous sûr de vouloir accepter ce candidat?',
+      icon: <CheckCircleIcon className="iconCheck"/>,
+      okText: 'Accepter',
+      okType: 'primary',
+      cancelText: 'Annuler',
+      onOk() {
+        handleAccept(id) 
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  }
+  function showRefuse() {
+    confirm({
+      title: 'Êtes-vous sûr de vouloir refuser ce candidat?',
+      icon: <CancelIcon className="iconCancel"/>,
+      okText: 'Refuser',
+      okType: 'danger',
+      cancelText: 'Annuler',
+      onOk() {
+        handleDelete(id);
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });}
+
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -49,67 +89,109 @@ function Candidat() {
   };
 
   useEffect(() => {
-    fetchUserDetails(token, id).then((res) => {
+    fetchUserDetails(token,id).then((res) => {
       dispatch(dispatchGetUserDetails(res));
-    });
-  }, [token, id, dispatch, callback]);
-
-  const handleAccept = async (id) => {
-    if (!isEmail(admin.email))
-      return setData({ ...data, err: "Invalid emails.", success: "" });
-    const email = admin.email;
+      
+    })
+  }, [token,id, dispatch,callback]);
+  console.log(candidat)
+  
+  const handleDelete = async (id) => {
     try {
-      if (admin._id !== id) {
-        await axios.post(
-          `/user/acceptInstr/${id}`,{ email },
+       
+                await axios.get(`http://localhost:5000/users/refusinst/${id}`, {
+                    
+                headers: {'X-Requested-With': 'XMLHttpRequest', 
+                "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
+                "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
+               "withCredentials": true 
+                }).then((response) => {
+                  const message = response.data.message;console.log(message)
+                  if (message==='candidat refusé !')
+                        {setSuccess('candidat refusé !');}
+                        if (message==='refus echoué')
+                        {setErr('refus echouée');}
+                        else{setErr("erreur");}})
+              
+        } catch (err) {
+          setErr("errrefus echoué");
+     
+    }
+  }
+  const handleAccept = async (id) => {
+    
+    try {
+      //if (candidat._id !== id) {
+        await axios.get(
+          `http://localhost:5000/users/acceptinst/${id}`,
           {
-            headers: { Authorization: token },
+           // headers: { Authorization: token },
+            headers: {'X-Requested-With': 'XMLHttpRequest', 
+                      "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
+                      "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
+                     "withCredentials": true 
           }
-        );
-        setData({ ...data, err: "", success: "Candidat accepté!" });
-        setOpen(true);
-      }
+        ).then((response) => {
+          const message = response.data.message;console.log(message)
+          if (message==='candidat Accepté avec Success !')
+                {setSuccess('candidat Accepté avec Success !');setTimeout(()=>{navigate(`/user/acceptInstr/${id}`)},2500);}
+                if (message==='acceptation echouée')
+                {setErr('acceptation echouée');}
+                else{setErr("erreur");}})
+        
+                  
+       // setData({ ...data, err: "", success: "Candidat accepté!" });
+        //setOpen(true);
+      //}
     } catch (err) {
-      setData({ ...data, err: err.response.data.msg, success: "" });
-      setOpen1(true);
+      setErr("acceptation echouée !");
+      //setData({ ...data, err: err.response.data.msg, success: "" });
+      //setOpen1(true);
     }
   };
 
   return (
     <div className="candidat">
-      <a href="/instructeur">
+      <Link to="/instructeurs">
         <ArrowBackIcon className="icon-back" />
-      </a>
+      </Link>
       <div className="btn-repond">
-        <Button className="btn-refuser">Refuser</Button>
+        <Button className="btn-refuser"
+        onClick={showRefuse}
+        //onClick={() => handleAccept(candidat.id)}
+        >Refuser</Button>
         <Button
           className="btn-accepter"
-          onClick={() => handleAccept(admin._id)}
+          //onClick={() => handleAccept(candidat.id)}
+          onClick={showAccepte}
         >
           Accepter
         </Button>
       </div>
       <div className="content-candidat">
-        <h1 className="name-candidat">{admin.name}</h1>
+      <h5  className="info-candidat">
+      <AccountCircleIcon className="icon-details" />
+         {candidat.name}
+      </h5>
         <h5 className="info-candidat">
           <WorkOutlineIcon className="icon-details" />
-          {admin.specialite}
+          {candidat.speciality}
         </h5>
         <h5 className="info-candidat">
           <PhoneIcon className="icon-details" />
-          {admin.tele}
+          {candidat.tel}
         </h5>
         <h5 className="info-candidat">
           <MailOutlineIcon className="icon-details" />
-          {admin.email}
+          {candidat.email}
         </h5>
         <h5 className="info-candidat">
           <DescriptionIcon className="icon-details" />
-          {admin.cv}
+          {candidat.cv}
         </h5>
-        <h5 className="info-candidat">
+        <h5 className="info-candidat" id="message">
           <MessageIcon className="icon-details" />
-          {admin.message}
+          {candidat.message}
         </h5>
       </div>
       <Snackbar

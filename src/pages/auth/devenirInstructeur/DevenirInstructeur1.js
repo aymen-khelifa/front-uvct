@@ -126,10 +126,10 @@ function DevenirInstructeur() {
       setspecialityError(value.trim() === '' ? 'La spécialité est requise.' : '');
     };
   return (
-      <div className={'devenir-instructeur-container flex-row '} >
+      <div className={'devenir-instructeur-container flex-row '} style={{width:'120%',marginTop:''}}>
           <Typography className={'become-instructor'}>Inscrivez-vous pour devenir instructeur</Typography>
           <img src={arrow} className={'arrow'} alt={'arrow'}/>
-    <div className='devInst' >
+    <div className='devInst'>
       
         <Form >
         <Form.Group  >

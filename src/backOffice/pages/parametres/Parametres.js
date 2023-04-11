@@ -2,6 +2,7 @@ import React from 'react'
 import ScrollTab from '../../components/ScrollTab/ScrollTab'
 import MotdePasse from './MotDePasse/MotdePasse'
 import Paiement from './Paiement/Paiement'
+import Profile from './profile/Profile'
 import './Parametres.css'
 
 function Parametres() {
@@ -9,9 +10,10 @@ function Parametres() {
     <div className="parametres">
       <h1 className="title-parametres">Paramétres</h1>
         <div className="scrollTab">
-          <ScrollTab label1="Paiement" label2="Mot de passe" 
+          <ScrollTab label1="Paiement" label2="Mot de passe" label3="profile"
               item1={<Paiement />}
               item2={<MotdePasse />}
+              item3={<Profile />}
           />
       </div>
     </div>

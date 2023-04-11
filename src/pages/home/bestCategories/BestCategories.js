@@ -64,42 +64,9 @@ function BestCategories() {
               <RightOutlined className='iconn' /> </p>
           </div>
         </div>
-        <div className={onHover?  "bestCategories-card-transparent": "bestCategories-card"}>
-          <div className="bestCategories-card-Title">
-            <h4> BRANDING</h4>
-          </div>
-          <div className="bestCategories-card-content">
-            <p> Behind every successful business is a recognisable brand, which has become inseparable from the services offered by the company.</p>
-          </div>
-          <div className="bestCategories-card-footer">
-            <p> Details    <RightOutlined className='iconn' />
-              <RightOutlined className='iconn' /> </p>
-          </div>
-        </div>
-        <div className={onHover?  "bestCategories-card-transparent": "bestCategories-card"}>
-          <div className="bestCategories-card-Title">
-            <h4> BRANDING</h4>
-          </div>
-          <div className="bestCategories-card-content">
-            <p> Behind every successful business is a recognisable brand, which has become inseparable from the services offered by the company.</p>
-          </div>
-          <div className="bestCategories-card-footer">
-            <p> Details    <RightOutlined className='iconn' />
-              <RightOutlined className='iconn' /> </p>
-          </div>
-        </div>
-        <div className={onHover?  "bestCategories-card-transparent": "bestCategories-card"}>
-          <div className="bestCategories-card-Title">
-            <h4> BRANDING</h4>
-          </div>
-          <div className="bestCategories-card-content">
-            <p> Behind every successful business is a recognisable brand, which has become inseparable from the services offered by the company.</p>
-          </div>
-          <div className="bestCategories-card-footer">
-            <p> Details    <RightOutlined className='iconn' />
-              <RightOutlined className='iconn' /> </p>
-          </div>
-        </div>
+        
+       
+        
       </div>
 
     </div>

@@ -18,8 +18,8 @@ function OffersSection(){
     },[]) ;  
 
     return(
-      <div className="home-sections">
-        <div className="container">
+      <div className="home-sections" style={{backgroundColor:'white'}}>
+        <div className="container" >
           <div className="row mb-3">
             <div className="col-md-12">
               <div className="section-header">

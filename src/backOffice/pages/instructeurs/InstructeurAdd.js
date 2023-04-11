@@ -7,7 +7,9 @@ import axios from 'axios'
 import SnackbarSuccess from '../../components/Snackbar/SnackbarSuccess'
 import SnackbarErr from '../../components/Snackbar/SnackbarErr'
 import {Snackbar,Alert} from "@mui/material";
-
+import IconButton from '@mui/material/IconButton';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 const initialState = {
     name: '',
     phone:'',
@@ -56,7 +58,7 @@ function InstructeurAdd() {
         //  if(isLength(password))
         //      return setData({...data, err: "Password must be at least 6 characters.", success: ''}) ;
         try {
-        const response=await axios.post('http://localhost:5000/instructeur/ajouterinstr', {
+        const response=await axios.post('http://localhost:5000/users/ajouterinstr', {
               name: name,
               email:email,
               password:password,
@@ -87,7 +89,9 @@ function InstructeurAdd() {
         setName(value);
         setNameError(value.length < 3  );
       };
-      
+      const [showPassword, setShowPassword] = React.useState(false);
+
+      const handleClickShowPassword = () => setShowPassword((show) => !show);
     
       const handleEmailChange = (event) => {
         const { value } = event.target;
@@ -113,16 +117,128 @@ function InstructeurAdd() {
       };
    
   return (
-    <div className="profile" style={{marginLeft:'200px'}}>
+    <div className='add-admin' style={{marginLeft:'100px',marginBottom:'50px'}}>
     <BreadcrumbHeader item="Liste instructeurs" link="/instructeurs" active="Ajouter instructeur"/>
+    <div className='content-admin' style={{width:'800px'}}>
+      <Form  className='form-admin' style={{width:'97%'}}>
+        <Form.Group className="mb-3" >
+            <Form.Label className="label">Nom complet</Form.Label>
+              <Form.Control type="text" placeholder="Entrer nom et prénom" 
+                name="name" 
+                value={name} required 
+                onChange={handleNameChange}
+                 error={nameError}
+                 isInvalid={nameError} 
+                
+              /><Form.Control.Feedback type="invalid">
+          Name obligatoirement 3 caracteres
+           </Form.Control.Feedback>
+        </Form.Group>
+        <Form.Group className="mb-3" >
+            <Form.Label className="label">Adresse e-mail</Form.Label>
+              <Form.Control type="email" placeholder="nom@email.com" 
+                name="email" 
+                value={email} required
+                onChange={handleEmailChange}
+                error={emailError}
+                 isInvalid={emailError} 
+                
+              /><Form.Control.Feedback type="invalid">
+          saisir un email valide
+           </Form.Control.Feedback>
+        </Form.Group>
+        <Form.Group className="mb-3" >
+            <Form.Label className="label">Numéro de téléphone</Form.Label>
+              <Form.Control type="number" placeholder="ex: 21 212 212" 
+                name="tele" 
+                value={tel}
+                onChange={handleTelChange} 
+                required 
+                error={telError}
+                 isInvalid={telError} 
+                
+              /><Form.Control.Feedback type="invalid">
+          saisir un numero de telephone valide
+           </Form.Control.Feedback>
+        </Form.Group>
+        <Form.Group className="mb-3" >
+              <Form.Label className='label'>Spécialité</Form.Label>
+              <Form.Select aria-label="Default select example"
+                name="specialite"
+                required
+                value={speciality}
+                onChange={handleSpecialityChange}
+                isInvalid={specialityError}>
+               
+                <option value="Développement web">Développement web</option>
+                <option value="Développement mobile">Développement mobile</option>
+                <option value="Développement personnel">Développement personnel</option>
+                <option value="Design">Design</option>
+                <option value="Business">Business</option>
+                <option value="Design">Design</option>
+                <option value="Communication">Communication</option>
+                <option value="Photographie">Photographie</option>
+                <option value="Musique">Musique</option>
+              </Form.Select>
+              <Form.Control.Feedback type="invalid">
+              La spécialité est requise.
+               </Form.Control.Feedback>
+          </Form.Group>
+      
+       
+        <Form.Group className="mb-3" >
+            <Form.Label className="label">Mot de passe</Form.Label>
+              <Form.Control type={showPassword ? 'text' : 'password'} placeholder="Entrez mot de passe" 
+                name="password"
+                value={password}
+                onChange={handlePasswordChange} 
+                required  
+                error={passwordError}
+                 isInvalid={passwordError} 
+                
+              /><IconButton className='eye' style={{position:'absolute',marginLeft:'660px',marginTop:'-39px'}} variant="outline-secondary" onClick={handleClickShowPassword}>
+        {showPassword ? <VisibilityOff /> : <Visibility />}
+      </IconButton>
+      <Form.Control.Feedback type="invalid">
+          password contient 8 caracteres
+           </Form.Control.Feedback>
+        </Form.Group>
+          
+          <div className="content-btn">
+              
+              <Button  className='btn-confirme' onClick={handleSubmit} disabled={!isFormValid()} type="submit">Ajouter</Button>
+          </div>
+        </Form>
+      </div>
+      <Snackbar autoHideDuration={2500} open={ err === "" ? false : true } onClose={()=>{ setErr("") }}  >
+        <Alert variant="filled" severity="error" onClose={()=>{ setErr("") }} >
+          {
+            err
+          }
+        </Alert>
+      </Snackbar>
+      <Snackbar autoHideDuration={2500} open={ success === "" ? false : true } onClose={()=>{ setSuccess("") }}  >
+        <Alert variant="filled" severity="success" onClose={()=>{ setSuccess("") }} >
+          {
+            success
+          }
+        </Alert>
+      </Snackbar>
+    </div>
+  )
+}
+
+export default InstructeurAdd;
+/*<div className="profile"  style={{marginLeft:'100px'}}>
+    <BreadcrumbHeader marginLeft="100px" item="Liste instructeurs" link="/instructeurs" active="Ajouter instructeur"/>
       <div className='content-profil' style={{width:'800px'}}>
-       <Form className='form-profil' onSubmit={handleSubmit} style={{width:'100%'}}>
+       <Form className='form-profil'  style={{width:'90%'}}>
           <Form.Group className="mb-3" >
             <Form.Label className="label">Nom complet</Form.Label>
               <Form.Control type="text" placeholder="Entrer son nom et prénom" 
                 name="name"
                 value={name} 
-                 fullwidth
+                 
                 onChange={handleNameChange}
                     isInvalid={nameError}                            
                     />
@@ -196,26 +312,7 @@ function InstructeurAdd() {
           
           <div className="content-btn">
               
-              <Button  className='btn-confirme' disabled={!isFormValid()} type="submit">Ajouter</Button>
+              <Button  className='btn-confirme' onClick={handleSubmit} disabled={!isFormValid()} type="submit">Ajouter</Button>
           </div>
         </Form>
-      </div>
-      <Snackbar autoHideDuration={2500} open={ err === "" ? false : true } onClose={()=>{ setErr("") }}  >
-        <Alert variant="filled" severity="error" onClose={()=>{ setErr("") }} >
-          {
-            err
-          }
-        </Alert>
-      </Snackbar>
-      <Snackbar autoHideDuration={2500} open={ success === "" ? false : true } onClose={()=>{ setSuccess("") }}  >
-        <Alert variant="filled" severity="success" onClose={()=>{ setSuccess("") }} >
-          {
-            success
-          }
-        </Alert>
-      </Snackbar>
-    </div>
-  )
-}
-
-export default InstructeurAdd
+      </div>*/

@@ -57,7 +57,7 @@ function Insctructors(){
                 personnes à travers le monde.<br />
                 Nous vous offrons l'appui et les outils <br />
                 nécessaires pour démontrer votre expertise.</p>
-                <Button className="btn-instrocteur">Commencez à enseigner</Button>
+                <Button className="btn-instrocteur" href='/devenir-instructeur'>Commencez à enseigner</Button>
               </div>
             </div>
             <div className="col-md-6">

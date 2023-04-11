@@ -17,9 +17,45 @@ import MessageIcon from "@material-ui/icons/Message";
 import ShopIcon from "@material-ui/icons/Shop";
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
 import StarsIcon from "@material-ui/icons/Stars";
-import { Link } from "react-router-dom";
+import {Link}  from "react-router-dom";
 
 // Routes instructeur
+const routes5 = [
+  {
+    icon: <PersonIcon />,
+    name: "Profile",
+    path: "/profile",
+  },
+  {
+    icon: <DescriptionIcon />,
+    name: "Mes formations",
+    path: "/mes-formations",
+  },
+  {
+    icon: <EventIcon />,
+    name: "Mes événements",
+    path: "/mes-evenements",
+  },
+  {
+    icon: <MonetizationOnIcon />,
+    name: "Mes gains",
+    path: "/mes-gains",
+  },
+  {
+    icon: <ShopIcon />,
+    name: "Mes achats",
+    path: "/mes-achats",
+  },
+  {
+    icon: <SettingsIcon />,
+    name: "Paramétres",
+    path: "/parametres",
+  },
+  {
+    icon: <ExitToAppIcon />,
+    name: "Se déconnecter",
+  },
+];
 const routes0 = [
   {
     icon: <PersonIcon />,
@@ -54,6 +90,7 @@ const routes0 = [
   {
     icon: <ExitToAppIcon />,
     name: "Se déconnecter",
+    path: "/se-deconnecter",
   },
 ];
 // Routes apprenant
@@ -208,24 +245,24 @@ function mapping(x) {
 }
 
 export default function LeftList({ children }) {
+  
   const auth = useSelector((state) => state.auth);
-  const { isLogged, isAdmin, isInstr, isSuperAdmin } = auth;
-
+  const {  isAdmin, isInstr, isSuperAdmin,loginUser } = auth;
+  const refreshToken = localStorage.getItem("refreshToken"); 
+  const isLogged = localStorage.getItem("isLogged");
   return (
-    <>
+    < >
       <div className="leftList">
         <Menu
           mode="inline"
           style={{ backgroundColor: "#ffffff", marginTop: "50px" }} 
         >
-          {isLogged &&
-            !isInstr &&
-            !isSuperAdmin &&
-            !isAdmin &&
-            mapping(routes1)}
-          {isAdmin && mapping(routes2)}
-          {isSuperAdmin && mapping(routes3)}
-          {isInstr && mapping(routes0)}
+         { refreshToken!=="" &&loginUser.role==='instructeur' && isLogged && mapping(routes0)}
+          { refreshToken!==""  &&loginUser.role==='apprenant' && isLogged && mapping(routes1)}
+          {/* {isLogged&&loginUser.role==='admin' && mapping(routes2)} */}
+          {refreshToken!=="" && loginUser.role==='admin' && isLogged &&  mapping(routes2)}
+          { refreshToken!=="" && loginUser.role==='superAdmin' && isLogged && mapping(routes3)}
+         
         </Menu>
       </div>
       <main className="children-content">{children}</main>

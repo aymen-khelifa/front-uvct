@@ -8,7 +8,9 @@ import { useNavigate } from 'react-router-dom';
 import { Snackbar, Alert} from "@mui/material";
 import logog from "../connexion/google.png"
 import { GoogleLogin } from "react-google-login";
-
+import IconButton from '@mui/material/IconButton';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 const initialState = {
     name: '',
@@ -28,8 +30,8 @@ function Inscrire({setShow1}) {
    const [nameError, setNameError] = useState(false);
 
     const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
     const [emailError, setEmailError] = useState(false);
+    const [password, setPassword] = useState("");
     const [passwordError, setPasswordError] = useState(false);
     const [err , setErr] = useState("");
     const [success , setSuccess] = useState("");
@@ -52,7 +54,7 @@ function Inscrire({setShow1}) {
                  headers: {'X-Requested-With': 'XMLHttpRequest', 
                  "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
                  "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
-                "withCredentials": true 
+                "withCredentials": true ,
               }
               ); 
                 if (response.data.message==='user created successfully...check your inbox')
@@ -68,7 +70,7 @@ function Inscrire({setShow1}) {
                 } catch (err) {
                   setErr('echec');
                   setTimeout(() => {
-                    navigate('/connexion');
+                    navigate('/inscrire');
                   }, 2500);
                 }
               };
@@ -91,6 +93,9 @@ function Inscrire({setShow1}) {
     }
     console.log(res);
   };
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const googleError = (error) =>
     console.log(error);
@@ -125,7 +130,7 @@ function Inscrire({setShow1}) {
                     instructeurs. 
                   </p>
 
-        <Form  onSubmit={handleSubmit} className="form" style={{width:'90%',marginLeft:'5%'}}>
+        <Form   className="form" style={{width:'90%',marginLeft:'5%'}}>
             <Form.Group className="mb-3" style={{width:'100%'}}>
                 <Form.Label className="labelForm" >Nom complet</Form.Label>
                     <Form.Control type="Normal text"
@@ -154,13 +159,15 @@ function Inscrire({setShow1}) {
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label className="labelForm" >Mot de passe</Form.Label>
-                <Form.Control type="password" placeholder="Créez votre mot de passe" 
+                <Form.Control type={showPassword ? 'text' : 'password'} placeholder="Créez votre mot de passe" 
                 name="password"
                 required 
                 onChange={handlePasswordChange}
               isInvalid={passwordError}
             
-            />
+            /><IconButton className='eye' style={{position:'absolute',marginLeft:'640px',marginTop:'-39px'}} variant="outline-secondary" onClick={handleClickShowPassword}>
+        {showPassword ? <VisibilityOff /> : <Visibility />}
+      </IconButton>
              <Form.Control.Feedback type="invalid">
              mot de passe contient 8 caracteres
   </Form.Control.Feedback> 
@@ -168,7 +175,7 @@ function Inscrire({setShow1}) {
                
         </Form.Group>
         <div className="d-grid gap-2">
-            <Button  className='btn-inscr'  type="submit" size="lg" disabled={!isFormValid()}>
+            <Button  className='btn-inscr'  type="submit" size="lg" onClick={handleSubmit} disabled={!isFormValid()}>
                 S'inscrire
             </Button>
             <Form.Label style={{ textAlign: "center" }}>ou</Form.Label>

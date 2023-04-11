@@ -1,6 +1,6 @@
 import ACTIONS from '../actions/'
 
-const token = ''
+const token =  ""
 
 const tokenReducer = (state = token, action) => {
     switch(action.type){

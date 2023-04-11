@@ -1,7 +1,7 @@
 import React ,{useState, useEffect} from 'react'
 import axios from 'axios'
 import {useSelector, useDispatch} from 'react-redux'
-import {fetchUserDetails1, dispatchGetUserDetails1} from '../../../redux/actions/authAction'
+import {fetchUserDetails2, dispatchGetUserDetails2} from '../../../redux/actions/authAction'
 import {isLength, isMatch} from '../../../components/utils/validation/Validation'
 import { Button,Form} from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
@@ -13,7 +13,6 @@ import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { Snackbar, Alert} from "@mui/material";
-
         const initialState = {
             name: '',
             phone:'',
@@ -25,47 +24,42 @@ import { Snackbar, Alert} from "@mui/material";
             success: ''
         }
 
-function EditUser() {
+function EditUserApprenant() {
     const auth = useSelector(state => state.auth)
     const token = useSelector(state => state.token)
-    const {instructeur} = auth
+    const {apprenant} = auth
     const [data, setData] = useState(initialState)
-    //const {name,phone,email,speciality,password, cf_password, err, success} = data
+   // const {name,phone,email,speciality,password, cf_password, err, success} = data
     const [avatar, setAvatar] = useState(false)
     const [loading, setLoading] = useState(false)
     const [callback] = useState(false)
     const dispatch = useDispatch()
     const {id} = useParams()
-    const [open, setOpen] = React.useState(false);
-    const [open2, setOpen2] = React.useState(false);
     const [name, setName] = useState("");
     const [nameError, setNameError] = useState(false);
+    const [open, setOpen] = React.useState(false);
+    const [open2, setOpen2] = React.useState(false);
     const [email, setEmail] = useState("");
     const [emailError, setEmailError] = useState(false);
-    const [speciality, setspeciality] = useState("");
-    const [specialityError, setspecialityError] = useState(false);
     const [tel, setTel] = useState("");
     const [telError, setTelError] = useState(false);
     const [err , setErr] = useState("");
     const [success , setSuccess] = useState("");
-    const [password, setPassword] = useState("");
-   
     const [passwordError, setPasswordError] = useState(false);
-
-
+    const [password, setPassword] = useState("");
         useEffect(() => {
-          fetchUserDetails1(token,id).then(res =>{
-                dispatch(dispatchGetUserDetails1(res))
+          fetchUserDetails2(token,id).then(res =>{
+                dispatch(dispatchGetUserDetails2(res))
             })
         },[token,id, dispatch, callback])
-        console.log(instructeur)
+        console.log(apprenant)
 
-        const handleChange = e => {
+    /*    const handleChange = e => {
 
             const {name, value} = e.target
 
             setData({...data, [name]:value, err:'', success: ''})
-        }
+        }*/
 
         const changeAvatar = async(e) => {
             e.preventDefault()
@@ -101,12 +95,11 @@ function EditUser() {
    
         const updateInfor = () => {
             try {
-                axios.patch(`http://localhost:5000/users/editprofileinst/${id}`, {
+                axios.patch(`http://localhost:5000/users/editprofileapprenant/${id}`, {
                     name: name ,
                     avatar: avatar ,
                     tel: tel ,
                     email: email ,
-                    speciality: speciality,
                     password:password,
 
                 },{
@@ -122,7 +115,7 @@ function EditUser() {
             }
         }
 
-  /*  const updatePassword = () => {
+ /*   const updatePassword = () => {
         if(isLength(password))
             return setData({...data, err: "Password must be at least 6 characters.", success: ''})
 
@@ -138,57 +131,47 @@ function EditUser() {
         } catch (err) {
             setData({...data, err: err.response.data.msg , success: ''})
         }
-    }*/
+    }
 
-   /* const handleUpdate = () => {
+    const handleUpdate = () => {
         if(name || avatar || phone || speciality || email) updateInfor()
         if(password) updatePassword()
     }*/
-
+    const isFormValid = () => {
+      // add validation rules here
+      return  email !== '' && password !== ''  && name !== '' && tel !== '' && !emailError && !passwordError
+      && !nameError && !telError ;
+    };
+    const handleEmailChange = (event) => {
+      const { value } = event.target;
+      setEmail(value);
+      setEmailError(value === '' || !/\S+@\S+\.\S+/.test(value));
+    };
+    const handleNameChange = (event) => {
+      const { value } = event.target;
+      setName(value);
+      setNameError(value.length < 3);
+    };
+    const handleTelChange = (event) => {
+      const { value } = event.target;
+      setTel(value);
+      setTelError(!/^\d{8}$/.test(value));
+    };
+    const handlePasswordChange = (event) => {
+      const { value } = event.target;
+      setPassword(value);
+      setPasswordError(value.length < 8);
+    };
     const [showPassword, setShowPassword] = React.useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleEmailChange = (event) => {
-    const { value } = event.target;
-    setEmail(value);
-    setEmailError(value === '' || !/\S+@\S+\.\S+/.test(value));
-  };
-  const handleNameChange = (event) => {
-    const { value } = event.target;
-    setName(value);
-    setNameError(value.length < 3);
-  };
-  const handleTelChange = (event) => {
-    const { value } = event.target;
-    setTel(value);
-    setTelError(!/^\d{8}$/.test(value));
-  };
-  
-  const handleSpecialityChange = (event) => {
-    const { value } = event.target;
-    setspeciality(value);
-    setspecialityError(value.trim() === '' ? 'La spécialité est requise.' : '');
-  };
-  const handlePasswordChange = (event) => {
-    const { value } = event.target;
-    setPassword(value);
-    setPasswordError(value.length < 8);
-  };
-  const isFormValid = () => {
-    // add validation rules here
-    return  email !== '' && password !== ''  && name !== '' && tel !== '' && speciality !== '' 
-     && !emailError && !passwordError && !nameError && !telError  && !specialityError ;
-  };
-  
-
-
   return (
       <div className='content-user'>
        <h3 className='title-photo'>Photo de profile</h3>
        <Form className='form-profil'>
        <Form.Group className="mb-3">
          <div className='profile-pic-div'>
-         <img src={ instructeur.avatar} alt="" className="avatar-img" />
+         <img src={ apprenant.avatar} alt="" className="avatar-img" />
            <div className="uploadBtn">
            <Form.Label htmlFor="file"> 
             <PhotoCameraIcon className='icon-camera'/>
@@ -204,10 +187,10 @@ function EditUser() {
           </Form.Group>
           <Form.Group className="mb-3" >
             <Form.Label className="label">Nom complet</Form.Label>
-              <Form.Control type="text" placeholder={instructeur.name} 
+              <Form.Control type="text" placeholder={apprenant.name} 
                 name="name" 
                 required 
-                defaultValue={instructeur.name}
+                defaultValue={apprenant.name}
                 onChange={handleNameChange}
                     isInvalid={nameError}                            
                     /><Form.Control.Feedback type="invalid">
@@ -216,9 +199,9 @@ function EditUser() {
           </Form.Group>
           <Form.Group className="mb-3" >
             <Form.Label className="label">Adresse e-mail</Form.Label>
-              <Form.Control type="email" placeholder={instructeur.email} 
+              <Form.Control type="email" placeholder={apprenant.email} 
                 name="email" 
-               defaultValue={instructeur.email}
+               defaultValue={apprenant.email}
                onChange={handleEmailChange}
             isInvalid={emailError} 
              />
@@ -228,9 +211,9 @@ function EditUser() {
           </Form.Group>
           <Form.Group className="mb-3" >
             <Form.Label className="label">Numéro de téléphone</Form.Label>
-              <Form.Control type="text" placeholder={instructeur.tel} 
+              <Form.Control type="text" placeholder={apprenant.tel} 
                 name="phone" 
-              defaultValue={instructeur.tel}
+              defaultValue={apprenant.tel}
               onChange={handleTelChange}
                     
                     isInvalid={telError}
@@ -239,35 +222,13 @@ function EditUser() {
           saisir un numero de  telephone valide
                </Form.Control.Feedback>
           </Form.Group>
-          <Form.Group className="mb-3" >
-            <Form.Label className="label">Spécialité</Form.Label>
-            <Form.Select
-              name="speciality"
-              required 
-              onChange={handleSpecialityChange}
-                isInvalid={specialityError}>
-             
-              <option defaultValue={instructeur.speciality}>{instructeur.speciality}</option>
-              <option value="développement web">développement web</option>
-              <option value="développement mobile">développement mobile</option>
-              <option value="développement personnel">développement personnel</option>
-              <option value="design">design</option>
-              <option value="business">business</option>
-              <option value="design">design</option>
-              <option value="communication">communication</option>
-              <option value="photographie">photographie</option>
-              <option value="mode de vie">design</option>
-              <option value="musique">musique</option>
-        </Form.Select>
-        <Form.Control.Feedback type="invalid">
-              La spécialité est requise.
-               </Form.Control.Feedback>
-          </Form.Group>
+         
+          
           <Form.Group className="mb-3" >
             <Form.Label className="label">Mot de passe</Form.Label>
               <Form.Control type={showPassword ? 'text' : 'password'} placeholder="Entrer mot de passe" 
                 name="password" 
-              defaultValue={instructeur.password}
+              defaultValue={apprenant.password}
               onChange={handlePasswordChange}
               isInvalid={passwordError}
             /><IconButton className='eye' style={{position:'absolute',marginLeft:'420px',marginTop:'-31px'}} variant="outline-secondary" onClick={handleClickShowPassword}>
@@ -275,11 +236,11 @@ function EditUser() {
       </IconButton>
                 <Form.Control.Feedback type="invalid">
              mot de passe contient 8 caracteres
-  </Form.Control.Feedback> 
+              </Form.Control.Feedback> 
           </Form.Group>
-         
+          
           <div className="content-btn">
-                  <Button className='btn-annnuler' href="/instructeurs">Annuler</Button>
+                  <Button className='btn-annnuler' href="/apprenants">Annuler</Button>
                   <Button  onClick={updateInfor} disabled={!isFormValid()} className='btn-confirme'>Sauvegarder les modifications</Button>
            </div>
         </Form>
@@ -301,5 +262,5 @@ function EditUser() {
   )
 }
 
-export default EditUser;
+export default EditUserApprenant;
 //<option defaultValue={instructeur.instructeur.speciality}>{instructeur.instructeur.speciality}</option>

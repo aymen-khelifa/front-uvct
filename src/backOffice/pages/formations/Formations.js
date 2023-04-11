@@ -33,6 +33,9 @@ function Formations() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const token = useSelector(state => state.token)
+  const auth = useSelector(state => state.auth)
+  const { loginUser } = auth ;
+
   const [formation, setFormation] = useState(initialState)
   const [archiver, setArchiver] = useState(false)
   const [statut, setStatut] = useState(false)
@@ -92,7 +95,7 @@ function Formations() {
         const handleSubmit = async e => {
               e.preventDefault()
               try {
-                  const res = await axios.post('/addFormation', {
+                  const res = await axios.post(`/addFormation/${loginUser.uuid}`, {
                     title
                   },{
                     headers: {Authorization: token}

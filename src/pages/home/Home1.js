@@ -9,7 +9,7 @@ import Insctructors from "./insctructors/Insctructors";
 
 const Home = () => {
   return (
-    <div style={{width:'100%'}}>
+    <div style={{width:'120%'}}>
       <BannerSection />
       <OffersSection />
       <LastEvents />

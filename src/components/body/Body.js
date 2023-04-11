@@ -4,9 +4,15 @@ import { useSelector } from "react-redux";
 import ForgotPassword from "../../pages/auth/forgotPassword/forgotPassword";
 import ResetPassword from "../../pages/auth/ResetPassword/ResetPassword";
 import Home from "../../pages/home/Home";
+import Home1 from "../../pages/home/Home1";
+import DevenirInstructeur1 from "../../pages/auth/devenirInstructeur/DevenirInstructeur1";
+
 import DevenirInstructeur from "../../pages/auth/devenirInstructeur/DevenirInstructeur";
 import Inscrire from "../../pages/auth/inscrire/Inscrire";
 import NotFound from "../utils/NotFound/NotFound";
+import NotFound1 from "../utils/NotFound/NotFound1";
+import NotFound2 from "../utils/NotFound/NotFound2";
+
 import LeftList from "../../backOffice/components/leftList/LeftList";
 import Profil from "../../backOffice/pages/profile/Profil";
 import Formations from "../../backOffice/pages/formations/Formations";
@@ -37,6 +43,8 @@ import AddFormation from "../../backOffice/pages/AddFormation/AddFormation";
 import Dashbord from "../../backOffice/pages/dashbord/Dashbord";
 import Panier from "../../pages/panier/Panier";
 import HeaderInstructeur from "../../pages/auth/devenirInstructeur/HeaderInstructeur";
+import HeaderInstructeur1 from "../../pages/auth/devenirInstructeur/HeaderInstructeur1";
+
 import { AllEvents } from "../../pages/events/allEvents/AllEvents";
 import { EventDetails } from "../../pages/events/eventDetails/event-details";
 import UpdateCategorie from "../../backOffice/pages/categories/UpdateCategorie";
@@ -67,7 +75,7 @@ import AddMessage from "../../backOffice/pages/messages/addMessage/AddMessage";
 
 function Body() {
   const auth = useSelector((state) => state.auth); 
-  const { isLogged, isAdmin, isInstr, isSuperAdmin } = auth ;
+  const { isLogged, isAdmin, isInstr, isSuperAdmin,loginUser } = auth ;
 
   
 
@@ -78,42 +86,40 @@ function Body() {
         <>
       <LeftList>  
           <Routes>
-          <Route path="/" element={isAdmin ? <NotFound /> : <Home />} /> 
-            <Route exact path="/profile" element={<Profil />} />
-            <Route path="/mes-formations" element={<Formations />} />
+         
+            <Route  path="/profile" element={ <Profil /> } /> 
+            <Route path="/mes-formations" element={ <Formations />} />
             <Route path="/mes-evenements" element={<MesEvents />} />
             <Route path="/evenements" element={<Evenements />} />
             <Route path="/ajout-evenement" element={<AjoutEvent />} />
             <Route path="/events/:id" element={<UpdateEvent />} />
             <Route path="/parametres" element={<Parametres />} />
             <Route path="/mes-achats" element={<Achats />} />
-            <Route path="/mes-gains" element={isInstr ? <Gains /> : <NotFound />}/>
-            <Route path="/new-formation/:titre1" element={<NewFormation />} />
+            <Route path="/mes-gains" element={ <Gains /> }/>
+            <Route path="/new-formation/:titre1" element={isLogged ? <NewFormation /> : <NotFound2 />} />
             <Route path="/maFormation/:titre1" element={<NewFormation />} />
             <Route path="/apprenants" element={<ApprenantList /> }/>
-            <Route path="/activationpage/:activationCode" element={<Activationpage /> } />
-            <Route path="/ResetPassword/:activationCode" element={<ResetPassword /> } />
-            <Route path="/DevenirInstructeur" element={<DevenirInstructeur /> } />
+           
 
             
             <Route
               path="/apprenant/:id"
-              element={isAdmin || isSuperAdmin ? <Apprenant /> : <NotFound />}
+              element={ <Apprenant /> }
             />
           <Route
               path="/user/:id"
-              element={isAdmin || isSuperAdmin ? <EditUser /> : <NotFound />}
+              element={ <EditUser />}
             />
             <Route
               path="/admin/:id"
               element={
-                isAdmin || isSuperAdmin ? <Administrateur /> : <NotFound />
+                <Administrateur /> 
               }
             />
             <Route
               path="/ajout-apprenant"
               element={
-                 <ApprenantAdd /> 
+              loginUser.role==='admin' ? <ApprenantAdd /> : <NotFound />
               }
             />
             <Route
@@ -140,13 +146,13 @@ function Body() {
               path="/addAdmin"
               element={ <AddAdmin /> }
             />
-            <Route
+            <Route 
               path="/instructeur/:id" //voir details
-              element={isAdmin || isSuperAdmin ? <Instructeur /> : <NotFound />}
+              element={loginUser.role==='apprenant'  ?  <Instructeur /> : <NotFound />}
             />
             <Route
               path="/ajouter-instructeur"
-              element={ <InstructeurAdd />}
+              element={loginUser.role==='admin'  ? <InstructeurAdd /> : <NotFound />}
             />
             <Route
               path="/candidat/:id"
@@ -154,7 +160,7 @@ function Body() {
             />
             <Route
               path="/tableau-bord"
-              element={isAdmin || isSuperAdmin ? <Dashbord /> : <NotFound />}
+              element={ <Dashbord />}
             />
             <Route
               path="/categories"
@@ -172,7 +178,8 @@ function Body() {
         
           
             <Route
-              path="/user/acceptInstr/:token"
+             // path="/user/acceptInstr/:token"
+             path="/user/acceptInstr/:id"
               element={<CandidatAccepted />}
             />
             <Route path="/formation/:titre1" element={<AddFormation />} />
@@ -193,28 +200,38 @@ function Body() {
             <Route path="/reclamation/:id" element={<Reclamation />} />
             <Route path="/all-reclamation" element={<Reclamations1 />} />
             <Route path="/reclamationdt/:id" element={<Reclamation1 />} />
+            <Route path="/" element={isLogged ?  <Home /> : <Home1 /> } />
+            <Route path="/DevenirInstructeur" element={isLogged ? <DevenirInstructeur /> : <DevenirInstructeur1 />} />
+            <Route
+              path="/devenir-instructeur"
+              element={isLogged ? <HeaderInstructeur /> : <HeaderInstructeur1 />}
+            />
           </Routes>
         
           </LeftList>
             </>
         <>
           <Routes>
-           
+          <Route path="/activationpage/:activationCode" element={<Activationpage /> } />
+            <Route path="/ResetPassword/:activationCode" element={<ResetPassword /> } />
+            {/*<Route path="/DevenirInstructeur" element={<DevenirInstructeur /> } />
             <Route
               path="/devenir-instructeur"
               element={<HeaderInstructeur />}
-            />
+            />*/}
+           
             <Route
               path="/connexion"
-              element={isLogged ? <NotFound /> : <Connexion />}
+              element={isLogged ?  <NotFound1 />  : <Connexion />}
             />
+            
             <Route
               path="/inscrire"
-              element={isLogged ? <NotFound /> : <Inscrire />}
+              element={isLogged ? <NotFound1 /> : <Inscrire />}
             />
             <Route
               path="/forgot_password"
-              element={isLogged ? <NotFound /> : <ForgotPassword />}
+              element={isLogged ? <NotFound1 /> : <ForgotPassword />}
             />
           
             <Route path="/panier" element={<Panier />} />
@@ -226,11 +243,16 @@ function Body() {
             <Route path="/partner" element={<PartnerPage />} />
             <Route path="/allInstructeurs" element={<Instructeurs1 />} />
             <Route path="/instructeurDet" element={<InstructeurDetails />} />
+            <Route path="/aaaa" element={<EditUser />} />
           </Routes>
+          
           <Footer />
+          
+         {/* <Routes> <Route path="/" element={ <Home />} /> </Routes>*/}
+          
         </>
 
-       
+        
     </section>
   );
 }
@@ -266,4 +288,25 @@ export default Body;
           /*  <Route
               path="/candidat/:id"
               element={isAdmin || isSuperAdmin ? <Candidat /> : <NotFound />}
+            />
+            
+             <Route
+              path="/admin/:id"
+              element={
+                isAdmin || isSuperAdmin ? <Administrateur /> : <NotFound />
+              }
+            />
+            
+             <Route
+              path="/instructeur/:id" //voir details
+              element={isAdmin || isSuperAdmin ? <Instructeur /> : <NotFound />}
             />*/
+            /*<Route
+              path="/user/:id"
+              element={isAdmin || isSuperAdmin ? <EditUser /> : <NotFound />}
+            />*/
+            
+          /*  <Route
+              path="/apprenant/:id"
+              element={isAdmin || isSuperAdmin ? <Apprenant /> : <NotFound />}
+            */

@@ -12,6 +12,9 @@ import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import AddIcon from '@material-ui/icons/Add';
 import './Apprenants.css'
 import Table from '../../components/table/Table';
+import {Snackbar,Alert} from "@mui/material";
+import { Link } from 'react-router-dom';
+
 
 const { confirm } = Modal;
 
@@ -22,6 +25,8 @@ function ApprenantList() {
     const users = useSelector(state => state.users)
     const [callback, setCallback] = useState(false)
     const [data, setData] =useState([]);
+    const [err , setErr] = useState("");
+    const [success , setSuccess] = useState("");
     const dispatch = useDispatch()
     //const [users,setUsers] = useState([]) ; 
     const rowData= users?.map(user => {
@@ -67,16 +72,26 @@ function ApprenantList() {
    //   ,isAdmin, isSuperAdmin,
       const handleDelete = async (id) => {
           try {
-              if(user._id !== id){
-                      await axios.delete(`/user/delete/${id}`, {
-                          headers: {Authorization: token}
-                      })
+              
+                      await axios.get(`http://localhost:5000/users/deleteapprenant/${id}`, {
+                        headers: {'X-Requested-With': 'XMLHttpRequest', 
+                        "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
+                        "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
+                       "withCredentials": true 
+                      }).then((response) => {
+                        const message = response.data.message;console.log(message)
+                        if (message==='apprenant supprimé !')
+                              {setSuccess('apprenant supprimé !');}
+                              if (message==='suppression echouée')
+                              {setErr('suppression echouée');}
+                              else{setErr("erreur");}})
                     
                       setCallback(!callback)
-              }
+              
               
           } catch (err) {
-              setData({...data, err: err.response.data.msg , success: ''})
+            setErr("suppression echouée");
+              //setData({...data, err: err.response.data.msg , success: ''})
           }
       }
       
@@ -137,9 +152,9 @@ function ApprenantList() {
               }
               return(
                 <>
-                <a href={`/apprenant/${params.row.id}`}>
+                <Link to={`/apprenant/${params.row.id}`}>
                 <VisibilityIcon  className='icon-action'/>
-                </a>
+                </Link>
               <OverlayTrigger placement="bottom" overlay={<Tooltip id="button-tooltip-2">Supprimer apprenant</Tooltip>}>
               <DeleteOutlineIcon onClick={showDeleteConfirm} className="icon-delete"/>
               </OverlayTrigger>
@@ -159,6 +174,21 @@ function ApprenantList() {
             <div style={{ height: 550 }} className="tableau">
             <Table row={rowData} columns={columns}/>
             </div> 
+            <Table row={rowData} columns={columns}/>
+       <Snackbar autoHideDuration={2500} open={ err === "" ? false : true } onClose={()=>{ setErr("") }}  >
+        <Alert variant="filled" severity="error" onClose={()=>{ setErr("") }} >
+          {
+            err
+          }
+        </Alert>
+      </Snackbar>
+      <Snackbar autoHideDuration={2500} open={ success === "" ? false : true } onClose={()=>{ setSuccess("") }}  >
+        <Alert variant="filled" severity="success" onClose={()=>{ setSuccess("") }} >
+          {
+            success
+          }
+        </Alert>
+      </Snackbar>
       </div>
   )
 }

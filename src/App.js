@@ -14,19 +14,18 @@ import {
 import "antd/dist/antd.css";
 import Chat from "./pages/home/Social/chat";
 
-
 function App() {
   
   const dispatch = useDispatch();
   const token = useSelector((state) => state.token);
   const auth = useSelector((state) => state.auth);
-  const {user,isInstr} = auth 
+  const {loginUser,isInstr} = auth 
   useEffect(() => {
     const firstLogin = localStorage.getItem("firstLogin");
     if (firstLogin) {
       const getToken = async () => {
-        const res = await axios.post("/user/refresh_token", null);
-        dispatch({ type: "GET_TOKEN", payload: res.data.access_token });
+        const res = await axios.get("http://localhost:5000/users/refresh_token", null);
+        dispatch({ type: "GET_TOKEN", payload: res.data.refreshToken });
         
       };
       getToken();
@@ -55,13 +54,15 @@ function App() {
 
 
   return (
-    <Router>
+    
       <div className="App">
+      <Router>
         <Header />
         <Body />  
-        <Chat/>  
+        <Chat/> 
+      </Router>
       </div>
-    </Router>
+    
     
   );
 }

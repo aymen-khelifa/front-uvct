@@ -8,7 +8,7 @@ import logo2 from './logo2.png'
 
 const Footer = () => {
   return (
-    <div className={"footer"}>
+    <div className={"footer"} >
       <div className={"logo-description-container"}>
         <img alt={"logo"} className={"logo"} src={logo2} />
         <Typography className={"site-description"}>

@@ -6,7 +6,9 @@ import {isLength, isMatch} from '../../../components/utils/validation/Validation
 import { Button ,Form} from 'react-bootstrap'
 import './RestPassword.css'
 import { Snackbar, Alert} from "@mui/material";
-
+import IconButton from '@mui/material/IconButton';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 /*const initialState = {
     password: '',
     cf_password: '',
@@ -34,11 +36,13 @@ function ResetPassword() {
         setData({...data, [name]:value, err: '', success: ''})
     }*/
 
-
-    const updateUser = async () => {
+const {activationCode}=useParams()
+    const updateUser = async (e) => {
       
-      await axios.patch('http://localhost:5000/users/update', {
-          email: email,
+      e.preventDefault();
+      
+      await axios.patch(`http://localhost:5000/users/update/${activationCode}`, {
+          
           password: password,
           confpassword: confpassword,
         }, {
@@ -53,32 +57,32 @@ function ResetPassword() {
         }).then(response => {
           const message = response.data.message;console.log(message)
           if (message==='mot de passe modifié')
-                {setSuccess('mot de passe modifié');setTimeout(()=>{navigate("/connexion")},2500);}
+                {setSuccess('mot de passe modifié');setTimeout(()=>{navigate("/connexion")},1000);}
                 if (message==='Password and Confirmation Password does not match')
-                {setErr('Password and Confirmation Password does not match');setTimeout(()=>{navigate("/connexion")},2500);}
-                else{setErr("erreur");}
-          
+                {setErr('Password and Confirmation Password does not match');}
+                
          // setSuccess('mot de passe modifié')
-         setTimeout(()=>{navigate("/coneexion")},2000);
+        //else{ setSuccess('mot de passe modifié');setTimeout(()=>{navigate("/coneexion")},2000);}
         })
         .catch(error => {
-           setErr('Password and Confirmation Password does not match');
+           setErr('erreur');
         });
-        
+      
         
        
       
    
     };
+    const [showPassword1, setShowPassword1] = React.useState(false);
+    const [showPassword, setShowPassword] = React.useState(false);
+    const handleClickShowPassword1 = () => setShowPassword1((show) => !show);
 
-    const handleEmailChange = (event) => {
-        const { value } = event.target;
-        setEmail(value);
-        setEmailError(value === '' || !/\S+@\S+\.\S+/.test(value));
-      };
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+   
       const isFormValid = () => {
         // add validation rules here
-        return  email !== ''  && !emailError ;
+        return   password !== ''  && !passwordError && confpassword !== ''  && !confPasswordError ;
       };
     
       const handlePasswordChange = (event) => {
@@ -95,47 +99,43 @@ function ResetPassword() {
         <div className="rest_pass">
             <h2>Reset Your Password</h2>
                
-                <Form onSubmit={updateUser}>
+                <Form >
          <Form.Group className="mb-3" controlId="formBasicEmail">
-         <Form.Label className="labelForm" >Adresse e-mail</Form.Label>
-         <Form.Control type="email" 
-             name="email"
-               required  placeholder="nom@gmail.com"
-                value={email}
-                onChange={handleEmailChange}
-                isInvalid={emailError} 
-             />
-              <Form.Control.Feedback type="invalid">
-              saisir un  email addresse valide
-               </Form.Control.Feedback>
+        
                <Form.Label className="labelForm" >Nouveau mot de passe</Form.Label>
-          <Form.Control type="password" placeholder="Nouveau mot de passe" 
+          <Form.Control type={showPassword ? 'text' : 'password'} placeholder="Nouveau mot de passe" 
                name="password"
                   required autoComplete="true" 
                   onChange={handlePasswordChange}
               isInvalid={passwordError}
             
-            />
+            /><IconButton className='eye' style={{position:'absolute',marginLeft:'390px',marginTop:'-39px'}} 
+            variant="outline-secondary" onClick={handleClickShowPassword}>
+        {showPassword ? <VisibilityOff /> : <Visibility />}
+      </IconButton>
              <Form.Control.Feedback type="invalid">
              mot de passe contient 8 caracteres
   </Form.Control.Feedback> 
  
   
   <Form.Label className="labelForm" >confirm mot de passe</Form.Label>
-    <Form.Control type="password" placeholder="Confirm mot de passe" 
+    <Form.Control type={showPassword1 ? 'text' : 'password'} placeholder="Confirm mot de passe" 
     name="cf_password"
     required autoComplete="true" 
     onChange={handlePasswordConfChange}
               isInvalid={confPasswordError}
             
-            />
+            /><IconButton className='eye' style={{position:'absolute',marginLeft:'390px',marginTop:'-39px'}} 
+            variant="outline-secondary" onClick={handleClickShowPassword1}>
+        {showPassword1 ? <VisibilityOff /> : <Visibility />}
+      </IconButton>
              <Form.Control.Feedback type="invalid">
              mot de passe contient 8 caracteres
   </Form.Control.Feedback> 
   </Form.Group>
-  <button
-            type="submit" 
-             disabled={!isFormValid()} 
+        <button
+            
+             disabled={!isFormValid()} onClick={updateUser}
             //onChange={handleResetPass}
             variant="contained" style={{marginLeft:'30%', borderRadius:'5px', color:"white",backgroundColor:"#20384D",width:'170px',height:'35px'}}
             sx={{ mt: 3, mb: 2 }} className="connexion"

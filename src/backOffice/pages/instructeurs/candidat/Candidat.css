@@ -1,10 +1,11 @@
 .candidat{
     background-color: white;
-    margin: 30px;
+    margin: 30px;margin-bottom: 200px;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     padding: 30px;
     margin-right: 100px;
 }
+#message{width: 500px;}
 .name-candidat{
     font-size: 30px;
     font-weight: 500;
@@ -60,6 +61,6 @@
 }
 .info-candidat{
     font-size: 15px;
-    font-weight: 500;
+    font-weight: 500;width: 600px;
     color:#20384D
 }

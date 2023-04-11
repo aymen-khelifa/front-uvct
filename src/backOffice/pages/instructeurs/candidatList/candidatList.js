@@ -15,6 +15,9 @@ import Table from '../../../components/table/Table';
 import SnackbarSuccess from '../../../components/Snackbar/SnackbarSuccess';
 import SnackbarErr from '../../../components/Snackbar/SnackbarErr';
 import {Snackbar,Alert} from "@mui/material";
+import {  useNavigate } from "react-router-dom";
+
+
 
 const { confirm } = Modal;
 
@@ -31,6 +34,8 @@ function CandidatList() {
     const [open2, setOpen2] = React.useState(false);
     const [err , setErr] = useState("");
     const [success , setSuccess] = useState("");
+    const navigate = useNavigate();
+
     /*const [users,setUsers] = useState([]) ; 
 
     
@@ -65,32 +70,45 @@ function CandidatList() {
 //, isAdmin, isSuperAdmin,
       const handleDelete = async (id) => {
           try {
-              if(user._id !== id){
-                      await axios.delete(`/user/delete/${id}`, {
-                          headers: {Authorization: token}
-                      })
-                      setCallback(!callback)
-                    } 
+             
+                      await axios.get(`http://localhost:5000/instructeur/refusinst/${id}`, {
+                          
+                      headers: {'X-Requested-With': 'XMLHttpRequest', 
+                      "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
+                      "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
+                     "withCredentials": true 
+                      }).then((response) => {
+                        const message = response.data.message;console.log(message)
+                        if (message==='candidat refusé !')
+                              {setSuccess('candidat refusé !');}
+                              if (message==='refus echoué')
+                              {setErr('refus echouée');}
+                              else{setErr("erreur");}})
+                    
               } catch (err) {
-            setData({...data, err: err.response.data.msg , success: ''})
-            setOpen2(true);
+                setErr("errrefus echoué");
+           
           }
         }
 
-      const handleAccept = async (id) => {console.log(id)
-       
-       
-            
+      const handleAccept = async (id) => {console.log(id);     
        try{
               
-                   await axios.get(`http://localhost:5000/instructeur/acceptinst/${id}`,
+                   await axios.get(`http://localhost:5000/users/acceptinst/${id}`,
                     {
                       headers: {'X-Requested-With': 'XMLHttpRequest', 
                       "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
                       "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
                      "withCredentials": true 
-                    })
-                  setSuccess("candidat Accepté avec Success !");
+                    }
+                    ).then((response) => {
+                      const message = response.data.message;console.log(message)
+                      if (message==='candidat Accepté avec Success !')
+                            {setSuccess('candidat Accepté avec Success !');setTimeout(()=>{navigate(`/user/acceptInstr/${id}`)},2500);}
+                            if (message==='acceptation echouée')
+                            {setErr('acceptation echouée');}
+                            else{setErr("erreur");}})
+
                               
                   //setData({...data, err: '' , success: "Accept Success!"})
                  // setOpen(true);
@@ -130,12 +148,12 @@ function CandidatList() {
           field: 'email',
           headerName: 'Email',
           type: 'email',
-          flex:1,
+          flex:1.5,
         },
         {
             field: 'specialite',
             headerName: 'Spécialité',
-            flex:1,
+            flex:1.5,
           },
           {
             field: 'tele',
@@ -180,7 +198,7 @@ function CandidatList() {
                   okType: 'danger',
                   cancelText: 'Annuler',
                   onOk() {
-                    handleDelete(params.row.uuid);
+                    handleDelete(params.row.id);
                   },
                   onCancel() {
                     console.log('Cancel');

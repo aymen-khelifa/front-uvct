@@ -6,11 +6,15 @@
     background-color: white;
     margin-top: 10px;
 }
+.aa{box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;}
 .widgetSmTitle{
     font-size: 22px;
     font-weight: 600;
 
 }
+.widgetTitle1{padding: 5px 20px;
+    border: none;
+    border-radius: 10px;}
 .widgetSmList{
  margin: 0;
  padding: 0 ;
