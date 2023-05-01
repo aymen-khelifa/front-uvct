@@ -16,9 +16,9 @@ function Messages() {
         </Link>
       </div>
       <div className="scrollTab">
-     <ScrollTab label1="Boite réception" label2="Messages envoyés" 
+     <ScrollTab label1="Boite réception" //label2="Messages envoyés" 
         item1={<BoiteReception />}
-        item2={<MessageEnvoyer />}
+      //  item2={<MessageEnvoyer />}
     />
     </div>
     </div>

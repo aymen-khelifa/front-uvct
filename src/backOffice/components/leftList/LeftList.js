@@ -56,6 +56,8 @@ const routes5 = [
     name: "Se déconnecter",
   },
 ];
+// Routes instructeur
+
 const routes0 = [
   {
     icon: <PersonIcon />,
@@ -83,6 +85,16 @@ const routes0 = [
     path: "/mes-achats",
   },
   {
+    icon: <MessageIcon />,
+    name: "Messages",
+    path: "/msginst",
+  },
+  {
+    icon: <SmsFailedIcon />,
+    name: "Réclamtions",
+    path: "/reclamations",
+  },
+  {
     icon: <SettingsIcon />,
     name: "Paramétres",
     path: "/parametres",
@@ -92,7 +104,24 @@ const routes0 = [
     name: "Se déconnecter",
     path: "/se-deconnecter",
   },
+  {
+    
+    name: "",
+    path: "",
+  },
+  {
+    
+    name: "",
+    path: "",
+  },
+  {
+   
+    name: "",
+    path: "",
+  },
+  
 ];
+
 // Routes apprenant
 const routes1 = [
   {
@@ -129,6 +158,18 @@ const routes1 = [
     icon: <ExitToAppIcon />,
     name: "Se déconnecter",
     path: "/se-deconnecter",
+  },{
+    
+    name: "",
+    path: "",
+  },{
+    
+    name: "",
+    path: "",
+  },{
+    
+    name: "",
+    path: "",
   },
 ];
 // Routes admin
@@ -178,6 +219,12 @@ const routes2 = [
     name: "Se déconnecter",
     path: "/se-deconnecter",
   },
+  {
+    
+    name: "",
+    path: "",
+  },
+  
 ];
 // Routes super admin
 const routes3 = [
@@ -246,10 +293,10 @@ function mapping(x) {
 
 export default function LeftList({ children }) {
   
-  const auth = useSelector((state) => state.auth);
-  const {  isAdmin, isInstr, isSuperAdmin,loginUser } = auth;
-  const refreshToken = localStorage.getItem("refreshToken"); 
-  const isLogged = localStorage.getItem("isLogged");
+  
+  const user = useSelector((state) => state.auth.user); 
+  
+  
   return (
     < >
       <div className="leftList">
@@ -257,11 +304,12 @@ export default function LeftList({ children }) {
           mode="inline"
           style={{ backgroundColor: "#ffffff", marginTop: "50px" }} 
         >
-         { refreshToken!=="" &&loginUser.role==='instructeur' && isLogged && mapping(routes0)}
-          { refreshToken!==""  &&loginUser.role==='apprenant' && isLogged && mapping(routes1)}
+        
+         {   user!==null && user.role==='instructeur'&& mapping(routes0)}
+          {   user!==null && user.role==='apprenant'&& mapping(routes1)}
           {/* {isLogged&&loginUser.role==='admin' && mapping(routes2)} */}
-          {refreshToken!=="" && loginUser.role==='admin' && isLogged &&  mapping(routes2)}
-          { refreshToken!=="" && loginUser.role==='superAdmin' && isLogged && mapping(routes3)}
+           {user!==null && user.role==='admin' &&  mapping(routes2)}
+          {  user!==null && user.role==='super admin' && mapping(routes3)}
          
         </Menu>
       </div>

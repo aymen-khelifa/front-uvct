@@ -21,16 +21,6 @@ export const fetchAllCond = async (token) => {
      })
     return res
 }
-export const fetchAllInstr = async (token) => {
-    const res = await axios.get('http://localhost:5000/users/getinstr', {
-    },{
-        headers: {'X-Requested-With': 'XMLHttpRequest', 
-        "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
-        "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
-       "withCredentials": true 
-     })
-    return res
-}
 
 export const fetchAllAdmin = async () => {
     const res = await axios.get('http://localhost:5000/users/getAdmin', {
@@ -62,6 +52,22 @@ export const dispatchGetAllCond= (res) => {
         payload: res.data
     }
 }
+/*useEffect(() => {
+          fetchAllInstr(token).then(res =>{
+              dispatch(dispatchGetAllInstr(res))
+          })
+    },[token, dispatch, callback])*/
+export const fetchAllInstr = async (token) => {
+    const res = await axios.get('http://localhost:5000/users/getinstr', {
+    },{
+        headers: {'X-Requested-With': 'XMLHttpRequest', 
+        "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
+        "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
+       "withCredentials": true 
+     })
+    return res
+}
+
 export const dispatchGetAllInstr= (res) => {
     return {
         type: ACTIONS.GET_ALL_INSTR,

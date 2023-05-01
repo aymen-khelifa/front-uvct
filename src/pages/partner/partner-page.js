@@ -16,7 +16,7 @@ const PartnerPage = () => {
                       <Typography className={'subtitle'}>Engagez-vous auprès d'un public large et
                           motivé avec vos connaissances et votre expertise.
                       </Typography>
-                      <Button  href="/DevenirInstructeur" className={'become-instructor-btn'}>Devenir instructeur</Button>
+                      <Button  href="/DevenirInstructeur1" className={'become-instructor-btn'}>Devenir instructeur</Button>
                   </div>
                   <div>
                       <img

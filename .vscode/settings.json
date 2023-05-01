@@ -1,8 +1,14 @@
 {
     "cSpell.words": [
+        "accesstoken",
         "candidat",
         "confpassword",
         "echouée",
+        "formationsarchive",
+        "getarchiveformations",
+        "getformations",
+        "getinst",
+        "getinstructeur",
         "handleactuel",
         "newpassword",
         "passworda",

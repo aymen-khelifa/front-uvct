@@ -1,18 +1,15 @@
 import React ,{useState, useEffect} from 'react'
 import axios from 'axios'
 import {useSelector, useDispatch} from 'react-redux'
-import {fetchUserDetails1, dispatchGetUserDetails1} from '../../../redux/actions/authAction'
-import {isLength, isMatch} from '../../../components/utils/validation/Validation'
 import { Button,Form} from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import './EditUser.css'
-import SnackbarErr from '../../components/Snackbar/SnackbarErr'
-import SnackbarSuccess from '../../components/Snackbar/SnackbarSuccess'
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { Snackbar, Alert} from "@mui/material";
+import { getinstructeurbyId } from '../../../redux/features/usersSlice'
 
         const initialState = {
             name: '',
@@ -26,9 +23,9 @@ import { Snackbar, Alert} from "@mui/material";
         }
 
 function EditUser() {
-    const auth = useSelector(state => state.auth)
     const token = useSelector(state => state.token)
-    const {instructeur} = auth
+    const instructeur = useSelector(state => state.auth.user)
+    //const {instructeur} = auth
     const [data, setData] = useState(initialState)
     //const {name,phone,email,speciality,password, cf_password, err, success} = data
     const [avatar, setAvatar] = useState(false)
@@ -36,8 +33,6 @@ function EditUser() {
     const [callback] = useState(false)
     const dispatch = useDispatch()
     const {id} = useParams()
-    const [open, setOpen] = React.useState(false);
-    const [open2, setOpen2] = React.useState(false);
     const [name, setName] = useState("");
     const [nameError, setNameError] = useState(false);
     const [email, setEmail] = useState("");
@@ -54,18 +49,12 @@ function EditUser() {
 
 
         useEffect(() => {
-          fetchUserDetails1(token,id).then(res =>{
-                dispatch(dispatchGetUserDetails1(res))
-            })
+         
+                dispatch(getinstructeurbyId(id))
+            
         },[token,id, dispatch, callback])
-        console.log(instructeur)
-
-        const handleChange = e => {
-
-            const {name, value} = e.target
-
-            setData({...data, [name]:value, err:'', success: ''})
-        }
+        console.log(instructeur.UUid)
+        
 
         const changeAvatar = async(e) => {
             e.preventDefault()
@@ -90,61 +79,42 @@ function EditUser() {
 
                 setLoading(false)
                 setAvatar(res.data.url)
-                setOpen(true);
+                
                 
             } catch (err) {
                 setData({...data, err: err.response.data.msg , success: ''})
-                setOpen2(true);
+               
 
             }
         }
-   
+   const uuid=instructeur.UUid
         const updateInfor = () => {
             try {
-                axios.patch(`http://localhost:5000/users/editprofileinst/${id}`, {
+                axios.patch(`http://localhost:5000/users/editprofileinst/${instructeur.UUid}`, {
                     name: name ,
-                    avatar: avatar ,
+                    //avatar: avatar ,
                     tel: tel ,
                     email: email ,
                     speciality: speciality,
-                    password:password,
+                    
 
-                },{
-                    headers: {Authorization: token}
+                },{ headers: {'X-Requested-With': 'XMLHttpRequest', 
+                "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
+                "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
+               "withCredentials": true 
+                    //headers: {Authorization: token}
                 })
 
                 setData({...data, err: '' , success: "Profile modifié!"})
-                setOpen(true);
-                window.location.reload(false);
+                
+                
             } catch (err) {
                 setData({...data, err: err.response.data.msg , success: ''})
-                setOpen2(true);
+               
             }
         }
 
-  /*  const updatePassword = () => {
-        if(isLength(password))
-            return setData({...data, err: "Password must be at least 6 characters.", success: ''})
-
-        if(!isMatch(password, cf_password))
-            return setData({...data, err: "Password did not match.", success: ''})
-
-        try {
-            axios.post('/user/reset', {password},{
-                headers: {Authorization: token}
-            })
-
-            setData({...data, err: '' , success: "Updated Success!"})
-        } catch (err) {
-            setData({...data, err: err.response.data.msg , success: ''})
-        }
-    }*/
-
-   /* const handleUpdate = () => {
-        if(name || avatar || phone || speciality || email) updateInfor()
-        if(password) updatePassword()
-    }*/
-
+ 
     const [showPassword, setShowPassword] = React.useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -176,8 +146,7 @@ function EditUser() {
   };
   const isFormValid = () => {
     // add validation rules here
-    return  email !== '' && password !== ''  && name !== '' && tel !== '' && speciality !== '' 
-     && !emailError && !passwordError && !nameError && !telError  && !specialityError ;
+    return  email !== ''   && name !== '' && tel !== '' && !emailError  && !nameError && !telError  && !specialityError ;
   };
   
 
@@ -204,21 +173,22 @@ function EditUser() {
           </Form.Group>
           <Form.Group className="mb-3" >
             <Form.Label className="label">Nom complet</Form.Label>
-              <Form.Control type="text" placeholder={instructeur.name} 
+              <Form.Control type="text"  
                 name="name" 
                 required 
-                defaultValue={instructeur.name}
+                //Value={instructeur.name}
                 onChange={handleNameChange}
                     isInvalid={nameError}                            
                     /><Form.Control.Feedback type="invalid">
               Name is required and at least 3 character
                </Form.Control.Feedback>
           </Form.Group>
+          
           <Form.Group className="mb-3" >
             <Form.Label className="label">Adresse e-mail</Form.Label>
-              <Form.Control type="email" placeholder={instructeur.email} 
+              <Form.Control type="email" 
                 name="email" 
-               defaultValue={instructeur.email}
+              //Value={instructeur.email}
                onChange={handleEmailChange}
             isInvalid={emailError} 
              />
@@ -228,9 +198,9 @@ function EditUser() {
           </Form.Group>
           <Form.Group className="mb-3" >
             <Form.Label className="label">Numéro de téléphone</Form.Label>
-              <Form.Control type="text" placeholder={instructeur.tel} 
+              <Form.Control type="text"  
                 name="phone" 
-              defaultValue={instructeur.tel}
+              //Value={instructeur.tel}
               onChange={handleTelChange}
                     
                     isInvalid={telError}
@@ -247,7 +217,7 @@ function EditUser() {
               onChange={handleSpecialityChange}
                 isInvalid={specialityError}>
              
-              <option defaultValue={instructeur.speciality}>{instructeur.speciality}</option>
+              <option Value={instructeur.speciality}>{instructeur.speciality}</option>
               <option value="développement web">développement web</option>
               <option value="développement mobile">développement mobile</option>
               <option value="développement personnel">développement personnel</option>
@@ -263,20 +233,7 @@ function EditUser() {
               La spécialité est requise.
                </Form.Control.Feedback>
           </Form.Group>
-          <Form.Group className="mb-3" >
-            <Form.Label className="label">Mot de passe</Form.Label>
-              <Form.Control type={showPassword ? 'text' : 'password'} placeholder="Entrer mot de passe" 
-                name="password" 
-              defaultValue={instructeur.password}
-              onChange={handlePasswordChange}
-              isInvalid={passwordError}
-            /><IconButton className='eye' style={{position:'absolute',marginLeft:'420px',marginTop:'-31px'}} variant="outline-secondary" onClick={handleClickShowPassword}>
-        {showPassword ? <VisibilityOff /> : <Visibility />}
-      </IconButton>
-                <Form.Control.Feedback type="invalid">
-             mot de passe contient 8 caracteres
-  </Form.Control.Feedback> 
-          </Form.Group>
+          
          
           <div className="content-btn">
                   <Button className='btn-annnuler' href="/instructeurs">Annuler</Button>

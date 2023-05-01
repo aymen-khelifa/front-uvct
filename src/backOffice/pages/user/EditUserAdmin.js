@@ -1,7 +1,7 @@
 import React ,{useState, useEffect} from 'react'
 import axios from 'axios'
 import {useSelector, useDispatch} from 'react-redux'
-import {fetchUserDetails3, dispatchGetUserDetails3} from '../../../redux/actions/authAction'
+import {getadminbyId} from '../../../redux/features/usersSlice'
 import {isLength, isMatch} from '../../../components/utils/validation/Validation'
 import { Button,Form} from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
@@ -27,7 +27,8 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 function EditUserAdmin() {
     const auth = useSelector(state => state.auth)
     const token = useSelector(state => state.token)
-    const {admin} = auth
+   
+    const admins=useSelector(state => state.auth.user)
     const [data, setData] = useState(initialState)
     //const {name,phone,email,speciality,password, cf_password, err, success} = data
     const [avatar, setAvatar] = useState(false)
@@ -50,20 +51,15 @@ function EditUserAdmin() {
     const [password, setPassword] = useState("");
 
 
-
+    
         useEffect(() => {
-          fetchUserDetails3(token,id).then(res =>{
-                dispatch(dispatchGetUserDetails3(res))
-            })
+         
+                dispatch(getadminbyId(id))
+          
         },[token,id, dispatch, callback])
-        console.log(admin)
+        console.log(admins)
 
-        const handleChange = e => {
-
-            const {name, value} = e.target
-
-            setData({...data, [name]:value, err:'', success: ''})
-        }
+        
 
         const changeAvatar = async(e) => {
             e.preventDefault()
@@ -99,16 +95,20 @@ function EditUserAdmin() {
    
         const updateInfor = () => {
             try {
-                axios.patch(`http://localhost:5000/users/editprofileadmin/${id}`, {
+                axios.patch(`http://localhost:5000/users/editprofileadmin/${admins.UUid}`, {
                     name: name ,
-                    avatar: avatar ,
+                    //avatar: avatar ,
                     tel: tel ,
                     email: email ,
                    genre:genre,
-                   password:password,
+                   
 
                 },{
-                    headers: {Authorization: token}
+                    //headers: {Authorization: token}
+                    headers: {'X-Requested-With': 'XMLHttpRequest', 
+                    "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
+                    "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
+                   "withCredentials": true 
                 })
 
                 setData({...data, err: '' , success: "Profile modifié!"})
@@ -120,28 +120,7 @@ function EditUserAdmin() {
             }
         }
 
-  /*  const updatePassword = () => {
-        if(isLength(password))
-            return setData({...data, err: "Password must be at least 6 characters.", success: ''})
-
-        if(!isMatch(password, cf_password))
-            return setData({...data, err: "Password did not match.", success: ''})
-
-        try {
-            axios.post('/user/reset', {password},{
-                headers: {Authorization: token}
-            })
-
-            setData({...data, err: '' , success: "Updated Success!"})
-        } catch (err) {
-            setData({...data, err: err.response.data.msg , success: ''})
-        }
-    }*/
-
-   /* const handleUpdate = () => {
-        if(name || avatar || phone || speciality || email) updateInfor()
-        if(password) updatePassword()
-    }*/
+ 
     const handlegenreChange = (event) => {
       const { value } = event.target;
       setGenre(value);
@@ -171,8 +150,8 @@ function EditUserAdmin() {
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const isFormValid = () => {
     // add validation rules here
-    return  email !== '' && password !== ''  && !emailError && !passwordError && tel !== ''  && !telError 
-    && genre !== ''  ;
+    return    email !== ''  && name !== '' && tel !== '' && !emailError && !passwordError  && !telError 
+     ;
   };
    
   return (
@@ -181,7 +160,7 @@ function EditUserAdmin() {
        <Form className='form-profil'>
        <Form.Group className="mb-3">
          <div className='profile-pic-div'>
-         <img src={ admin.avatar} alt="" className="avatar-img" />
+         <img src={ admins.avatar} alt="" className="avatar-img" />
            <div className="uploadBtn">
            <Form.Label htmlFor="file"> 
             <PhotoCameraIcon className='icon-camera'/>
@@ -197,10 +176,10 @@ function EditUserAdmin() {
           </Form.Group>
           <Form.Group className="mb-3" >
             <Form.Label className="label">Nom complet</Form.Label>
-              <Form.Control type="text" placeholder={admin.name} 
+              <Form.Control type="text" 
                 name="name" 
                 required 
-                defaultValue={admin.name}
+               // defaultValue={admins.name}
                 onChange={handleNameChange}
                     isInvalid={nameError}                            
                     /><Form.Control.Feedback type="invalid">
@@ -209,9 +188,9 @@ function EditUserAdmin() {
           </Form.Group>
           <Form.Group className="mb-3" >
             <Form.Label className="label">Adresse e-mail</Form.Label>
-              <Form.Control type="email" placeholder={admin.email} 
+              <Form.Control type="email" 
                 name="email" 
-               defaultValue={admin.email}
+              // defaultValue={admins.email}
                onChange={handleEmailChange}
             isInvalid={emailError} 
              />
@@ -221,9 +200,9 @@ function EditUserAdmin() {
           </Form.Group>
           <Form.Group className="mb-3" >
             <Form.Label className="label">Numéro de téléphone</Form.Label>
-              <Form.Control type="text" placeholder={admin.tel} 
+              <Form.Control type="text" 
                 name="phone" 
-              defaultValue={admin.tel}
+              //defaultValue={admins.tel}
               onChange={handleTelChange}
                     
                     isInvalid={telError}
@@ -251,20 +230,7 @@ function EditUserAdmin() {
                </Form.Control.Feedback>
             </Form.Group>
          
-            <Form.Group className="mb-3" >
-            <Form.Label className="label">Mot de passe</Form.Label>
-              <Form.Control type={showPassword ? 'text' : 'password'} placeholder="Entrer mot de passe" 
-                name="password" 
-              defaultValue={admin.password}
-              onChange={handlePasswordChange}
-              isInvalid={passwordError}
-            /><IconButton className='eye' style={{position:'absolute',marginLeft:'420px',marginTop:'-31px'}} variant="outline-secondary" onClick={handleClickShowPassword}>
-        {showPassword ? <VisibilityOff /> : <Visibility />}
-      </IconButton>
-                <Form.Control.Feedback type="invalid">
-             mot de passe contient 8 caracteres
-  </Form.Control.Feedback> 
-          </Form.Group>
+            
           
           <div className="content-btn">
                   <Button className='btn-annnuler' href="/administrateurs">Annuler</Button>

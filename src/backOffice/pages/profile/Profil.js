@@ -35,9 +35,10 @@ const initialState = {
 };
 function Profil() {
   const dispatch = useDispatch();
-  const auth = useSelector((state) => state.auth);
-  const token = useSelector((state) => state.token);
-  const { loginUser, isInstr, setIsLogged } = auth;
+  //const auth = useSelector((state) => state.auth);
+  //const token = useSelector((state) => state.token);
+  
+  //const { user, isInstr, setIsLogged } = auth;
   const [data, setData] = useState(initialState);
   // const {name,site,phone,description, err, success} = data
   //const {site,description, err, success} = data
@@ -53,7 +54,9 @@ function Profil() {
   const [telError, setTelError] = useState(false);
   const [err, setErr] = useState("");
   const [success, setSuccess] = useState("");
-
+  const { user, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -163,7 +166,7 @@ function Profil() {
   };
   useEffect(() => {
     // Mettre à jour la valeur de isLogged à true au chargement du composant
-    console.log(loginUser);
+   
   }, []);
   return (
     <>
@@ -175,7 +178,7 @@ function Profil() {
             <Form.Group>
               {loading && openMessage()}
               <div className="profile-pic-div">
-                <img src={loginUser.avatar} alt="" className="avatar-img" />
+                <img  alt="" className="avatar-img" />
                 <div className="uploadBtn">
                   <Form.Label htmlFor="file">
                     <PhotoCameraIcon className="icon-camera" />
@@ -193,12 +196,12 @@ function Profil() {
             <div className="content-candidat">
               <h5 className="info-candidat">
                 <AccountCircleIcon className="icon-details" />
-                {loginUser.name}
+                
               </h5>
 
               <h5 className="info-candidat">
                 <MailOutlineIcon className="icon-details" />
-                {loginUser.email}
+                
               </h5>
             </div>
             {/* loginUser.role==="instructeur" &&

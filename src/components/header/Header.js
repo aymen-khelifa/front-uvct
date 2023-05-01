@@ -39,6 +39,8 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { logout } from '../../redux/features/authSlice'
+import { login } from "../../redux/features/authSlice";
 
 function Header() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -62,15 +64,9 @@ function Header() {
   const [passwordError, setPasswordError] = useState(false);
   const [name, setName] = useState("");
   const [nameError, setNameError] = useState(false);
-  const {
-    isInstr,
-    isSuperAdmin,
-    isAdmin,
-    user,
-    loginUser,
-    firstLogin,
-    isLogged,
-  } = auth;
+  const user = useSelector((state) => state.auth.user); 
+
+  
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -107,7 +103,7 @@ function Header() {
           handleClose1();
         }, 2500);
       }
-      if (response.data.message === "user already exist") {
+      if (response.data.message === "User already exist") {
         setErr("user already exist");
         setTimeout(() => {
           navigate("/connexion");
@@ -144,70 +140,26 @@ function Header() {
         },
         {
           headers: {
-            "X-Requested-With": "XMLHttpRequest",
-            "content-type": "application/json",
-            "Access-Control-Allow-Origin": "http://localhost:5000",
-            "Access-control-request-methods":
+            "X-Requested-With": "XMLHttpRequest","content-type": "application/json",
+            "Access-Control-Allow-Origin": "http://localhost:5000","Access-control-request-methods":
               "POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS",
-          },
-          withCredentials: true,
-        }
+          },withCredentials: true,}
       );
-      if (res.data.message === "login avec success") {
-        setSuccess("login avec success");
-        setTimeout(() => {
-          localStorage.setItem("firstLogin", true);
-          localStorage.setItem("refreshToken", res.data.refreshToken);
-        }, 500);
-        setTimeout(() => {
-          dispatch(dispatchLogin(res));
-        }, 500);
-        //localStorage.setItem("firstLogin", true);
-        // dispatch(dispatchLogin(res.data.user));
-        setTimeout(() => {
-          navigate("/profile");
-        }, 500);
-      }
-      setTimeout(() => {
-        handleClose();
-      }, 500);
-      if (res.data.message === "mot de passe incorrect") {
-        setErr("mot de passe incorrect");
-        setTimeout(() => {
-          navigate("/connexion");
-        }, 2500);
-        setTimeout(() => {
-          handleClose();
-        }, 2500);
-      }
-      if (res.data.message === "User does not exist") {
-        setErr("utilisateur non trouvé");
-        setTimeout(() => {
-          navigate("/connexion");
-        }, 2500);
-        setTimeout(() => {
-          handleClose();
-        }, 2500);
-      }
-      if (res.data.message === "verifiez votre compte") {
-        setErr("verifiez votre compte");
-        setTimeout(() => {
-          navigate("/connexion");
-        }, 2500);
-        setTimeout(() => {
-          handleClose();
-        }, 2500);
-      } else {
-        setErr("erreur");
-      }
-      //setUser({ ...user, err: "", success: res.data.msg });console.log(res.data.message)
-
-      //localStorage.setItem("firstLogin", true);
-      //dispatch(dispatchLogin());
-      // navigate("/profile");
+      if (res.data.message==='login avec success')
+      {setSuccess('login avec success');setTimeout(()=>{dispatch(login(res.data))},500);
+      setTimeout(()=>{localStorage.setItem('token', JSON.stringify(res.data.accessToken));},500);
+      setTimeout(()=>{navigate("/profile");},500);}
+      
+      if (res.data.message==='verifiez votre compte')
+      {setErr('verifiez votre compte');}
+      if (res.data.message==='User does not exist')
+      {setErr('User does not exist');}
+      if (res.data.message==='mot de passe incorrect')
+      {setErr('mot de passe incorrect');}
+      else{setErr("erreur");}
     } catch (err) {
-      console.log("erreur"); //&&
-      // setUser({ ...user, err: err.response.data.msg, success: "" });
+      console.log("erreur"); 
+     
     }
   };
   const googleSuccess = async (res) => {
@@ -254,7 +206,7 @@ function Header() {
     setName(value);
     setNameError(value.length < 3);
   };
-  const handleLogout = async () => {
+ /* const handleLogout = async () => {
     try {
       await axios.patch("http://localhost:5000/users/Logout");
       localStorage.removeItem("firstLogin");
@@ -265,7 +217,7 @@ function Header() {
     } catch (err) {
       window.location.href = "/";
     }
-  };
+  };*/
   const isFormValid = () => {
     // add validation rules here
     return email !== "" && password !== "" && !emailError && !passwordError;
@@ -285,7 +237,10 @@ function Header() {
   const googleError = (error) => console.log(error);
 
   var fex = false;
-
+  const handleLogout = () => {
+    dispatch(logout())
+    navigate('/')
+  }
   return (
     <div className="header">
       <Navbar className="row2">
@@ -295,36 +250,6 @@ function Header() {
             &#160; Uvct-Training
           </p>
         </Navbar.Brand>
-
-        {/*<Box sx={{ flexGrow: 0 }} style={{marginRight:'40px'}}> 
-        <Tooltip title="Open settings">
-                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}> 
-                   <Avatar alt="Remy Sharp" src={loginUser.avatar} /> </IconButton>
-                    </Tooltip> 
-        <Menu sx={{ mt: '45px' }} id="menu-appbar" 
-               anchorEl={anchorElUser} 
-               anchorOrigin={{ vertical: 'top', horizontal: 'right', }} 
-               onClose={handleCloseUserMenu}
-               keepMounted transformOrigin={{ vertical: 'top', horizontal: 'right', }} 
-               open={Boolean(anchorElUser)}  > 
-                
-                <MenuItem  >
-                
-    <a class="dropdown-item" href="/devloppement-web">Développement web</a>
-   <a class="dropdown-item" href="/design">Design</a>
-   <a class="dropdown-item" href="/business">Business</a>
-   <a class="dropdown-item" href="/marketing">Marketing</a>
-   <a class="dropdown-item" href="/developpement-personnel">Développement personnel</a>
-    <a class="dropdown-item" href="/communication">Communication</a>
-    <a class="dropdown-item" href="/photographie">Photographie</a>
-    <a class="dropdown-item" href="/informatique">Informatiques et logiciels</a>
-    <a class="dropdown-item" href="/mode-de-vie">Mode de vie</a>
-    <a class="dropdown-item" href="/musique">Musique</a>
- 
-                
-                </MenuItem>
-               </Menu>
-               </Box>*/}
 
         <div class="dropdown">
           <a
@@ -406,7 +331,7 @@ function Header() {
           />
         </Form>
 
-        {loginUser.role !== "instructeur" && (
+        { (
           <Nav.Link
             href="/devenir-instructeur"
             className="link-postuler-enseigner"
@@ -415,15 +340,15 @@ function Header() {
           </Nav.Link>
         )}
 
-        {loginUser.role !== "admin" && (
+        {user!==null && user.role!=='instructeur' && (
           <a href="/panier" className="shoppingIcon">
             <ShoppingCartIcon href="/panier" />
           </a>
         )}
 
-        {isLogged ? (
+        {user!==null ? (
           <>
-            {!isInstr && !isAdmin && !isSuperAdmin && (
+            {user.role!=='admin' && (
               <div>
                 <FavoriteBorderIcon className="header-icon" />
               </div>
@@ -432,7 +357,7 @@ function Header() {
             <Box sx={{ flexGrow: 0 }} style={{ marginRight: "40px" }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src={loginUser.avatar} />{" "}
+                  <Avatar alt="Remy Sharp" src={user.avatar} />{" "}
                 </IconButton>
               </Tooltip>
               <Menu
@@ -682,7 +607,7 @@ function Header() {
                   setShow1={setShow1}
                 >
                   <Form
-                    onSubmit={handleSubmit1}
+                    
                     className="form"
                     style={{ width: "90%", marginLeft: "5%" }}
                   >
@@ -692,7 +617,7 @@ function Header() {
                         type="Normal text"
                         placeholder="Saisissez votre mot de passe"
                         name="name"
-                        value={name}
+                        //value={name}
                         required
                         onChange={handleNameChange}
                         isInvalid={nameError}
@@ -748,8 +673,8 @@ function Header() {
                     <div className="d-grid gap-2">
                       <Button
                         className="btn-inscr"
-                        size="lg"
-                        disabled={!isFormValid()}
+                        size="lg" onClick={handleSubmit1}
+                        disabled={!isFormValid()} 
                       >
                         S'inscrire
                       </Button>

@@ -6,7 +6,7 @@ import {KnowMore} from "../../partner/components/know-more/know-more";
 
 function HeaderInstructeur() {
   return (
-    <div>
+    <div style={{marginTop:'-3.5%',width:'100%',backgroundColor:'white'}}>
         <PartnerPage/>
         <DevenirInstructeur />
         <KnowMore/>

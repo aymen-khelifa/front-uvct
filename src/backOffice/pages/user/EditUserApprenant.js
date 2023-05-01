@@ -1,7 +1,7 @@
 import React ,{useState, useEffect} from 'react'
 import axios from 'axios'
 import {useSelector, useDispatch} from 'react-redux'
-import {fetchUserDetails2, dispatchGetUserDetails2} from '../../../redux/actions/authAction'
+import {getapprenantbyId} from '../../../redux/features/usersSlice'
 import {isLength, isMatch} from '../../../components/utils/validation/Validation'
 import { Button,Form} from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
@@ -27,7 +27,8 @@ import { Snackbar, Alert} from "@mui/material";
 function EditUserApprenant() {
     const auth = useSelector(state => state.auth)
     const token = useSelector(state => state.token)
-    const {apprenant} = auth
+    const apprenant = useSelector(state => state.auth.user)
+    //const {apprenant} = auth
     const [data, setData] = useState(initialState)
    // const {name,phone,email,speciality,password, cf_password, err, success} = data
     const [avatar, setAvatar] = useState(false)
@@ -48,12 +49,12 @@ function EditUserApprenant() {
     const [passwordError, setPasswordError] = useState(false);
     const [password, setPassword] = useState("");
         useEffect(() => {
-          fetchUserDetails2(token,id).then(res =>{
-                dispatch(dispatchGetUserDetails2(res))
-            })
+          
+                dispatch(getapprenantbyId(id))
+            
         },[token,id, dispatch, callback])
-        console.log(apprenant)
-
+       // console.log(apprenant)
+       
     /*    const handleChange = e => {
 
             const {name, value} = e.target
@@ -95,15 +96,19 @@ function EditUserApprenant() {
    
         const updateInfor = () => {
             try {
-                axios.patch(`http://localhost:5000/users/editprofileapprenant/${id}`, {
+                axios.patch(`http://localhost:5000/users/editprofileapprenant/${apprenant.UUid}`, {
                     name: name ,
-                    avatar: avatar ,
+                    //avatar: avatar ,
                     tel: tel ,
                     email: email ,
-                    password:password,
+                    
 
                 },{
-                    headers: {Authorization: token}
+                   // headers: {Authorization: token}
+                    headers: {'X-Requested-With': 'XMLHttpRequest', 
+                    "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
+                    "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
+                   "withCredentials": true 
                 })
 
                 setData({...data, err: '' , success: "Profile modifié!"})
@@ -115,31 +120,10 @@ function EditUserApprenant() {
             }
         }
 
- /*   const updatePassword = () => {
-        if(isLength(password))
-            return setData({...data, err: "Password must be at least 6 characters.", success: ''})
-
-        if(!isMatch(password, cf_password))
-            return setData({...data, err: "Password did not match.", success: ''})
-
-        try {
-            axios.post('/user/reset', {password},{
-                headers: {Authorization: token}
-            })
-
-            setData({...data, err: '' , success: "Updated Success!"})
-        } catch (err) {
-            setData({...data, err: err.response.data.msg , success: ''})
-        }
-    }
-
-    const handleUpdate = () => {
-        if(name || avatar || phone || speciality || email) updateInfor()
-        if(password) updatePassword()
-    }*/
+ 
     const isFormValid = () => {
       // add validation rules here
-      return  email !== '' && password !== ''  && name !== '' && tel !== '' && !emailError && !passwordError
+      return  email !== ''   && name !== '' && tel !== '' && !emailError && !passwordError
       && !nameError && !telError ;
     };
     const handleEmailChange = (event) => {
@@ -157,14 +141,7 @@ function EditUserApprenant() {
       setTel(value);
       setTelError(!/^\d{8}$/.test(value));
     };
-    const handlePasswordChange = (event) => {
-      const { value } = event.target;
-      setPassword(value);
-      setPasswordError(value.length < 8);
-    };
-    const [showPassword, setShowPassword] = React.useState(false);
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
+   
   return (
       <div className='content-user'>
        <h3 className='title-photo'>Photo de profile</h3>
@@ -187,10 +164,10 @@ function EditUserApprenant() {
           </Form.Group>
           <Form.Group className="mb-3" >
             <Form.Label className="label">Nom complet</Form.Label>
-              <Form.Control type="text" placeholder={apprenant.name} 
+              <Form.Control type="text" 
                 name="name" 
                 required 
-                defaultValue={apprenant.name}
+                //defaultValue={apprenant.name}
                 onChange={handleNameChange}
                     isInvalid={nameError}                            
                     /><Form.Control.Feedback type="invalid">
@@ -199,9 +176,9 @@ function EditUserApprenant() {
           </Form.Group>
           <Form.Group className="mb-3" >
             <Form.Label className="label">Adresse e-mail</Form.Label>
-              <Form.Control type="email" placeholder={apprenant.email} 
+              <Form.Control type="email"  
                 name="email" 
-               defaultValue={apprenant.email}
+              // defaultValue={apprenant.email}
                onChange={handleEmailChange}
             isInvalid={emailError} 
              />
@@ -211,9 +188,9 @@ function EditUserApprenant() {
           </Form.Group>
           <Form.Group className="mb-3" >
             <Form.Label className="label">Numéro de téléphone</Form.Label>
-              <Form.Control type="text" placeholder={apprenant.tel} 
+              <Form.Control type="text"  
                 name="phone" 
-              defaultValue={apprenant.tel}
+              //defaultValue={apprenant.tel}
               onChange={handleTelChange}
                     
                     isInvalid={telError}
@@ -224,20 +201,7 @@ function EditUserApprenant() {
           </Form.Group>
          
           
-          <Form.Group className="mb-3" >
-            <Form.Label className="label">Mot de passe</Form.Label>
-              <Form.Control type={showPassword ? 'text' : 'password'} placeholder="Entrer mot de passe" 
-                name="password" 
-              defaultValue={apprenant.password}
-              onChange={handlePasswordChange}
-              isInvalid={passwordError}
-            /><IconButton className='eye' style={{position:'absolute',marginLeft:'420px',marginTop:'-31px'}} variant="outline-secondary" onClick={handleClickShowPassword}>
-        {showPassword ? <VisibilityOff /> : <Visibility />}
-      </IconButton>
-                <Form.Control.Feedback type="invalid">
-             mot de passe contient 8 caracteres
-              </Form.Control.Feedback> 
-          </Form.Group>
+        
           
           <div className="content-btn">
                   <Button className='btn-annnuler' href="/apprenants">Annuler</Button>
@@ -250,6 +214,8 @@ function EditUserApprenant() {
             err
           }
         </Alert>
+
+    
       </Snackbar>
       <Snackbar autoHideDuration={2500} open={ success === "" ? false : true } onClose={()=>{ setSuccess("") }}  >
         <Alert variant="filled" severity="success" onClose={()=>{ setSuccess("") }} >

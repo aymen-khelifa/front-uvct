@@ -1,6 +1,6 @@
 import React,{useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux'
-import {fetchAllInstr, dispatchGetAllInstr} from '../../../../redux/actions/usersAction'
+import {getInstructeur, userSelectors} from '../../../../redux/features/usersSlice'
 import axios from 'axios'
 import Avatar1 from '../../../../components/Avatar/Avatar';
 import DayJS from 'react-dayjs';
@@ -11,11 +11,15 @@ import { Modal, Button} from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import Table from '../../../components/table/Table';
-import SnackbarErr from '../../../components/Snackbar/SnackbarErr';
 import { Link } from 'react-router-dom';
-import { isEmpty } from '../../../../Utils';
 import {Snackbar,Alert} from "@mui/material";
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import Tooltip from "@mui/material/Tooltip";
+import BlockIcon from '@mui/icons-material/Block';
+import LockOpenIcon from '@mui/icons-material/LockOpen';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+
+
 
 const { confirm } = Modal;
 
@@ -25,8 +29,9 @@ function InstructeurList() {
     const id= open ? 'simple-popover' : undefined;
     const auth = useSelector(state => state.auth)
     const token = useSelector(state => state.token)
-    const {user, isAdmin, isSuperAdmin } = auth ; 
-    const users = useSelector(state => state.users)
+    const users = useSelector(state => state.user.instructeurs)
+    //const {user, isAdmin, isSuperAdmin } = auth ; 
+    //const users = useSelector(userSelectors.selectAll)
    // const [users,setUsers] = useState([]) ; 
     const [callback, setCallback] = useState(false)
     const [data, setData] =useState([]);
@@ -35,7 +40,7 @@ function InstructeurList() {
     const [open2, setOpen2] = React.useState(false);
     const [err , setErr] = useState("");
     const [success , setSuccess] = useState("");
-   
+    console.log(users)
 
   /*  useEffect(()=>{
     
@@ -58,8 +63,14 @@ function InstructeurList() {
 */
 
 
-
-
+ 
+ useEffect(() => {
+        //if(isAdmin|| isSuperAdmin ){
+              
+                  dispatch(getInstructeur())
+              
+        // }
+        },[dispatch])
     const rowData=users?.map(user => {
       return{
           id:user.uuid,
@@ -72,7 +83,7 @@ function InstructeurList() {
           status:user.status,
       }
      })
-    
+   
       const handleClick = (event) => {
           setAnchorEl(event.currentTarget);
         };
@@ -81,13 +92,7 @@ function InstructeurList() {
           setAnchorEl(null);
         };
 
-      useEffect(() => {
-        //if(isAdmin|| isSuperAdmin ){
-              fetchAllInstr(token).then(res =>{
-                  dispatch(dispatchGetAllInstr(res))
-              })
-        // }
-        },[token, dispatch, callback])
+     
        // ,isAdmin, isSuperAdmin
       const handleDelete = async (id) => {
           try {
@@ -101,10 +106,11 @@ function InstructeurList() {
                     }).then((response) => {
                       const message = response.data.message;console.log(message)
                       if (message==='instructeur supprimé !')
-                            {setSuccess('instructeur supprimé !');}
+                            {setSuccess('instructeur supprimé !');window.location.reload()}
                             if (message==='suppression echouée')
                             {setErr('suppression echouée');}
                             else{setErr("erreur");}})
+                            
                   } catch (err) {
                     setErr("suppression echouée");
                    // setData({...data, err: err.response.data.msg , success: ''})
@@ -124,10 +130,14 @@ function InstructeurList() {
                       }).then((response) => {
                         const message = response.data.message;console.log(message)
                         if (message==='instructeur activé !')
-                              {setSuccess('instructeur activé !');}
+                              {setSuccess('instructeur activé !');window.location.reload()}
                               if (message==='activation echouée')
                               {setErr('activation echouée');}
+                              if (message==='instructeur deja activé !')
+                              {setErr('instructeur deja activé !');}
                               else{setErr("erreur");}})
+                              
+
                     } catch (err) {
                       setErr("activation echouée");
                      // setData({...data, err: err.response.data.msg , success: ''})
@@ -146,10 +156,14 @@ function InstructeurList() {
                       }).then((response) => {
                         const message = response.data.message;console.log(message)
                         if (message==='instructeur bloqué !')
-                              {setSuccess('instructeur bloqué !');}
+                              {setSuccess('instructeur bloqué !');window.location.reload()}
                               if (message==='bloquation echouée')
                               {setErr('opération echouée');}
+                              if (message==='instructeur deja bloqué !')
+                              {setErr('instructeur deja bloqué !');}
                               else{setErr("erreur");}})
+                              
+
                     } catch (err) {
                       setErr("opération echouée");
                      // setData({...data, err: err.response.data.msg , success: ''})
@@ -209,7 +223,7 @@ function InstructeurList() {
         {
             field: 'action',
             headerName: 'Action',
-            flex:1,
+            flex:1.5,
             renderCell: (params) =>{
               function showDeleteConfirm() {
                 confirm({
@@ -258,30 +272,19 @@ function InstructeurList() {
               
               return(
                 <>
-                 <Link to={`/instructeur/${params.row.id}`}>
-                 <VisibilityIcon className='icon-action'/>
+                 <Link to={`/instructeur/${params.row.id}`}><Tooltip title="voir détails">
+                 <VisibilityIcon className='icon-action'/></Tooltip>
                  </Link>
-                    <Button aria-describedby={id} className="btn-action" onClick={handleClick}>⋮</Button>
-                        <Popover
-                              id={id}
-                              open={open}
-                              anchorEl={anchorEl}
-                              onClose={handleClose1}
-                              anchorOrigin={{
-                                vertical: 'bottom',
-                                horizontal: 'center',
-                              }}
-                              transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'center',
-                              }}
-                            >
-                            <Nav.Link className="actionNav" onClick={showbloquerConfirm}>Bloquer instructeur</Nav.Link>
-                            <Divider />
-                            <Nav.Link className="actionNav" onClick={showactiverConfirm}>Activer instructeur</Nav.Link>
-                            <Divider />
-                            <Nav.Link className="actionNav" onClick={showDeleteConfirm}>Supprimer instructeur</Nav.Link>
-                        </Popover> 
+                 <Tooltip title="bloquer">
+                 <BlockIcon className='icon-action' onClick={showbloquerConfirm} />
+                 </Tooltip>
+                 <Tooltip title="activer">
+                 <LockOpenIcon className='icon-action' onClick={showactiverConfirm} />
+                 </Tooltip>
+                 <Tooltip title="supprimer">
+                 <DeleteOutlineIcon className='icon-action' onClick={showDeleteConfirm} />
+                 </Tooltip>
+                    
                 </>
               )
             }

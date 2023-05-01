@@ -30,7 +30,7 @@ function Coupons() {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    const {titre1} = useParams()
+    const {id} = useParams()
 
     const handleClose2 = (event, reason) => {
       if (reason === 'clickaway') {
@@ -54,7 +54,7 @@ function Coupons() {
     const handleSubmit = async e => {
       e.preventDefault()
       try {
-          const res = await axios.post(`/ajoutCoupon/${titre1}`, {
+          const res = await axios.post(`/ajoutCoupon/${id}`, {
             code,number,discount,dateStart,dateEnd
           },{
             headers: {Authorization: token}

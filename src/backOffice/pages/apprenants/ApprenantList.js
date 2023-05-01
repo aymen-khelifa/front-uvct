@@ -1,6 +1,6 @@
 import React,{useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux'
-import {fetchAllUsers, dispatchGetAllUsers} from '../../../redux/actions/usersAction'
+import { getApprenant} from '../../../redux/features/usersSlice'
 import axios from 'axios'
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import Avatar1 from '../../../components/Avatar/Avatar';
@@ -22,7 +22,7 @@ function ApprenantList() {
     const auth = useSelector(state => state.auth)
     const token = useSelector(state => state.token)
     const {user, isAdmin, isSuperAdmin} = auth
-    const users = useSelector(state => state.users)
+    const users = useSelector(state => state.user.apprenants)
     const [callback, setCallback] = useState(false)
     const [data, setData] =useState([]);
     const [err , setErr] = useState("");
@@ -63,12 +63,12 @@ function ApprenantList() {
     
       useEffect(() => {
         //  if(isAdmin || isSuperAdmin){
-              fetchAllUsers(token).then(res =>{
-                  dispatch(dispatchGetAllUsers(res))
-              })
-
+             
+                  dispatch(getApprenant())
+              
+              
         //  }
-      },[token, dispatch, callback])
+      },[ dispatch])
    //   ,isAdmin, isSuperAdmin,
       const handleDelete = async (id) => {
           try {
@@ -86,7 +86,7 @@ function ApprenantList() {
                               {setErr('suppression echouée');}
                               else{setErr("erreur");}})
                     
-                      setCallback(!callback)
+                     
               
               
           } catch (err) {

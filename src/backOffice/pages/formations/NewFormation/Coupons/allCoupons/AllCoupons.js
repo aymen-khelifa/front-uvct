@@ -11,7 +11,11 @@ import MuiAlert from '@material-ui/lab/Alert';
 import { useParams } from 'react-router-dom';
 import { Button, Form, Modal, Nav } from 'react-bootstrap';
 import Popover from '@material-ui/core/Popover';
-import { Divider } from '@material-ui/core'
+import { Divider } from '@material-ui/core';
+import {
+  getformation,
+
+} from "../../../../../../redux/features/detailsforSlice";
 
 const initialState = {
      code:'', 
@@ -29,8 +33,8 @@ function Alert(props) {
   
 function AllCoupons() {
     const token = useSelector(state => state.token)
-    const coupons = useSelector(state => state.coupons)
-    const formations = useSelector(state => state.formations)
+    
+    const formations = useSelector(state => state.formation.formation)
     const [coupon, setCoupon ]= useState(initialState);
     const [callback, setCallback] = useState(false)
     const [callback1, setCallback1] = useState(false)
@@ -39,22 +43,25 @@ function AllCoupons() {
     const [open2, setOpen2] = React.useState(false);
     const dispatch = useDispatch()
     const dispatch1 = useDispatch()
-    const {titre1} = useParams()
+    const {id} = useParams()
+    //const id= open4 ? 'simple-popover' : undefined;
     const [show2, setShow2] = useState(false);
     const [statut, setStatut] = useState(false);
     const handleClose1 = () => setShow2(false);
     const handleShow2 = () => setShow2(true);
     const [anchorEl1, setAnchorEl1] = React.useState(null);
     const open4 = Boolean(anchorEl1);
-    const id= open4 ? 'simple-popover' : undefined;
+
+    const coupons = useSelector(state => state.couponSlice.coupons)
+    
     const rowData= coupons?.map(coupon => {
         return{
-            id:coupon?._id,
-            code:coupon?.code,
-            remise:coupon?.remise,
-            dateFin:coupon?.dateFin,
-            nbRemise:coupon?.nbRemise,
-            statut:coupon?.statut,
+            id:coupon.uuid,
+            code:coupon.code,
+            remise:coupon.remise,
+            dateFin:coupon.dateFin,
+            nbRemise:coupon.nbRemise,
+            status:coupon.status,
         }
       })
 
@@ -80,28 +87,24 @@ function AllCoupons() {
         setOpen2(false);
       };
    
-      useEffect(() => {
-        fetchFormation(token,titre1).then(res =>{
-            dispatch1(dispatchGetFormation(res))
-        })
-    },[token,titre1,dispatch1, callback1])
+      
 
       useEffect(() => {
-        fetchCoupons(token,formations._id).then(res =>{
-            dispatch(dispatchCoupons(res))
-        })
-    },[token,formations._id,dispatch, callback])
+       
+            dispatch(dispatchCoupons())
+      
+    },[dispatch ])
      
       const handleDelete = async (id) => {
         try {
-            if(coupon._id !== id){
+           
                     await axios.delete(`/deleteCoupon/${id}`, {
                         headers: {Authorization: token}
                     })
                   
                     setCallback(!callback)
                     setOpen(true);
-            }
+            
             
         } catch (err) {
                 setCoupon({...coupon, err: err.response.data.msg, success: ''})
@@ -197,8 +200,8 @@ function AllCoupons() {
             }
           },
           {
-            field: 'statut',
-            headerName: 'Statut',
+            field: 'status',
+            headerName: 'Status',
             flex:1,
             renderCell: (params) =>{
               return(

@@ -1,6 +1,6 @@
 import React,{useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux'
-import {fetchAllCond, dispatchGetAllCond} from '../../../../redux/actions/usersAction'
+import {getCandidatFormateur} from '../../../../redux/features/usersSlice'
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import {OverlayTrigger, Tooltip } from 'react-bootstrap';
 import axios from 'axios';
@@ -25,7 +25,7 @@ function CandidatList() {
     const auth = useSelector(state => state.auth)
     const token = useSelector(state => state.token)
     const {user, isAdmin, isSuperAdmin} = auth
-    const users = useSelector(state => state.users)
+    const users = useSelector(state => state.user.candidats)
     const [callback, setCallback] = useState(false)
     const [data, setData] =useState([]);
     //const {success,err} = data
@@ -35,6 +35,8 @@ function CandidatList() {
     const [err , setErr] = useState("");
     const [success , setSuccess] = useState("");
     const navigate = useNavigate();
+
+
 
     /*const [users,setUsers] = useState([]) ; 
 
@@ -62,16 +64,27 @@ function CandidatList() {
      
       useEffect(() => {
          // if(isAdmin|| isSuperAdmin ){
-            fetchAllCond(token).then(res =>{
-                  dispatch(dispatchGetAllCond(res))
-              })
+           
+                  dispatch(getCandidatFormateur())
+              
         //  }
-      },[token, dispatch, callback])
+      },[ dispatch])
+
+      const rowData= users?.map(user => {
+        return{
+            id:user.uuid,
+            name:user.name,
+            email:user.email,
+            specialite:user.speciality,
+            tele:user.tel,
+            date:user.createdAt,
+        }
+    })
 //, isAdmin, isSuperAdmin,
       const handleDelete = async (id) => {
           try {
              
-                      await axios.get(`http://localhost:5000/instructeur/refusinst/${id}`, {
+                      await axios.get(`http://localhost:5000/users/refusinst/${id}`, {
                           
                       headers: {'X-Requested-With': 'XMLHttpRequest', 
                       "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
@@ -222,16 +235,7 @@ function CandidatList() {
           },
       ];
 
-      const rowData= users?.map(user => {
-          return{
-              id:user.uuid,
-              name:user.name,
-              email:user.email,
-              specialite:user.speciality,
-              tele:user.tel,
-              date:user.createdAt,
-          }
-      })
+     
 
   return (
 

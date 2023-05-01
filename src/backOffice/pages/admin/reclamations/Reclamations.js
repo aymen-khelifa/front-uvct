@@ -1,6 +1,7 @@
 import React,{useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux'
-import {fetchAllReclamations, dispatchGetAllReclamations} from '../../../../redux/actions/reclamationAction'
+import {fetchAllReclamations, dispatchGetAllReclamations} from '../../../../redux/actions/reclamationAction';
+
 import DayJS from 'react-dayjs';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -8,39 +9,56 @@ import axios from 'axios'
 import { Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import Table from '../../../components/table/Table';
-
+import { getreclamations } from '../../../../redux/features/reclamationsSlice';
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import { Link } from "react-router-dom";
 const { confirm } = Modal;
 
 function Reclamations1() {
   const token = useSelector(state => state.token)
-  const [reclamation, setReclamation] = useState([])
-  const reclamations1 = useSelector(state => state.reclamations)
+  //const [reclamation, setReclamation] = useState([])
+  const reclamations = useSelector(state => state.reclamation.reclamation)
   const [callback, setCallback] = useState(false)
   const dispatch = useDispatch()
+
+  useEffect(() => {
+        
+    dispatch(getreclamations())
+
+  },[dispatch])
+  
+  const rowData= reclamations?.map(reclamation => {
+    return{
+        id:reclamation.uuid,
+        sujet:reclamation.sujet,
+        message:reclamation.message,
+        
+        envoyerpar:reclamation.user.name,
+        date:reclamation.createdAt,
+        
+    }
+})
       
-      useEffect(() => {
-        fetchAllReclamations().then(res =>{
-                dispatch(dispatchGetAllReclamations(res))
-            })
-      },[dispatch, callback])
+      
 
      const handleDelete = async (id) => {
-      try {
-          if(reclamation._id !== id){
+      
+          
                   await axios.delete(`/deleteReclamation/${id}`, {
                     headers: {Authorization: token}
-                })
-                  
-                  setCallback(!callback)
-          }
-      } catch (err) {
-          setReclamation({...reclamation, err: err.response.data.msg , success: ''})
-      }
+                  }
+                    )
+               
+                
+          
+      .catch( (err)=> {
+        console.log('eee')
+      })
       }
 
       const columns = [
         {
-          field: 'cause',
+          field: 'sujet',
           headerName: 'Sujet',
           flex:1,
         },
@@ -49,6 +67,12 @@ function Reclamations1() {
           headerName: 'Messages',
           flex:2,
         },
+        {
+          field: 'envoyerpar',
+          headerName: 'envoyerpar',
+          flex:1,
+        },
+        
         {
           field: 'date',
           headerName: 'Date',
@@ -81,9 +105,9 @@ function Reclamations1() {
             }
             return(
               <>
-               <a href={`/reclamationdt/${params.row.id}`}>
+               <Link to={`/reclamationdt/${params.row.id}`}>
                <VisibilityIcon className='icon-action'/>
-                    </a>
+                    </Link>
                <DeleteOutlineIcon  onClick={showDeleteConfirm} className="icon-delete"/>
               </>
             )
@@ -92,14 +116,7 @@ function Reclamations1() {
         },
         
       ];
-      const rowData= reclamations1?.map(reclamation => {
-        return{
-            id:reclamation?._id,
-            cause:reclamation?.cause,
-            message:reclamation?.message,
-            date:reclamation?.createdAt,
-        }
-    })
+      
     
   return (
     <div className="favoris">

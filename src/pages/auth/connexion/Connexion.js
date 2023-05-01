@@ -17,6 +17,7 @@ import FacebookLogin from "react-facebook-login";
 import { FacebookRounded, Google } from "@mui/icons-material";
 import { gapi } from "gapi-script";
 import { Snackbar, Alert } from "@mui/material";
+import { login } from "../../../redux/features/authSlice";
 
 
  // gapi.load("client:auth2", () => {
@@ -44,69 +45,68 @@ function Connexion() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = React.useState(false);
-
+  const [open, setOpen] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const { user, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
+
+
+  /*useEffect(() => {
+    if ( message==='login avec success') {
+      navigate("/profile");
+      
+    }//dispatch(reset())
+    
+  }, [user, isSuccess, dispatch, navigate,message]);
+  if (message==='mot de passe incorrect')
+  {setTimeout(()=>{setErr('mot de passe incorrect')},1500);localStorage.removeItem('isLogged')}
+if (message==='verifiez votre compte')
+  {setTimeout(()=>{setErr('verifiez votre compte')},1500);localStorage.removeItem('isLogged')}
+  if (message==='User does not exist')
+  {setTimeout(()=>{setErr('User does not exist')},1500);localStorage.removeItem('isLogged')}
+  */
+
   const handleSubmit = async (e) => {
          e.preventDefault();
-    
-   try {
-    const res =await axios.post("http://localhost:5000/users/Login",
-               { email: email, password: password },{
-               }
-               
-               
-               )
-
-     if (res.data.message === "login avec success") {
-       setSuccess("login avec success");
-       setTimeout(() => {
-        localStorage.setItem("firstLogin", true);
-       // localStorage.setItem("refreshToken",res.data.refreshToken);
-        //localStorage.setItem("accessToken",res.data.accessToken);
-       }, 500);     
-       setTimeout(() => {
-         dispatch(dispatchLogin(res));
-       }, 500);
-       //localStorage.setItem("firstLogin", true);
-      //dispatch(dispatchLogin(res.data.user));
-       setTimeout(() => {
-         navigate("/profile");
-   }, 500);
- }
-     else if (res.data.message === "mot de passe incorrect") {
-       setErr("mot de passe incorrect");
-       setTimeout(() => {
-         navigate("/connexion");
-       }, 2500);
-     }
-     else if (res.data.message === "User does not exist") {
-       setErr("utilisateur non trouvé");
-    setTimeout(() => {
-         navigate("/connexion");
-       }, 2500);
-     }
-     else if (res.data.message === "verifiez votre compte") {
-       setErr("verifiez votre compte");
-       setTimeout(() => {
-         navigate("/connexion");
-       }, 2500);
-     } else {
-       setErr("erreur1");
-     }
-     //setUser({ ...user, err: "", success: res.data.message });console.log(res.data.message);
-
-   
-    
-   } catch (err) {
-     //err.response.data.msg &&
-     //setUser(err);
-    setErr("verifiez vos données");
-     console.log(err);
-   }
+         try{
+          const res =await axios.post('http://localhost:5000/users/login', {
+              email: email,
+              password: password
+          },{ headers: {'X-Requested-With': 'XMLHttpRequest', 
+          "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
+          "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS",
+          //Authorization: 'Bearer ' + user.accessToken
+                        }, 
+         "withCredentials": true ,
+         
+          
+          });
+          if (res.data.message==='login avec success')
+          {setSuccess('login avec success');setTimeout(()=>{dispatch(login(res.data))},500);
+          setTimeout(()=>{localStorage.setItem('token', JSON.stringify(res.data.accessToken));},500);
+          setTimeout(()=>{navigate("/profile");},500);}
+          
+          if (res.data.message==='vous n\'étes pas encore accepté')
+          {setErr('vous n\'étes pas encore accepté');}
+          if (res.data.message==='verifiez votre compte')
+          {setErr('verifiez votre compte');}
+          if (res.data.message==='User does not exist')
+          {setErr('User does not exist');}
+          if (res.data.message==='mot de passe incorrect')
+          {setErr('mot de passe incorrect');}
+          else{setErr("erreur");}
   
 
 
-  };
+         }catch{setErr('err')}
+        
+          
+    
+      }
+        
+
+  
 
  //const responseGoogle = async (response) => {
   //   try {
@@ -139,11 +139,7 @@ function Connexion() {
     console.log(res);
   };
  
- /* useEffect(() => {
-    // Mettre à jour la valeur de isLogged à true au chargement du composant
-    dispatch(setIsLogged());
-  }, [dispatch]);*/
-
+ 
   const googleError = (error) => console.log(error);
 
   const responseFacebook = async (response) => {
@@ -180,6 +176,14 @@ function Connexion() {
     setPassword(value);
     setPasswordError(value.length < 8);
   };
+  const handleSnackbarClose = () => {
+    setOpen(false);
+  };
+  useEffect(() => {
+    if (isError) {
+      setOpen(true); // Open Snackbar if isError is true
+    }
+  }, [isError]);
 
   var fex = false;
   return (
@@ -264,7 +268,7 @@ function Connexion() {
                       marginLeft: "35px",
                       marginBottom: "15px",
                     }}
-                    fullWidth
+                    //fullWidth
                     onClick={renderProps.onClick}
                     disabled={renderProps.disabled}
                     className="bb"
@@ -314,38 +318,18 @@ function Connexion() {
           </div>
         </Form>
       </div>
-      <Snackbar
-        autoHideDuration={2500}
-        open={err === "" ? false : true}
-        onClose={() => {
-          setErr("");
-        }}
-      >
-        <Alert
-          variant="filled"
-          severity="error"
-          onClose={() => {
-            setErr("");
-          }}
-        >
-          {err}
+      <Snackbar autoHideDuration={1500} open={ err === "" ? false : true } onClose={()=>{ setErr("") }}  >
+        <Alert variant="filled" severity="error" onClose={()=>{ setErr("") }} >
+          {
+            err
+          }
         </Alert>
       </Snackbar>
-      <Snackbar
-        autoHideDuration={2500}
-        open={success === "" ? false : true}
-        onClose={() => {
-          setSuccess("");
-        }}
-      >
-        <Alert
-          variant="filled"
-          severity="success"
-          onClose={() => {
-            setSuccess("");
-          }}
-        >
-          {success}
+      <Snackbar autoHideDuration={1500} open={ success === "" ? false : true } onClose={()=>{ setSuccess("") }}  >
+        <Alert variant="filled" severity="success" onClose={()=>{ setSuccess("") }} >
+          {
+            success
+          }
         </Alert>
       </Snackbar>
     </div>
@@ -353,3 +337,111 @@ function Connexion() {
 }
 
 export default Connexion;
+
+/*import { useState } from "react";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+
+const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [open, setOpen] = useState(false); // State for Snackbar
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user, isError, isSuccess, isLoading, message } = useSelector(
+    (state) => state.auth
+  );
+
+  useEffect(() => {
+    if (user || isSuccess) {
+      navigate("/dashboard");
+    }
+    dispatch(reset());
+  }, [user, isSuccess, dispatch, navigate]);
+
+  const Auth = (e) => {
+    e.preventDefault();
+    dispatch(LoginUser({ email, password }));
+  };
+
+  const handleSnackbarClose = () => {
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    if (isError) {
+      setOpen(true); // Open Snackbar if isError is true
+    }
+  }, [isError]);
+
+  return (
+    <section className="hero is-fullheight is-fullwidth">
+      <div className="hero-body">
+        <div className="container">
+          <div className="columns is-centered">
+            <div className="column is-4">
+              <form onSubmit={Auth} className="box">
+                <h1 className="title is-2">Sign In</h1>
+                <div className="field">
+                  <label className="label">Email</label>
+                  <div className="control">
+                    <input
+                      type="text"
+                      className="input"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Email"
+                    />
+                  </div>
+                </div>
+                <div className="field">
+                  <label className="label">Password</label>
+                  <div className="control">
+                    <input
+                      type="password"
+                      className="input"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="******"
+                    />
+                  </div>
+                </div>
+                <div className="field mt-5">
+                  <button
+                    type="submit"
+                    className="button is-success is-fullwidth"
+                  >
+                    {isLoading ? "Loading..." : "Login"}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      /* Snackbar to show error message */
+     /* <Snackbar
+        open={open}
+        autoHideDuration={5000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <MuiAlert elevation={6} variant="filled" severity="error">
+          {message}
+        </MuiAlert>
+      </Snackbar>
+    </section>
+  );
+};
+
+export default Login;if (response.data.message==='login avec success')
+          {setSuccess('login avec success');
+          const data = await response.json();
+          console.log(data); dispatch(login(data));navigate("/profile");}
+          if (response.data.message==='verifiez votre compte')
+          {setErr('verifiez votre compte');}
+          if (response.data.message==='User does not exist')
+          {setSuccess('User does not exist');}
+          if (response.data.message==='mot de passe incorrect')
+          {setSuccess('mot de passe incorrect');}
+          else{setErr("erreur");}*/

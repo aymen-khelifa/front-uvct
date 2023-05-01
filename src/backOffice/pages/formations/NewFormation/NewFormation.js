@@ -18,9 +18,7 @@ function NewFormation() {
     <div className='admin'>
       <div className='header-formation'>
       <BreadcrumbHeader item="Mes formations" link="/mes-formations" active={titre1}/>
-            <Button className='btn-edit-formation' href={`/formation/${titre1}`}>
-              <AddIcon />Modifier formation
-            </Button>
+            
       </div>
      <div className='scrolltab'>
      <ScrollTab label1="Informations" label2="Curriculum" label3="Coupons" 

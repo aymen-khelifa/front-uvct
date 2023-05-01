@@ -1,8 +1,6 @@
 import React, {useState} from 'react'
 import { Button,Form} from 'react-bootstrap';
 import axios from 'axios'
-import {ShowErrMsg, ShowSuccessMsg} from '../../../components/utils/notifications/Nofification'
-//import {isEmpty, isEmail, isLength} from '../../../components/utils/validation/Validation'
 import './inscrire.css'
 import { useNavigate } from 'react-router-dom';
 import { Snackbar, Alert} from "@mui/material";

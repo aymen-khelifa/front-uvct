@@ -27,17 +27,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-  return ['Planifiez votre cours', 'Créez votre contenu', 'Publiez votre cours'];
+  return ['Créez votre contenu', 'Planifiez votre cours'];
 }
 
 function getStepContent(step) {
   switch (step) {
     case 0:
-      return <PlanifierCours />;
-    case 1:
-      return <Programme />;
-    case 2:
       return <PublierCours />;
+    case 1:
+      return <PlanifierCours />;
+    
     default:
       return 'Unknown step';
   }
@@ -73,20 +72,20 @@ export default function AddFormation() {
               <Typography>{getStepContent(index)}</Typography>
               <div className={classes.actionsContainer}>
                 <div>
-                  <Button
+                  {/*<Button
                     disabled={activeStep === 0}
                     onClick={handleBack}
                     className={classes.button}
                   >
                     Arrière
-                  </Button>
+                  </Button>*/}
                   <Button
                     variant="contained"
                     color="primary"
                     onClick={handleNext}
                     className={classes.button}
                   >
-                    {activeStep === steps.length - 1 ? 'Terminer' : 'Suivant'}
+                    {activeStep === steps.length - 1 ? 'cliquer sur confirmer' : 'Suivant'}
                   </Button>
                 </div>
               </div>
@@ -97,7 +96,7 @@ export default function AddFormation() {
       {activeStep === steps.length && (
         <Paper square elevation={0} className={classes.resetContainer}>
           <Typography>All steps completed - you&apos;re finished</Typography>
-          <Button onClick={handleReset} className={classes.button}>
+          <Button onClick={handleBack} className={classes.button}>
             Reset
           </Button>
         </Paper>

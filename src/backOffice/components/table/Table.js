@@ -7,8 +7,7 @@ function Table(props) {
     rows={props.row}
     columns={props.columns}
     pageSize={8}
-    checkboxSelection
-    disableSelectionOnClick
+   
   />
   )
 }

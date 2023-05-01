@@ -137,7 +137,7 @@ function Informations() {
                 placeholder="Ecrire ici..." 
                 name="description" 
                 onChange={handleChange}
-                defaultValue={formations.description}
+                //defaultValue={formations.description}
                 required 
               />
             </Form.Group>
@@ -146,7 +146,7 @@ function Informations() {
               <Form.Label className="label">L’affiche</Form.Label>
               <div className="content-affiche">
               <Form.Label htmlFor="file" > 
-                <img src={affiche ? affiche : formations.affiche} alt="" className="affiche-img"></img>
+                <img  alt="" className="affiche-img"></img>
               <p> <PhotoSizeSelectActualIcon /> Séléctionnez une image </p>
               </Form.Label>
               </div>
@@ -159,7 +159,7 @@ function Informations() {
                 <Form.Label className="label">Vidéo promotionnelle</Form.Label>
                 <div className="content-affiche">
                   <Form.Label htmlFor="file" > 
-                  <ReactPlayer url={videopromo ? videopromo : formations.videopromo}
+                  <ReactPlayer /*url={videopromo ? videopromo : formations.videopromo}*/
                   controls playing muted width='80%' height='60%' ></ReactPlayer>
                   <p> <MovieIcon /> Séléctionnez un vidéo </p>
                   </Form.Label>
@@ -176,7 +176,7 @@ function Informations() {
                     name="categorie"
                     onChange={handleChange}
                     >
-                    <option defaultValue={formations.categorie}>{formations.categorie}</option>
+                    {/*<option defaultValue={formations.categorie}>{formations.categorie}</option>*/}
                     <option value="développement web">développement web</option>
                     <option value="développement mobile">développement mobile</option>
                     <option value="développement personnel">développement personnel</option>
@@ -196,7 +196,7 @@ function Informations() {
                     name="level"
                     onChange={handleChange}
                     >
-                    <option defaultValue={formations.level}>{formations.level}</option>
+                   {/* <option defaultValue={formations.level}>{formations.level}</option>*/}
                     <option value="Débutant">Débutant</option>
                     <option value="développement mobile">Expert</option>
             </Form.Select>
@@ -207,14 +207,14 @@ function Informations() {
                 type="switch"
                 id="custom-switch"
                 label="Gratuit"
-                defaultValue={formations.free}
+              //  defaultValue={formations.free}
                 onChange={(e) => setFree(e.target.checked)}
               />
               </Form.Label>
                 <Form.Control type="number"
                 placeholder="0,000 Dt"
                 name="prix"
-                defaultValue={formations.price}
+                //defaultValue={formations.price}
                 onChange={handleChange}
                 />
               </Form.Group>

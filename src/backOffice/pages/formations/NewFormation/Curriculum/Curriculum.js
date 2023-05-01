@@ -4,9 +4,13 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
-import Checkbox from '@material-ui/core/Checkbox';
+import Checkbox from '@material-ui/core/Checkbox';import Box from '@mui/material/Box';
+
 import IconButton from '@material-ui/core/IconButton';
-import {fetchFormation, dispatchGetFormation} from '../../../../../redux/actions/formationsAction'
+import {getsectionbyid} from '../../../../../redux/features/sectionbyid';import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
+import BorderColorIcon from '@mui/icons-material/BorderColor';
+import TextField from '@mui/material/TextField';
+
 import {fetchSections, dispatchSections} from '../../../../../redux/actions/sectionAction'
 import {ShowSuccessMsg, ShowErrMsg} from '../../../../../components/utils/notifications/Nofification'
 import { Collapse } from 'antd';
@@ -16,10 +20,12 @@ import {useSelector, useDispatch} from 'react-redux'
 import { useParams } from 'react-router-dom';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 import '../../Formation.css'
-import Questionnaire from './Questionnaire';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import EditIcon from '@material-ui/icons/Edit';
+import Questionnaire from './Questionnaire';import { Modal} from 'antd';
 
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';import { ExclamationCircleOutlined } from '@ant-design/icons';
+
+import EditIcon from '@material-ui/icons/Edit';
+import getsession from '../../../../../redux/features/sessionSlice'
 const { Panel } = Collapse;
 
 function callback1(key) {
@@ -35,53 +41,143 @@ const initialState = {
 }
 
 export default function Curriculum() {
+  const [err, setErr] = useState("");
+  const [success, setSuccess] = useState("");
   const [show, setShow] = useState(true);
+  const [show1, setShow1] = useState(false);
   const [show2, setShow2] = useState(true);
   const [showFile, setShowFile] = useState(false);
   const [showText, setShowText] = useState(false);
   const [showQuest, setShowQuest] = useState(false);
   const [checked, setChecked] = React.useState([0]);
-  const [section, setSection] = useState(initialState)
-  const {formation,description,titre, err, success} = section
+ // const [section, setSection] = useState([])
+  //const {formation,description,titre} = section
   const token = useSelector(state => state.token)
   const formations = useSelector(state => state.formations)
-  const sections = useSelector(state => state.sections)
+  const sections = useSelector(state => state.sectionbyid.sections)
+  const sessions = useSelector(state => state.session.sessions)
+
   const [callback, setCallback] = useState(false)
   const [callback2, setCallback2] = useState(false)
+  const [Title, setTitle] = useState("");const [Title1, setTitle1] = useState("");
+  const [texte, setTexte] = useState("");
+  const [titlesec, setTitlesec] = useState("");
+
+  const [titleses, setTitleses] = useState("");
+  const [objectif, setObjectif] = useState("");
+  const [titleError, setTitlelError] = useState(false);
+  const [objectifError, setObjectifError] = useState(false);
   const dispatch = useDispatch()
   const dispatch2 = useDispatch()
-  const {titre1} = useParams();
-  var id = formations._id
+  const {id} = useParams();const { confirm } = Modal;
 
-        useEffect(() => {
-          fetchFormation(token,titre1).then(res =>{
-                dispatch(dispatchGetFormation(res))
-            })
-          },[token,titre1, dispatch, callback])
+  //var id = formations._id
+
+       /* useEffect(() => {
+         
+                dispatch(getformation(id))
+            
+          },[dispatch])*/
           
           useEffect(() => {
-            fetchSections(token,id).then(res =>{
-                  dispatch2(dispatchSections(res))
-              })
-          },[token, id ,dispatch2, callback2])
+          
+                  dispatch(getsectionbyid(id))
+              
+          },[dispatch])
+         
+       /*   useEffect(() => {
+          
+            dispatch2(getsession(sections.uuid))
+        
+    },[dispatch2])
 
-      const handleChangeInput = e => {
-        const {name, value} = e.target
-        setSection({...section, [name]:value, err: '', success: ''})
-      }
-
-      const handleSubmit = async (e,titre1) => {
+   useEffect(() => {
+    
+        const data =  dispatch(getsession(id));
+        setSection(data);
+      });*/
+      const handleObjectifChange = (event) => {
+        const { value } = event.target;
+        setObjectif(value);
+       // setObjectifError(value.length < 8);
+      };
+      const handleTitleChange = (event) => {
+        const { value } = event.target;
+        setTitle(value);
+       // setTitlelError(value.length < 8);
+      };const handleTitle1Change = (event) => {
+        const { value } = event.target;
+        setTitle1(value);
+       // setTitlelError(value.length < 8);
+      };
+      const handleTitlesesChange = (event) => {
+        const { value } = event.target;
+        setTitleses(value);
+       // setTitlelError(value.length < 8);
+      };
+      const handleTexteChange = (event) => {
+        const { value } = event.target;
+        setTexte(value);
+       // setObjectifError(value.length < 8);
+      };const handleTitlesecChange = (event) => {
+        const { value } = event.target;
+        setTitlesec(value);
+       // setTitlelError(value.length < 8);
+      };
+      
+      const handleSubmit = async (e,id) => {
         e.preventDefault()
         try {
-          if(formations.titre !== titre1){
-            const res = await axios.post(`/ajoutsect/${formations.titre}`,
-            {titre, formation: formations._id}, {headers: {Authorization: token}
+          
+            const res = await axios.post(`http://localhost:5000/sections/addsection/${id}`,
+            {title:Title,
+              objectif:objectif,
+               }, {headers: {'X-Requested-With': 'XMLHttpRequest', 
+               "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
+               "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
+              "withCredentials": true 
           })
-            setSection({...section, err: '', success: res.data.msg})
+          if (res.data.message==='section  créé avec succès')
+          {setSuccess('section  créé avec succès')}
+          
+          if (res.data.message===' existe déjà')
+          {setErr(' existe déjà');}
+          if (res.data.message==='Une erreur est survenue lors de la création de section')
+          {setErr('Une erreur est survenue lors de la création de section');}
+          
+          else{setErr("Une erreur est survenue lors de la création de section");}
 
-      } } catch (err) { 
-          err.response.data.msg &&
-          setSection({...section, err: err.response.data.msg, success: ''})
+       } catch (err) { 
+        setErr("Une erreur est survenue lors de la création de section");
+        }
+      }
+      const handleSubmit1 = async (e) => {
+        e.preventDefault()
+        try {
+          
+            const res = await axios.post('http://localhost:5000/sessions/addSession',
+            {texte:texte,
+              titleses:titleses,titlesec:titlesec
+              
+               }, {headers: {'X-Requested-With': 'XMLHttpRequest', 
+               "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
+               "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
+              "withCredentials": true 
+             
+          })
+          if (res.data.message==='session créé avec succès')
+          {setSuccess('session créé avec succès')}
+          
+          if (res.data.message==='Une erreur est survenue lors de la création de section')
+          {setErr('Une erreur est survenue lors de la création de section');}
+          if (res.data.message==='chapitre non trouvé')
+          {setErr('chapitre non trouvé');}
+          if (res.data.message===' existe déjà')
+          {setErr('existe déjà');}
+          else{setErr("erreur");}
+
+       } catch (err) { 
+        setErr("erreur");
         }
       }
     const handleToggle = (value) => () => {
@@ -94,14 +190,181 @@ export default function Curriculum() {
       }
       setChecked(newChecked);
     };
+    const handleDeleteses = async (title) => {
+          
+             
+      await axios.get(`http://localhost:5000/formations/supprformation/${title}`, {
+          //headers: {Authorization: token}
+          headers: {'X-Requested-With': 'XMLHttpRequest', 
+          "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
+          "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
+         "withCredentials": true 
+        }).then((response)=>{
+          if(response.data.message==='formation supprimé !')
+          {setSuccess('formation supprimé !')}
+          if(response.data.message==='suppression echouée')
+          {setErr('suppression echouée')}
+          }
+).catch( (err)=> {
+setErr('erreur')
+  
+})
+}
+const handleUpdateses = async (title) => {
+          
+             
+  await axios.get(`http://localhost:5000/formations/supprformation/${title}`, {
+      //headers: {Authorization: token}
+      headers: {'X-Requested-With': 'XMLHttpRequest', 
+      "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
+      "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
+     "withCredentials": true 
+    }).then((response)=>{
+      if(response.data.message==='formation supprimé !')
+      {setSuccess('formation supprimé !')}
+      if(response.data.message==='suppression echouée')
+      {setErr('suppression echouée')}
+      }
+).catch( (err)=> {
+setErr('erreur')
+
+})
+}
+const handleDeletesec = async (title) => {
+          
+             
+          await axios.get(`http://localhost:5000/sections/supprimersection/${title}`, {
+             //headers: {Authorization: token}
+             headers: {'X-Requested-With': 'XMLHttpRequest', 
+                 "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
+              "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
+             "withCredentials": true 
+                }).then((response)=>{
+                if(response.data.message==='chapitre supprimé !')
+                 {setSuccess('chapitre supprimé !')}
+                  if(response.data.message==='suppression echouée')
+                  {setErr('suppression echouée')}
+                 }
+                   ).catch( (err)=> {
+                     setErr('erreur')
+
+                 })
+}
+const handleUpdatesec = async (title) => { 
+  console.log(title);
+  
+      
+          await axios.patch(`http://localhost:5000/sections/modifier/${title}`,{title:Title}, {
+              //headers: {Authorization: token}
+              headers: {'X-Requested-With': 'XMLHttpRequest', 
+             "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
+             "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
+                  "withCredentials": true 
+                   }).then((response)=>{
+                 if(response.data.message==='section modifié !')
+               {setSuccess('section modifié !')}
+               if(response.data.message==='modification echouée')
+                  {setErr('modification echouée')}
+                    }
+                ).catch( (err)=> {
+               setErr('erreur')
+
+              })
+}
+    function showDeletesecConfirm(tit) {
+      confirm({
+        title: 'Êtes-vous sûr de vouloir supprimer ce chapitre ?',
+        icon: <ExclamationCircleOutlined />,
+        okText: 'Supprimer',
+        okType: 'danger',
+        cancelText: 'Annuler',
+         
+        onOk() {
+          handleDeletesec(tit)
+        },
+        onCancel() {
+          console.log('Cancel');
+        },
+      });}
+      /*function showUpdatesecConfirm(tit) {
+        confirm({
+          title: 'Êtes-vous sûr de vouloir modifer ce chapitre ?',
+         
+          okText: 'Modifier',
+          okType: 'primary',
+          cancelText: 'Annuler',
+          content: (
+            <Box component="form"    sx={{ mt: 1 }}>
+            <TextField
+              margin="normal"
+              required placeholder={tit}
+              onChange={handleTitleChange} 
+            />
+            <Button onClick={() => handleUpdatesec(tit)} >ok</Button>
+            
+            </Box>
+            
+               
+          ),
+           
+          
+          onCancel() {
+            console.log('Cancel');
+          },
+        });}*/
+
+        function showDeletesesConfirm(tit) {
+          confirm({
+            title: 'Êtes-vous sûr de vouloir supprimer ce chapitre ?',
+            icon: <ExclamationCircleOutlined />,
+            okText: 'Supprimer',
+            okType: 'danger',
+            cancelText: 'Annuler',
+             
+            onOk() {
+              handleDeleteses(tit)
+            },
+            onCancel() {
+              console.log('Cancel');
+            },
+          });}
+       /*   function showUpdatesesConfirm(tit) {
+            confirm({
+              title: 'Êtes-vous sûr de vouloir supprimer ce chapitre ?',
+              icon: <ExclamationCircleOutlined />,
+              okText: 'Supprimer',
+              okType: 'danger',
+              cancelText: 'Annuler',
+               
+              onOk() {
+                handleUpdateses(tit)
+              },
+              onCancel() {
+                console.log('Cancel');
+              },
+            });}*/
+    const genExtra = (title) => (
+       <DeleteOutlineIcon className='icon-action'
+         onClick={() => showDeletesecConfirm(title)}
+      />);
+      
+    /* const genExtra1 = (title) => (
+      <BorderColorIcon className='icon-action'
+      onClick={() => showUpdatesecConfirm(title)}
+     />
     
-    const genExtra = () => (
-      <EditIcon
-        onClick={event => {
-          event.stopPropagation();
-        }}
+    );*/
+    const genExtra2 = (title) => (
+      <DeleteOutlineIcon className='icon-action'
+       onClick={() => showDeletesesConfirm(title)}
       />
     );
+   /* const genExtra3 = (title) => (
+      <BorderColorIcon className='icon-action'
+     onClick={() => showUpdatesesConfirm(title)}
+    />
+    );*/
+
 
     return(
       <div className="coupon">
@@ -110,36 +373,48 @@ export default function Curriculum() {
        (<>
         <Button className='btn-event'  onClick={() => setShow(!show)}>Nouveau chapitre</Button>
       {
-          sections.map(chapitre => 
+          sections.map(section => 
           (
+           
+
           <div className='content-chapitre'>
-              <Collapse  onChange={callback1}>
-                <Panel header={chapitre.titre}  extra={genExtra()}>
+              <Collapse  onChange={callback1}> 
+                <Panel header={section.title}  extra={[genExtra(section.title)
+                //,genExtra1(section.title)
+                ]}>
                   <List>
-                    <ListItem key="1" role={undefined} dense button onClick={handleToggle("1")}>
-                      <ListItemIcon>
-                        <Checkbox
-                        edge="start"
-                        checked={checked.indexOf("1") !== -1}
-                        tabIndex={-1}
-                        disableRipple
-                        inputProps={{ 'aria-labelledby': "1" }}
-                        />
-                      </ListItemIcon>
-                      <ListItemText id="1" primary="Leçon 1">
-                        <img src="images/trash.png" alt="" /> 
-                      </ListItemText>
-                      <ListItemSecondaryAction>
-                        <IconButton edge="end" aria-label="comments">
-                          <img src="/images/tick-circle.png" alt="" className='icon-action'/> 
-                          <img src="/images/trash.png" alt="" className='icon-action'/> 
-                        </IconButton>
+                    
+                    {sessions.map(session => //titlede session
+                        (<div className='content-chapitre'>
+              <Collapse  onChange={callback1}>
+                <Panel header={session.title //titlede session
+                }  extra={[genExtra2(session.title) //,genExtra3(session.title)
+                ]}>
+                  <List>
+ 
+  { 
+                      sessions.map(session => 
+                        (session.texte //divn7otfiha les detailsfilew videow texte w questionnaire ba33ed(seesion.texte)
+                         ))
+                         }
+                     
+                     <ListItemSecondaryAction>
+                      <DeleteOutlineIcon className='icon-action'
+       // onClick={showDeleteConfirm}
+      />
                       </ListItemSecondaryAction>
-                    </ListItem>
-                      <Button className='btn-add-lecon' onClick={() => setShow2(!show2)}>
+                   
+                     
+                  </List>
+                </Panel>
+            </Collapse>
+          </div> ))
+                         }
+                     
+                  </List>
+                  <Button className='btn-add-lecon' onClick={() => setShow2(!show2)}>
                        <AddCircleOutlineIcon /> Ajouter une nouvelle leçon
                       </Button>
-                  </List>
                 </Panel>
             </Collapse>
           </div> 
@@ -150,16 +425,15 @@ export default function Curriculum() {
           !show &&
           (
           <div className='content-chapitre'>
-                <Form onSubmit={handleSubmit}>
-                {err && ShowErrMsg(err)}
-                {success && ShowSuccessMsg(success)}
+                <Form >
+                
                 <Form.Group className="mb-3" >
                   <Form.Label className="label">Titre du chapitre</Form.Label>
                     <Form.Control type="text" 
                       placeholder="Enter un titre" 
                       name="titre"
-                      value={titre}
-                      onChange={handleChangeInput} 
+                      value={Title}
+                      onChange={handleTitleChange} 
                       required 
                     />
                 </Form.Group>
@@ -168,14 +442,14 @@ export default function Curriculum() {
                     <Form.Control type="text" 
                       placeholder="Saisir un objectif d'apprentissage" 
                       name="description"
-                      value={description}
-                      onChange={handleChangeInput} 
+                      value={objectif}
+                      onChange={handleObjectifChange} 
                       required 
                     />
                 </Form.Group>
                 <div className="content-btn">
-                  <Button className='btn-annnuler'>Annuler</Button>
-                  <Button  className='btn-confirme'  type="submit">Sauvgarder</Button>
+                  <Button className='btn-annnuler'  type="annuler" onClick={() => setShow(!show)}>Annuler</Button>
+                  <Button  className='btn-confirme'  type="submit" onClick={handleSubmit}>Sauvgarder</Button>
                 </div>
               </Form>
           </div>
@@ -220,18 +494,32 @@ export default function Curriculum() {
             {
               showText &&
                 (<div className="content-lecon">
-                <h5>Texte</h5>
-                <p>Utilisez l'éditeur de texte enrichi pour formater proprement le texte de votre session.</p>
+                <h5>titre de chapitre dans lequelle ajouté  </h5>
+                
                <Form>
+               <Form.Group className="mb-3" >
+                <Form.Control type="text" 
+                placeholder="saisir titre de chapitre " 
+                required  onChange={handleTitlesecChange} 
+              /></Form.Group>
+                <h5>titre de leçon</h5>
+                
+               
+               <Form.Group className="mb-3" >
+                <Form.Control type="text" 
+                placeholder="saisir titre de leçon " 
+                required  onChange={handleTitlesesChange} 
+              /></Form.Group>
+              <h5>Texte</h5>
                <Form.Group className="mb-3" >
                 <Form.Control as="textarea" rows={5} 
                 placeholder="Ecrire ici..." 
-                required 
+                required  onChange={handleTexteChange} 
               />
             </Form.Group>
               <div className="content-btn">
               <Button className='btn-annnuler'>Annuler</Button>
-              <Button  className='btn-confirme' >Sauvegarder</Button>
+              <Button  className='btn-confirme' onClick={handleSubmit1} >Sauvegarder</Button>
           </div>
                </Form>
                 </div>

@@ -6,6 +6,7 @@ import ResetPassword from "../../pages/auth/ResetPassword/ResetPassword";
 import Home from "../../pages/home/Home";
 import Home1 from "../../pages/home/Home1";
 import DevenirInstructeur1 from "../../pages/auth/devenirInstructeur/DevenirInstructeur1";
+import Ajouterfile from "../../pages/auth/devenirInstructeur/ajouterfile";
 
 import DevenirInstructeur from "../../pages/auth/devenirInstructeur/DevenirInstructeur";
 import Inscrire from "../../pages/auth/inscrire/Inscrire";
@@ -24,6 +25,7 @@ import Gains from "../../backOffice/pages/gains/Gains";
 import Connexion from "../../pages/auth/connexion/Connexion";
 import Favoris from "../../backOffice/pages/favoris/Favoris";
 import Messages from "../../backOffice/pages/messages/Messages";
+import Messages1 from '../../backOffice/pages/messages/Messagesinst'
 import Reclamations from "../../backOffice/pages/reclamations/Reclamations";
 import Instructeurs from "../../backOffice/pages/instructeurs/Instructeurs";
 import ApprenantList from "../../backOffice/pages/apprenants/ApprenantList";
@@ -60,6 +62,7 @@ import MesEvents from "../../backOffice/pages/evenements/MesEvent/MesEvents";
 import Evenements from "../../backOffice/pages/admin/events/Evenements";
 import Formations1 from "../../backOffice/pages/admin/formation/Formations";
 import Footer from "../footer/footer";
+import Formationdet from "../../backOffice/pages/admin/formation/formationdet";
 import { Instructeurs1 } from "../../pages/instructeurs/Instructeurs";
 import InstructeurDetails from "../../pages/instructeurs/instructeurDetails/InstructeurDetails";
 import UpdateEvent from "../../backOffice/pages/evenements/updateEvent/UpdateEvent";
@@ -68,21 +71,23 @@ import { CoursPage } from "../../pages/cours/cours";
 import { CourseDetails } from "../../pages/cours/course-details/course-details";
 import { CourseVideos } from "../../pages/cours/course-videos/course-videos";
 import Activationpage from "../../pages/auth/inscrire/Activationpage"
+import Boitereception1 from '../../backOffice/pages/messages/BoiteReception/boitereceotioninst'
 // CSS FILES 
 import "./Body.css";
+import Acceptforcan from "../../backOffice/pages/admin/formation/acceptforcan"
 import AddMessage from "../../backOffice/pages/messages/addMessage/AddMessage";
-
-
+import Msgdet from "../../backOffice/pages/messages/messagedetails";
+import Msgdetinst from "../../backOffice/pages/messages/messagedetailsinst";
 function Body() {
-  const auth = useSelector((state) => state.auth); 
-  const { isLogged, isAdmin, isInstr, isSuperAdmin,loginUser } = auth ;
+  const user = useSelector((state) => state.auth.user); 
+  //const {  isAdmin, isInstr, isSuperAdmin,loginUser } = auth ;
 
-  
-
+  //const user =localStorage.getItem('user',JSON.stringify())
+//const isLogged=localStorage.getItem('isLogged')
 
 
   return (
-    <section className={`${isLogged ? "body" : ""} ${isAdmin ? "body" : ""}`}>
+    <section className={`${user!==null ? "body" : ""}`}>
         <>
       <LeftList>  
           <Routes>
@@ -96,11 +101,25 @@ function Body() {
             <Route path="/parametres" element={<Parametres />} />
             <Route path="/mes-achats" element={<Achats />} />
             <Route path="/mes-gains" element={ <Gains /> }/>
-            <Route path="/new-formation/:titre1" element={isLogged ? <NewFormation /> : <NotFound2 />} />
-            <Route path="/maFormation/:titre1" element={<NewFormation />} />
+            
+            <Route path="/maFormation/:id" element={<Formationdet />} />
             <Route path="/apprenants" element={<ApprenantList /> }/>
-           
 
+
+            <Route path="/messages" element={<Messages />} />
+
+            <Route
+              path="/msginst"
+              element={ <Messages1 /> }
+            />
+            <Route
+              path="/messagedet/:id"
+              element={ <Msgdetinst /> }
+            />
+            <Route
+              path="/msgdet/:id"
+              element={ <Msgdet /> }
+            />
             
             <Route
               path="/apprenant/:id"
@@ -119,23 +138,18 @@ function Body() {
             <Route
               path="/ajout-apprenant"
               element={
-              loginUser.role==='admin' ? <ApprenantAdd /> : <NotFound />
+               <ApprenantAdd /> 
               }
             />
-            <Route
-              path="/formations"
-              element={
-                isAdmin || isSuperAdmin ? <FormationList /> : <NotFound />
-              }
-            />
+           
             <Route
               path="/all-formations"
-              element={isAdmin || isSuperAdmin ? <Formations1 /> : <NotFound />}
+              element={ <Formations1 />}
             />
             <Route
               path="/instructeurs"
               element={
-                 <Instructeurs />
+                 <Instructeurs />  
               }
             />
             <Route
@@ -148,11 +162,19 @@ function Body() {
             />
             <Route 
               path="/instructeur/:id" //voir details
-              element={loginUser.role==='apprenant'  ?  <Instructeur /> : <NotFound />}
+              element={   <Instructeur />  }
+            />
+            <Route 
+              path="/formation/:id" //voir details
+              element={   <Formationdet />  }
             />
             <Route
               path="/ajouter-instructeur"
-              element={loginUser.role==='admin'  ? <InstructeurAdd /> : <NotFound />}
+              element={   <InstructeurAdd />  }
+            />
+            <Route
+              path="/formation-attente/:id"
+              element={<Acceptforcan />}//voir details
             />
             <Route
               path="/candidat/:id"
@@ -164,14 +186,13 @@ function Body() {
             />
             <Route
               path="/categories"
-              element={isSuperAdmin ? <Categories /> : <NotFound />}
+              element={ <Categories />}
             />
             <Route
               path="/addcategorie"
-              element={isSuperAdmin ? <AddCategorie /> : <NotFound />}
+              element={ <AddCategorie />}
             />
             <Route path="/mes-favoris" element={<Favoris />} />
-            <Route path="/messages" element={<Messages />} />
             <Route path="/newMessage" element={<AddMessage />} />
             <Route path="/reclamations" element={<Reclamations />} />
            
@@ -182,7 +203,8 @@ function Body() {
              path="/user/acceptInstr/:id"
               element={<CandidatAccepted />}
             />
-            <Route path="/formation/:titre1" element={<AddFormation />} />
+            {/*path="/formation/:titre1"*/}
+            <Route path="/ajouterformation/:id" element={<AddFormation />} />
             <Route path="/categorie/:id" element={<UpdateCategorie />} />
             <Route
               path="/categorie/sousCategories/:id"
@@ -200,11 +222,16 @@ function Body() {
             <Route path="/reclamation/:id" element={<Reclamation />} />
             <Route path="/all-reclamation" element={<Reclamations1 />} />
             <Route path="/reclamationdt/:id" element={<Reclamation1 />} />
-            <Route path="/" element={isLogged ?  <Home /> : <Home1 /> } />
-            <Route path="/DevenirInstructeur" element={isLogged ? <DevenirInstructeur /> : <DevenirInstructeur1 />} />
+            <Route path="/" element={user!==null ? <Home /> : <Home1 /> } />
+
+
+            <Route path="/DevenirInstructeur1" element={user!==null  ? <DevenirInstructeur /> : <DevenirInstructeur1 />} />
+            <Route path="/DevenirInstructeur/:activationCode" element={ <Ajouterfile /> } />
+            
+            
             <Route
               path="/devenir-instructeur"
-              element={isLogged ? <HeaderInstructeur /> : <HeaderInstructeur1 />}
+              element={user!==null  ? <HeaderInstructeur /> : <HeaderInstructeur1 />}
             />
           </Routes>
         
@@ -222,16 +249,16 @@ function Body() {
            
             <Route
               path="/connexion"
-              element={isLogged ?  <NotFound1 />  : <Connexion />}
+              element={user!==null ?  <NotFound1 />  : <Connexion />}
             />
             
             <Route
               path="/inscrire"
-              element={isLogged ? <NotFound1 /> : <Inscrire />}
+              element={user!==null ? <NotFound1 /> : <Inscrire />}
             />
             <Route
               path="/forgot_password"
-              element={isLogged ? <NotFound1 /> : <ForgotPassword />}
+              element={user!==null ? <NotFound1 /> : <ForgotPassword />}
             />
           
             <Route path="/panier" element={<Panier />} />
@@ -259,11 +286,19 @@ function Body() {
 
 export default Body;
 //isAdmin || isSuperAdmin ? <Instructeurs /> : <NotFound />
-
-
+/*<Route
+              path="/all-formations"
+              element={isAdmin || isSuperAdmin ? <Formations1 /> : <NotFound />}
+            />
+<Route path="/new-formation/:titre1" element={ <NewFormation /> } />
 //element={isSuperAdmin ? <AdministrateurList /> : <NotFound />}
 
-
+ <Route
+              path="/formations"
+              element={
+                isAdmin || isSuperAdmin ? <FormationList /> : <NotFound />
+              }
+            />
 
 //              element={isSuperAdmin ? <AddAdmin /> : <NotFound />}
 /*path="/ajouter-instructeur"
@@ -282,7 +317,12 @@ export default Body;
                 isAdmin || isSuperAdmin ? <ApprenantAdd /> : <NotFound />
               }
             />*/
-
+            /*<Route
+            path="/formations"
+            element={
+              <FormationList /> 
+            }
+          />
             /*<Route path="/apprenants" element={isAdmin || isSuperAdmin ? <ApprenantList /> : <NotFound />}/>*/
 
           /*  <Route

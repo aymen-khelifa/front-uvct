@@ -56,7 +56,7 @@ function ScrollTab(props) {
           <Tab label={props.label4} />
           <Tab label={props.label5} />
           <Tab label={props.label6} />
-
+          <Tab label={props.label7} />
 
       </Tabs>
     </AppBar>
@@ -78,6 +78,9 @@ function ScrollTab(props) {
       </TabPanel>
       <TabPanel value={value} index={5}>
         {props.item6}
+      </TabPanel>
+      <TabPanel value={value} index={6}>
+        {props.item7}
       </TabPanel>
       </>
   )

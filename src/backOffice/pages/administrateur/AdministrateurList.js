@@ -1,6 +1,6 @@
 import React,{useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux'
-import {fetchAllAdmin, dispatchGetAllAdmin} from '../../../redux/actions/usersAction'
+import {getAdmin} from '../../../redux/features/usersSlice'
 import Avatar1 from '../../../components/Avatar/Avatar';
 import DayJS from 'react-dayjs';
 import { Nav} from 'react-bootstrap';
@@ -35,15 +35,28 @@ function AdministrateurList() {
     const auth = useSelector(state => state.auth)
     const token = useSelector(state => state.token)
     const {user,isSuperAdmin} = auth
-    const users = useSelector(state => state.users)
+    const users = useSelector((state) => state.user.admins)
+
+    //const users = useSelector(state => state.users)
     const [callback, setCallback] = useState(false)
     const [data, setData] =useState(initialState);
     const [err , setErr] = useState("");
     const [success , setSuccess] = useState("");
+    //const users = useSelector(userSelectors.selectAll)
     //const {err} =data
     //const [administrateur, setAdministrateurs] = useState([]);
     const dispatch = useDispatch()
     const [open2, setOpen2] = React.useState(false);
+
+
+    useEffect(() => {
+        
+           
+      dispatch(getAdmin())
+
+
+      },[ dispatch])
+
     const rowData= users?.map(user => {
       return{
         id:user.uuid,
@@ -110,13 +123,7 @@ function AdministrateurList() {
           }
         }
 
-      useEffect(() => {
-        
-            fetchAllAdmin(token).then(res =>{
-                dispatch(dispatchGetAllAdmin(res))
-            })
-        
-      },[token, dispatch, callback])//isSuperAdmin
+   //isSuperAdmin
      /* useEffect(() => {
         getAdministrateurs();
       }, []);

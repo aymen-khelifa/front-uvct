@@ -53,7 +53,7 @@ function MotdePasse() {
           return setErr("Password did not match.")
       try {
         //user/reset
-          axios.patch('http://localhost:5000/users/changpass', {password},{
+          axios.patch('http://localhost:5000/users/changpass', {password:password},{
             headers: {
               'X-Requested-With': 'XMLHttpRequest',
               'content-type': 'application/json',
@@ -146,7 +146,7 @@ function MotdePasse() {
                 onChange={handleactuelPasswordChange}
               isInvalid={passwordaError}
             
-            /><IconButton className='eye' style={{position:'absolute',marginLeft:'990px',marginTop:'-39px'}} variant="outline-secondary" 
+            /><IconButton className='eye' style={{position:'absolute',marginLeft:'1060px',marginTop:'-39px'}} variant="outline-secondary" 
             onClick={handleClickShowPassword}>
         {showPassword ? <VisibilityOff /> : <Visibility />}
       </IconButton>
@@ -162,7 +162,7 @@ function MotdePasse() {
               onChange={handlePasswordChange}
               isInvalid={passwordError}
             
-            /><IconButton className='eye' style={{position:'absolute',marginLeft:'990px',marginTop:'-39px'}} variant="outline-secondary" 
+            /><IconButton className='eye' style={{position:'absolute',marginLeft:'1060px',marginTop:'-39px'}} variant="outline-secondary" 
             onClick={handleClickShowPassword1}>
         {showPassword1 ? <VisibilityOff /> : <Visibility />}
       </IconButton>
@@ -178,7 +178,7 @@ function MotdePasse() {
               onChange={handlePasswordConfChange}
               isInvalid={confPasswordError}
             
-            /><IconButton className='eye' style={{position:'absolute',marginLeft:'990px',marginTop:'-39px'}} variant="outline-secondary" 
+            /><IconButton className='eye' style={{position:'absolute',marginLeft:'1060px',marginTop:'-39px'}} variant="outline-secondary" 
             onClick={handleClickShowPassword2}>
         {showPassword2 ? <VisibilityOff /> : <Visibility />}
       </IconButton>

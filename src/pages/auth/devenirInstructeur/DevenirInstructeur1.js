@@ -60,7 +60,7 @@ function DevenirInstructeur() {
          //   return setUser({...user, err: "Invalid emails.", success: ''})
 
         try {
-            const response = await axios.post('http://localhost:5000/users/devenirinstructeur', {
+            const response = await axios.post('http://localhost:5000/users/devenirinstructeur1', {
               name: name,
               email:email,
               tel: tel,
@@ -75,7 +75,8 @@ function DevenirInstructeur() {
               }
               
               ); if (response.data.message==='votre demande est bien envoyé')
-              {setSuccess('votre demande est bien envoyé');setTimeout(()=>{navigate("/")},2000);}
+              {setSuccess('votre demande est bien envoyé');
+              setTimeout(()=>{navigate("/devenirinstructeur/"+response.data.userid)},1000);}
               if (response.data.message==='demande deja envoyée')
               {setErr('demande deja envoyée');}
               else{setErr("erreur");}

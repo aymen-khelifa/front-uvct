@@ -8,32 +8,47 @@ import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import axios from 'axios'
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import Table from '../../../components/table/Table';
+import { getmymessage } from '../../../../redux/features/getmymsgSlice';
+import { Link } from "react-router-dom";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
 const { confirm } = Modal;
 
 function BoiteReception() {
   const token = useSelector(state => state.token)
   const [reclamation, setReclamation] = useState([])
-  const reclamations1 = useSelector(state => state.reclamations)
+  const message2 = useSelector(state => state.mymessage.mymessage1)
   const [callback, setCallback] = useState(false)
   const dispatch = useDispatch()
-      
+  const user = useSelector(state => state.auth.user)
+console.log(user)
+console.log(message2)
+
       useEffect(() => {
-        fetchMyReclamations(token).then(res =>{
-                dispatch(dispatchGetMyReclamations(res))
-            })
-      },[token,dispatch, callback])
-      
+        
+                dispatch(getmymessage(user.UUid))
+            
+      },[dispatch])
+      const rowData= message2?.map(message => {
+        return{
+            id:message.uuid,
+            objectif:message.objectif,
+            message:message.message,
+            response:message.response,
+            date:message.createdAt,
+            destinataire:message.destinataire,
+        }
+    })
 
      const handleDelete = async (id) => {
       try {
-          if(reclamation._id !== id){
+          
                   await axios.delete(`/deleteReclamation/${id}`, {
                     headers: {Authorization: token}
                 })
                   
                   setCallback(!callback)
-          }
+          
       } catch (err) {
           setReclamation({...reclamation, err: err.response.data.msg , success: ''})
       }
@@ -41,13 +56,23 @@ function BoiteReception() {
 
   const columns = [
     {
-      field: 'cause',
-      headerName: 'Envoyé par',
+      field: 'objectif',
+      headerName: 'Objectif',
       flex:1,
     },
     {
       field: 'message',
       headerName: 'Messages',
+      flex:2,
+    },
+    {
+      field: 'response',
+      headerName: 'Response',
+      flex:2,
+    },
+    {
+      field: 'destinataire',
+      headerName: 'destinataire',
       flex:2,
     },
     {
@@ -67,7 +92,7 @@ function BoiteReception() {
       renderCell: (params) =>{
         function showDeleteConfirm() {
           confirm({
-            title: 'Êtes-vous sûr de vouloir supprimer cette réclamation?',
+            title: 'Êtes-vous sûr de vouloir supprimer ce message?',
             icon: <ExclamationCircleOutlined />,
             okText: 'Supprimer',
             okType: 'danger',
@@ -82,9 +107,10 @@ function BoiteReception() {
         }
         return(
           <>
-           <a href={`/reclamation/${params.row.id}`}>
+           <Link to={`/msgdet/${params.row.id}`}>
            <VisibilityIcon className='icon-action'/>
-                </a>
+                </Link>
+              
            <DeleteOutlineIcon  onClick={showDeleteConfirm} className="icon-delete"/>
           </>
         )
@@ -93,14 +119,7 @@ function BoiteReception() {
     },
     
   ];
-  const rowData= reclamations1?.map(reclamation => {
-    return{
-        id:reclamation?._id,
-        cause:reclamation?.cause,
-        message:reclamation?.message,
-        date:reclamation?.createdAt,
-    }
-})
+
 
   return (
     <div style={{ height: 550, width: '100%' , backgroundColor:'white'}}>

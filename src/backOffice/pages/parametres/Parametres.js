@@ -4,6 +4,7 @@ import MotdePasse from './MotDePasse/MotdePasse'
 import Paiement from './Paiement/Paiement'
 import Profile from './profile/Profile'
 import './Parametres.css'
+import EditUser from '../user/EditUser'
 
 function Parametres() {
   return (
@@ -13,7 +14,8 @@ function Parametres() {
           <ScrollTab label1="Paiement" label2="Mot de passe" label3="profile"
               item1={<Paiement />}
               item2={<MotdePasse />}
-              item3={<Profile />}
+              //item3={<Profile />}
+              item3={<EditUser />}
           />
       </div>
     </div>

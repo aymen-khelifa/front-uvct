@@ -42,49 +42,45 @@ function DevenirInstructeur() {
   const [specialityError, setspecialityError] = useState(false);
 
   
-    // const [file, setFile] = useState(false);
+    
 
-
-  /*  const handleChangeInput = e => {
-        const {name, value} = e.target
-        setUser({...user, [name]:value, err: '', success: ''})
-    }*/
-
-    const handleSubmit = async e => {
+    
+    const handleSubmit = async e => {console.log('aa');
         e.preventDefault() ; 
       
-        //if(isEmpty(name) || isEmpty(speciality) || isEmpty(tel) || isEmpty(email) || isEmpty(message))
-         //       return setUser({...user, err: "Merci de remplir tous les champs.", success: ''})
+      
 
-        //if(!isEmail(email))
-         //   return setUser({...user, err: "Invalid emails.", success: ''})
-
-        try {
-            const response = await axios.post('http://localhost:5000/users/devenirinstructeur', {
-              name: name,
+        try {console.log('bbb');
+            const response = await axios.post('http://localhost:5000/users/devenirinstructeur1',
+              
+             { name: name,
               email:email,
               tel: tel,
               message:message,
               speciality:speciality,
-              
+
             },{
-                 headers: {'X-Requested-With': 'XMLHttpRequest', 
-                 "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
-                 "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
-                "withCredentials": true 
+              headers: {'X-Requested-With': 'XMLHttpRequest', 
+              "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
+              "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
+             "withCredentials": true 
               }
               
-              ); if (response.data.message==='votre demande est bien envoyé')
-              {setSuccess('votre demande est bien envoyé');setTimeout(()=>{navigate("/")},2000);}
+              );console.log('ccc');console.log(response.data.message); if (response.data.message==='votre demande est bien envoyé')
+              {setSuccess('votre demande est bien envoyé');
+              setTimeout(()=>{navigate("/devenirinstructeur/"+response.data.userid)},1000);}
+            
               if (response.data.message==='demande deja envoyée')
               {setErr('demande deja envoyée');}
+              if (response.data.message==='merci d\'utiliser un autre email pour devenir instructeur')
+              {setErr('merci d\'utiliser un autre email pour devenir instructeur');}
               else{setErr("erreur");}
 
               
             //navigate("/")
 
         } catch (err) {
-          setErr('erreur');setTimeout(()=>{navigate("/")},2000);
+          setErr('erreur');//setTimeout(()=>{navigate("/")},2000);
         }
     }
     const isFormValid = () => {
@@ -117,9 +113,7 @@ function DevenirInstructeur() {
       setTel(value);
       setTelError(!/^\d{8}$/.test(value));
     };
-    const handleFileChange=()=>{
-
-    };
+   
     const handleSpecialityChange = (event) => {
       const { value } = event.target;
       setspeciality(value);
@@ -172,18 +166,7 @@ function DevenirInstructeur() {
           saisir un numero de  telephone valide
                </Form.Control.Feedback>
       </Form.Group>
-      <Form.Group  controlId="formBasicEmail" >
-      <Form.Label className='labelForm'>Votre CV</Form.Label>
-        <Form.Control type="file"
-        onChange={handleFileChange}  accept=".pdf"
-                    
-                    //isInvalid={cvError}
-         />
-          <Form.Control.Feedback type="invalid">
-          fichier is obligatoire
-               </Form.Control.Feedback>
-        
-      </Form.Group>
+      
       <Form.Group className="mb-3" >
               <Form.Label className='labelForm'>Spécialité</Form.Label>
               <Form.Select aria-label="Default select example"

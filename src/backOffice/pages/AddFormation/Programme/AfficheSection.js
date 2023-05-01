@@ -15,20 +15,20 @@ function AfficheSection() {
     const [callback2, setCallback2] = useState(false)
     const dispatch = useDispatch()
     const dispatch2 = useDispatch()
-    const {titre1} = useParams();
-    const id = formations._id
+    //const {titre1} = useParams();
+    const ref = formations._id
 
         useEffect(() => {
-        fetchFormation(token,titre1).then(res =>{
+        fetchFormation(token,ref).then(res =>{
                 dispatch(dispatchGetFormation(res))
             })
-        },[token,titre1, dispatch, callback])
+        },[token,ref, dispatch, callback])
         
         useEffect(() => {
-            fetchSections(token,id).then(res =>{
+            fetchSections(token).then(res =>{
                 dispatch2(dispatchSections(res))
             })
-        },[token,id ,dispatch2, callback2])
+        },[token,ref ,dispatch2, callback2])
        
         
         return(
