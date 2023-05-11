@@ -175,6 +175,9 @@ console.log(user.url1)*/
       <div className='content-user'>
        <h3 className='title-photo'>Photo de profile</h3>
        <Form className='form-profil'>
+
+
+       
        <Form.Group className="mb-3">
          <div className='profile-pic-div'>
          <img src={user.url1} alt="image" className="avatar-img" />
@@ -193,6 +196,13 @@ console.log(user.url1)*/
               style={{display:"none"}}
           />
           </Form.Group>
+
+
+
+
+
+
+
           <Form.Group className="mb-3" >
             <Form.Label className="label">Nom complet</Form.Label>
               <Form.Control type="text"  
