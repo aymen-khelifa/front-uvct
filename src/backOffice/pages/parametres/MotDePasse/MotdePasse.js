@@ -19,9 +19,9 @@ const initialState = {
   success: ''
 }
 function MotdePasse() {
-    const auth = useSelector(state => state.auth)
+    const user = useSelector(state => state.auth.user)
     const token = useSelector(state => state.token)
-    const {user} = auth
+    //const {user} = auth
     const [data, setData] = useState(initialState)
    // const { password, cf_password, err, success} = data
     const [callback] = useState(false)
@@ -53,7 +53,7 @@ function MotdePasse() {
           return setErr("Password did not match.")
       try {
         //user/reset
-          axios.patch('http://localhost:5000/users/changpass', {password:password},{
+          axios.patch(`http://localhost:5000/users/changpass/${user.UUid}`, {password:password},{
             headers: {
               'X-Requested-With': 'XMLHttpRequest',
               'content-type': 'application/json',
@@ -95,18 +95,10 @@ function MotdePasse() {
   }
   const isFormValid = () => {
     // add validation rules here
-    return passworda !== ''  && !passwordaError && password !== ''  && !passwordError && confpassword !== ''  && !confPasswordError ;
+    return password !== ''  && !passwordError && confpassword !== ''  && !confPasswordError ;
   };
-  const [email, setEmail] = useState("");
- // const [password, setPassword] = useState("");
-  const [emailError, setEmailError] = useState(false);
- // const [passwordError, setPasswordError] = useState(false);
-
-  const handleactuelPasswordChange = (event) => {
-    const { value } = event.target;
-    setPassworda(value);
-    setPasswordaError(value.length < 8);
-  };
+ 
+ 
   const handlePasswordChange = (event) => {
     const { value } = event.target;
     setPassword(value);
@@ -117,43 +109,12 @@ function MotdePasse() {
     setConfPassword(value);
     setConfPasswordError(value.length < 8);
   };
-  const handleEmailChange = (event) => {
-    const { value } = event.target;
-    setEmail(value);
-    setEmailError(value === "" || !/\S+@\S+\.\S+/.test(value));
-  };
+ 
   return (
     <div className='motDePasse'>
       <Form>
-      <Form.Group controlId="formBasicEmail" className="mb-3">
-            <Form.Label className="label">Adresse e-mail</Form.Label>
-            <Form.Control
-              type="email"
-              placeholder="nom@gmail.com"
-              name="email"
-              required
-              onChange={handleEmailChange}
-              isInvalid={emailError}
-            />
-            <Form.Control.Feedback type="invalid">
-              saisir un email addresse valide
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group className="mb-3" >
-            <Form.Label className="label">Mot de passe actuel</Form.Label>
-              <Form.Control type={showPassword ? 'text' : 'password'} placeholder="Entrer le mot de passe actuel" 
-                name="password"
-                onChange={handleactuelPasswordChange}
-              isInvalid={passwordaError}
-            
-            /><IconButton className='eye' style={{position:'absolute',marginLeft:'1060px',marginTop:'-39px'}} variant="outline-secondary" 
-            onClick={handleClickShowPassword}>
-        {showPassword ? <VisibilityOff /> : <Visibility />}
-      </IconButton>
-             <Form.Control.Feedback type="invalid">
-             mot de passe contient 8 caracteres
-  </Form.Control.Feedback> 
-        </Form.Group>
+     
+         
         <Form.Group className="mb-3" >
           <Form.Label className="label">Nouveau mot de passe</Form.Label>
             <Form.Control type={showPassword1 ? 'text' : 'password'} placeholder="Entrer le nouveau mot de passe" 
@@ -187,7 +148,7 @@ function MotdePasse() {
   </Form.Control.Feedback>
         </Form.Group>
         <div className="content-button">
-        <Button className='btn-confirme' disabled={!isFormValid()} onClick={handleUpdate}>Changer le mot de passe</Button>
+        <Button className='btn-confirme' disabled={!isFormValid()} onClick={updatePassword}>Changer le mot de passe</Button>
         </div>
       </Form>
       <Snackbar autoHideDuration={3000} open={ err === "" ? false : true } onClose={()=>{ setErr("") }}  >

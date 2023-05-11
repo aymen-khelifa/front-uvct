@@ -74,7 +74,7 @@ function InstructeurList() {
     const rowData=users?.map(user => {
       return{
           id:user.uuid,
-          avatar:user.avatar,
+          avatar:user.url1,
           name:user.name,
           email:user.email,
           specialite:user.speciality,
@@ -175,7 +175,7 @@ function InstructeurList() {
         {
           field: 'avatar',
           headerName: 'Nom',
-          flex:1.7,
+          flex:2,
           renderCell(params){
             return(
               <div className='userList'>
@@ -204,7 +204,7 @@ function InstructeurList() {
         {
           field: 'date',
           headerName: 'Date création',
-          flex:2,
+          flex:1.6,
           renderCell(params){
             return(
               <DayJS format="DD-MM-YYYY / HH:mm:ss">{params.row.date}</DayJS>

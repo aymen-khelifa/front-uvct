@@ -4,7 +4,7 @@ import axios from "axios";
 
 const initialState = {
     loading: false,
-    mymessageinst1:{},
+    mymessageinstr1:{},
     error: ''
 }
 export const getmymessageinst  = createAsyncThunk("messages/getmymessageinst ", async (id) => {console.log('aa')
@@ -27,7 +27,7 @@ const mymessageinstSlice = createSlice({
        
         [getmymessageinst.fulfilled]: (state, action) => {
             state.loading = false
-            state.mymessageinst1 = action.payload
+            state.mymessageinstr1 = action.payload
             state.error = ''
         },
         

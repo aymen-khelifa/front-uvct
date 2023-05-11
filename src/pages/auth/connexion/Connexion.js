@@ -87,8 +87,8 @@ if (message==='verifiez votre compte')
           setTimeout(()=>{localStorage.setItem('token', JSON.stringify(res.data.accessToken));},500);
           setTimeout(()=>{navigate("/profile");},500);}
           
-          if (res.data.message==='vous n\'étes pas encore accepté')
-          {setErr('vous n\'étes pas encore accepté');}
+          if (res.data.message==='compte non accepté')
+          {setErr('compte non accepté');}
           if (res.data.message==='verifiez votre compte')
           {setErr('verifiez votre compte');}
           if (res.data.message==='User does not exist')

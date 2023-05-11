@@ -144,9 +144,10 @@ const FormaAddFormateur = () => {
   const [preview, setPreview] = useState(null);
   const [success, setSuccess] = useState(false);
   const [err, setErr] = useState(false);
+  const[selectedFile,setImage]=useState("");
 
 
-  const handleFileChange = (e) => {
+ /* const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     setCv(selectedFile);
 
@@ -155,16 +156,21 @@ const FormaAddFormateur = () => {
       setPreview(reader.result);
     };
     reader.readAsDataURL(selectedFile);
-  };
+  };*/
 
-  const handleSubmit = async (e) => {
+ /* const handleSubmit = async (e) => {
     e.preventDefault();
-   
+    const selectedFile= e.target.files
+    setImage(selectedFile);
+    setPreview(URL.createObjectURL(selectedFile));
+    let formData =  new FormData()
+    formData.append('file', selectedFile)
+
 
     try {console.log('aaa')
       const response=await axios.patch(`http://localhost:5000/users/devenirinstructeur/${activationCode}`, {
        
-        file:cv,
+      formData,
         
       },{
            headers: {'X-Requested-With': 'XMLHttpRequest', 
@@ -173,7 +179,8 @@ const FormaAddFormateur = () => {
           "withCredentials": true 
         })
         if (response.data.message==='cv ajouté')
-        {setSuccess('cv ajouté...attendez notre reponse sur le boite Mail'); setTimeout(()=>{navigate("/")},1000);}
+        {setSuccess('cv ajouté...attendez notre reponse sur le boite Mail'); //setTimeout(()=>{navigate("/")},1000);
+      }
       
       if (response.data.message==='No File Uploaded')
         {setErr('cv est obligatoire');}
@@ -181,13 +188,45 @@ const FormaAddFormateur = () => {
         {setErr('type de fichier invalide(pdf)');}
        
         else{setErr("erreur");}
-
+        //SkeletonImage(res.data.url)
       //setTimeout(() => navigate("/formateurs"), 2000);
     } catch (error) {
       setErr(true);
       console.error(error);
     }
-  };
+  };*/
+  const changeAffiche = async(e) => {
+    e.preventDefault()
+    try {
+      const image= e.target.files[0]
+      setImage(image);
+      setPreview(URL.createObjectURL(image));
+
+     
+      let formData =  new FormData()
+      formData.append('file', image)
+
+     
+        const res = await axios.patch(`http://localhost:5000/users/devenirinstructeur/${activationCode}`, formData, {
+          headers: {'X-Requested-With': 'XMLHttpRequest', 
+         "content-type":"multipart/form-data", "Access-Control-Allow-Origin": "http://localhost:5000", 
+         "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
+        "withCredentials": true ,// Authorization: token
+     });
+     setSuccess('cv ajoutée!');
+
+     setTimeout(()=>{navigate("/")},2000)
+    // SkeletonImage(res.data.url)
+     //window.location.reload()
+     
+
+       
+        
+    } catch (err) {
+        //setAffiche({...data, err: err.response.data.msg , success: ''})
+      //  setOpen2(true);
+    }
+  }
 
   return (
     <div className={'devenir-instructeur-container flex-row '} style={{width:'90%',marginTop:'4%',marginLeft:'50px'}}>
@@ -200,16 +239,19 @@ const FormaAddFormateur = () => {
 
         <div>
         <label htmlFor="cv">CV :</label>
-        <input type="file" id="cv" name="cv" onChange={handleFileChange} />
+        <input type="file" id="cv" name="cv" onChange={changeAffiche} 
+
+        />
       </div>
 
 
 
-            <div className="d-grid gap-2" style={{marginTop:'20px'}}>
-               <Button className='btn-devInst' type="submit" size="lg"  onSubmit={handleSubmit}>
+          {/*  <div className="d-grid gap-2" style={{marginTop:'20px'}}>
+               <Button className='btn-devInst' type="submit" size="lg"  //onChange={changeAffiche}
+               >
                Envoyer
               </Button>
-                </div>
+                </div>*/}
              </Form>
     
       

@@ -14,11 +14,14 @@ import './Apprenants.css'
 import Table from '../../components/table/Table';
 import {Snackbar,Alert} from "@mui/material";
 import { Link } from 'react-router-dom';
+import {  useNavigate } from "react-router-dom";
 
 
 const { confirm } = Modal;
 
 function ApprenantList() {
+  const navigate = useNavigate();
+
     const auth = useSelector(state => state.auth)
     const token = useSelector(state => state.token)
     const {user, isAdmin, isSuperAdmin} = auth
@@ -31,12 +34,12 @@ function ApprenantList() {
     //const [users,setUsers] = useState([]) ; 
     const rowData= users?.map(user => {
       return{
-          id:user.uuid,
-          name:user.name,
-          email:user.email,
-          avatar:user.avatar,
-          date:user.createdAt,
-          tele:user.tel,
+          id:user?.uuid,
+          name:user?.name,
+          email:user?.email,
+          avatar:user?.url1,
+          date:user?.createdAt,
+          tele:user?.tel,
       }
      })
 
@@ -81,7 +84,7 @@ function ApprenantList() {
                       }).then((response) => {
                         const message = response.data.message;console.log(message)
                         if (message==='apprenant supprimé !')
-                              {setSuccess('apprenant supprimé !');}
+                              {setSuccess('apprenant supprimé !');window.location.reload()}
                               if (message==='suppression echouée')
                               {setErr('suppression echouée');}
                               else{setErr("erreur");}})

@@ -11,7 +11,7 @@ import {Avatar, Typography} from 'antd';
 import './components/instructeurCard.scss'
 import {Link} from "react-router-dom";
 import {MenuBookOutlined} from "@mui/icons-material";
-export const Instructeurs1 = () => {
+  const Instructeurs1a = () => {
 
     const users = useSelector(state => state.user.instructeurs)
     const dispatch = useDispatch()
@@ -27,9 +27,9 @@ console.log(users)
 
 
  return(
-     <div className={'instructors-container'} >
+     <div className={'instructors-container'} style={{width: '120%',marginTop: '-3.5%',backgroundColor:'#FFFFFF'}}>
          <QuickNavigation/>
-         <div className={'filter-container'} style={{marginLeft:'-4%'}} >
+         <div className={'filter-container'} style={{marginLeft: '10%'}} >
              <div className={'search-input-container'}>
                  <input className={"search-input"} placeholder="Rechercher des instructeurs" />
                  <div className={'search-input-icon'}>
@@ -52,7 +52,7 @@ console.log(users)
 
 
          </div>
-         <div className={'all-instructors-container'} style={{marginLeft:'-4%'}} >
+         <div className={'all-instructors-container'} style={{marginLeft:'10%'}} >
              {
                 users.map((user)=> {
                      return(
@@ -75,6 +75,9 @@ console.log(users)
      </div>
  )
 }
+
+export default Instructeurs1a
+
 
 
 

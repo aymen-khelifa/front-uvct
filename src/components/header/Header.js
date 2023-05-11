@@ -42,7 +42,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { logout } from '../../redux/features/authSlice'
 import { login } from "../../redux/features/authSlice";
 
-function Header() {
+function Header(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [anchorEl3, setAnchorEl3] = React.useState(null);
   const open3 = Boolean(anchorEl3);
@@ -133,7 +133,7 @@ function Header() {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "http://localhost:5000/users/Login",
+        "http://localhost:5000/users/login",
         {
           email: email,
           password: password,
@@ -144,21 +144,22 @@ function Header() {
             "Access-Control-Allow-Origin": "http://localhost:5000","Access-control-request-methods":
               "POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS",
           },withCredentials: true,}
-      );
+      );console.log(res.data.message)
       if (res.data.message==='login avec success')
       {setSuccess('login avec success');setTimeout(()=>{dispatch(login(res.data))},500);
       setTimeout(()=>{localStorage.setItem('token', JSON.stringify(res.data.accessToken));},500);
-      setTimeout(()=>{navigate("/profile");},500);}
-      
+      setTimeout(()=>{navigate("/profile");},500);};
+      if (res.data.message==='compte non accepté')
+          {setTimeout(()=>{setErr('compte non accepté')},1500);}
       if (res.data.message==='verifiez votre compte')
       {setErr('verifiez votre compte');}
       if (res.data.message==='User does not exist')
       {setErr('User does not exist');}
       if (res.data.message==='mot de passe incorrect')
       {setErr('mot de passe incorrect');}
-      else{setErr("erreur");}
+      //else{setErr("erreur111");}
     } catch (err) {
-      console.log("erreur"); 
+      //console.log("erreur11"); 
      
     }
   };
@@ -263,6 +264,18 @@ function Header() {
             Categories
           </a>
 
+         {/* { props?.data.map((item)=>{
+          return(
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <li>
+              <a class="dropdown-item" href={`/${item.categorie}`}>
+                {item.categorie}
+              </a>
+            </li>
+            </ul>
+          )
+         })} */}
+
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
             <li>
               <a class="dropdown-item" href="/devloppement-web">
@@ -354,10 +367,10 @@ function Header() {
               </div>
             )}
             <NotificationsNoneIcon className="header-icon" />
-            <Box sx={{ flexGrow: 0 }} style={{ marginRight: "40px" }}>
+            <Box sx={{ flexGrow: 0 }} style={{ marginRight: "80px" }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src={user.avatar} />{" "}
+                  <Avatar alt="Remy Sharp" src={user?.url1} />{" "}
                 </IconButton>
               </Tooltip>
               <Menu
@@ -370,9 +383,9 @@ function Header() {
                 transformOrigin={{ vertical: "top", horizontal: "right" }}
                 open={Boolean(anchorElUser)}
               >
-                <MenuItem>
+                <MenuItem style={{width:'140px'}}>
                   <a onClick={handleLogout} textAlign="center">
-                    Se deconnecter
+                     Se déconnecter
                   </a>
                 </MenuItem>
               </Menu>
@@ -749,7 +762,7 @@ function Header() {
                     </div>
                   </Form>
                   <Snackbar
-                    autoHideDuration={2500}
+                    autoHideDuration={1500}
                     open={err === "" ? false : true}
                     onClose={() => {
                       setErr("");
@@ -766,7 +779,7 @@ function Header() {
                     </Alert>
                   </Snackbar>
                   <Snackbar
-                    autoHideDuration={2500}
+                    autoHideDuration={1500}
                     open={success === "" ? false : true}
                     onClose={() => {
                       setSuccess("");

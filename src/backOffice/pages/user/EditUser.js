@@ -10,11 +10,13 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { Snackbar, Alert} from "@mui/material";
 import { getinstructeurbyId } from '../../../redux/features/usersSlice'
-
+import SkeletonImage from 'antd/lib/skeleton/Image'
+import image11 from './322181069_1143812432987887_1096907598338066296_n.jpg'
         const initialState = {
             name: '',
             phone:'',
             email:'',
+            image:'',
             speciality:'',
             password:'',
             cf_password: '',
@@ -22,9 +24,10 @@ import { getinstructeurbyId } from '../../../redux/features/usersSlice'
             success: ''
         }
 
+
 function EditUser() {
     const token = useSelector(state => state.token)
-    const instructeur = useSelector(state => state.auth.user)
+    const user = useSelector(state => state.auth.user)
     //const {instructeur} = auth
     const [data, setData] = useState(initialState)
     //const {name,phone,email,speciality,password, cf_password, err, success} = data
@@ -38,6 +41,8 @@ function EditUser() {
     const [email, setEmail] = useState("");
     const [emailError, setEmailError] = useState(false);
     const [speciality, setspeciality] = useState("");
+    const[image,setImage]=useState("");
+    const[preview,setPreview]=useState("");
     const [specialityError, setspecialityError] = useState(false);
     const [tel, setTel] = useState("");
     const [telError, setTelError] = useState(false);
@@ -48,49 +53,55 @@ function EditUser() {
     const [passwordError, setPasswordError] = useState(false);
 
 
-        useEffect(() => {
+        /*useEffect(() => {
          
                 dispatch(getinstructeurbyId(id))
             
-        },[token,id, dispatch, callback])
-        console.log(instructeur.UUid)
+        },[token,id, dispatch, callback])*/
+        
         
 
         const changeAvatar = async(e) => {
-            e.preventDefault()
-            try {
-                const file = e.target.files[0]
+          e.preventDefault()
+          try {
+              const image= e.target.files[0]
+              setImage(image);
+              setPreview(URL.createObjectURL(image));
 
-                if(!file) return setData({...data, err: "Aucun fichier n'a été téléchargé." , success: 'Photo téléchargée'})
+              if(!image) return setData({...data, err: "Aucun fichier n'a été téléchargé." , success: 'Photo téléchargée'})
 
-                if(file.size > 1024 * 1024)
-                    return setData({...data, err: "Taille trop grande." , success: 'Photo téléchargée'})
+              if(image.size > 1024 * 1024)
+                  return setData({...data, err: "Taille trop grande." , success: 'Photo téléchargée'})
 
-                if(file.type !== 'image/jpeg' && file.type !== 'image/png')
-                    return setData({...data, err: "Le format de fichier est incorrect." , success: 'Photo téléchargée'})
+              if(image.type !== 'image/jpeg' && image.type !== 'image/png')
+                  return setData({...data, err: "Le format de fichier est incorrect." , success: 'Photo téléchargée'})
 
-                let formData =  new FormData()
-                formData.append('file', file)
+              let formData =  new FormData()
+              formData.append('file', image)
 
-                setLoading(true)
-                const res = await axios.post('/api/upload_avatar', formData, {
-                    headers: {'content-type': 'multipart/form-data', Authorization: token}
-                })
+              setLoading(true)
+              const res = await axios.patch(`http://localhost:5000/users/ajouterimage/${user.UUid}`, formData, {
+                   headers: {'X-Requested-With': 'XMLHttpRequest', 
+                  "content-type":"multipart/form-data", "Access-Control-Allow-Origin": "http://localhost:5000", 
+                  "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
+                 "withCredentials": true ,// Authorization: token
+              });
+              setSuccess('image ajoutée!');
 
-                setLoading(false)
-                setAvatar(res.data.url)
-                
-                
-            } catch (err) {
-                setData({...data, err: err.response.data.msg , success: ''})
-               
+              setLoading(false)
+              SkeletonImage(res.data.url)
+              
+              
+          } catch (err) {
+            setErr('Une erreur est survenue ');
+             
 
-            }
-        }
-   const uuid=instructeur.UUid
+          }
+      }
+  
         const updateInfor = () => {
-            try {
-                axios.patch(`http://localhost:5000/users/editprofileinst/${instructeur.UUid}`, {
+           
+                const res =axios.patch(`http://localhost:5000/users/editprofileinst/${user.UUid}`, {
                     name: name ,
                     //avatar: avatar ,
                     tel: tel ,
@@ -103,15 +114,16 @@ function EditUser() {
                 "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
                "withCredentials": true 
                     //headers: {Authorization: token}
-                })
-
-                setData({...data, err: '' , success: "Profile modifié!"})
+                });
+                console.log(res.data.message)
+                if (res.data.message==='profile modifié !')
+                {setSuccess('profile modifié !');}
+                if (res.data.message==='Une erreur est survenue ')
+                {setErr('Une erreur est survenue ');}
+                else{setErr("erreur");}
                 
                 
-            } catch (err) {
-                setData({...data, err: err.response.data.msg , success: ''})
-               
-            }
+          
         }
 
  
@@ -137,7 +149,7 @@ function EditUser() {
   const handleSpecialityChange = (event) => {
     const { value } = event.target;
     setspeciality(value);
-    setspecialityError(value.trim() === '' ? 'La spécialité est requise.' : '');
+   
   };
   const handlePasswordChange = (event) => {
     const { value } = event.target;
@@ -146,18 +158,28 @@ function EditUser() {
   };
   const isFormValid = () => {
     // add validation rules here
-    return  email !== ''   && name !== '' && tel !== '' && !emailError  && !nameError && !telError  && !specialityError ;
+    return  email !== ''   && name !== '' && tel !== '' && !emailError  && !nameError && !telError  ;
   };
-  
+  const [imagePreviewUrl, setImagePreviewUrl] = useState("");
+/*let reader = new FileReader()
 
-
+reader.onloadend = () => {
+      setImagePreviewUrl(user.url1);
+    }
+console.log(user.url1)*/
+/*;
+    
+    reader.readAsDataURL(user.url1);*/
+   // setImagePreviewUrl(reader.result())
   return (
       <div className='content-user'>
        <h3 className='title-photo'>Photo de profile</h3>
        <Form className='form-profil'>
        <Form.Group className="mb-3">
          <div className='profile-pic-div'>
-         <img src={ instructeur.avatar} alt="" className="avatar-img" />
+         <img src={user.url1} alt="image" className="avatar-img" />
+        
+         {/*imagePreviewUrl && <img src={imagePreviewUrl} alt="Preview" className="avatar-img" />*/ }
            <div className="uploadBtn">
            <Form.Label htmlFor="file"> 
             <PhotoCameraIcon className='icon-camera'/>
@@ -166,7 +188,7 @@ function EditUser() {
          </div>
          <Form.Control type="file"  id="file"
               name="avatar"
-              //defaultValue={instructeur.avatar}
+              defaultValue={image}
               onChange={changeAvatar}
               style={{display:"none"}}
           />
@@ -174,7 +196,7 @@ function EditUser() {
           <Form.Group className="mb-3" >
             <Form.Label className="label">Nom complet</Form.Label>
               <Form.Control type="text"  
-                name="name" 
+                name="name" placeholder={user?.name}
                 required 
                 //Value={instructeur.name}
                 onChange={handleNameChange}
@@ -187,7 +209,7 @@ function EditUser() {
           <Form.Group className="mb-3" >
             <Form.Label className="label">Adresse e-mail</Form.Label>
               <Form.Control type="email" 
-                name="email" 
+                name="email" placeholder={user?.email}
               //Value={instructeur.email}
                onChange={handleEmailChange}
             isInvalid={emailError} 
@@ -199,7 +221,7 @@ function EditUser() {
           <Form.Group className="mb-3" >
             <Form.Label className="label">Numéro de téléphone</Form.Label>
               <Form.Control type="text"  
-                name="phone" 
+                name="phone" placeholder={user?.tel}
               //Value={instructeur.tel}
               onChange={handleTelChange}
                     
@@ -209,15 +231,16 @@ function EditUser() {
           saisir un numero de  telephone valide
                </Form.Control.Feedback>
           </Form.Group>
-          <Form.Group className="mb-3" >
+            
+                 <Form.Group className="mb-3" >
             <Form.Label className="label">Spécialité</Form.Label>
             <Form.Select
               name="speciality"
               required 
               onChange={handleSpecialityChange}
-                isInvalid={specialityError}>
+                >
              
-              <option Value={instructeur.speciality}>{instructeur.speciality}</option>
+              <option Value={user.speciality}>choisir votre specialité</option>
               <option value="développement web">développement web</option>
               <option value="développement mobile">développement mobile</option>
               <option value="développement personnel">développement personnel</option>
@@ -233,6 +256,9 @@ function EditUser() {
               La spécialité est requise.
                </Form.Control.Feedback>
           </Form.Group>
+             
+           
+       
           
          
           <div className="content-btn">

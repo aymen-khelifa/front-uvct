@@ -5,6 +5,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';import Box from '@mui/material/Box';
+import {Snackbar,Alert} from "@mui/material";
 
 import IconButton from '@material-ui/core/IconButton';
 import {getsectionbyid} from '../../../../../redux/features/sectionbyid';import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
@@ -41,8 +42,7 @@ const initialState = {
 }
 
 export default function Curriculum() {
-  const [err, setErr] = useState("");
-  const [success, setSuccess] = useState("");
+  
   const [show, setShow] = useState(true);
   const [show1, setShow1] = useState(false);
   const [show2, setShow2] = useState(true);
@@ -55,14 +55,15 @@ export default function Curriculum() {
   const token = useSelector(state => state.token)
   const formations = useSelector(state => state.formations)
   const sections = useSelector(state => state.sectionbyid.sections)
-  const sessions = useSelector(state => state.session.sessions)
+  //const sessions = useSelector(state => state.session.sessions)
 
   const [callback, setCallback] = useState(false)
   const [callback2, setCallback2] = useState(false)
   const [Title, setTitle] = useState("");const [Title1, setTitle1] = useState("");
   const [texte, setTexte] = useState("");
   const [titlesec, setTitlesec] = useState("");
-
+  const [err , setErr] = useState("");
+  const [success , setSuccess] = useState("");
   const [titleses, setTitleses] = useState("");
   const [objectif, setObjectif] = useState("");
   const [titleError, setTitlelError] = useState(false);
@@ -84,6 +85,7 @@ export default function Curriculum() {
                   dispatch(getsectionbyid(id))
               
           },[dispatch])
+console.log(sections)
          
        /*   useEffect(() => {
           
@@ -125,7 +127,7 @@ export default function Curriculum() {
        // setTitlelError(value.length < 8);
       };
       
-      const handleSubmit = async (e,id) => {
+      const handleSubmit = async (e,) => {
         e.preventDefault()
         try {
           
@@ -136,19 +138,19 @@ export default function Curriculum() {
                "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
                "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
               "withCredentials": true 
-          })
-          if (res.data.message==='section  créé avec succès')
-          {setSuccess('section  créé avec succès')}
+          });
+          if (res.data.message==='section créé avec succès')
+          {setSuccess('section créé avec succès')}
           
           if (res.data.message===' existe déjà')
           {setErr(' existe déjà');}
           if (res.data.message==='Une erreur est survenue lors de la création de section')
           {setErr('Une erreur est survenue lors de la création de section');}
           
-          else{setErr("Une erreur est survenue lors de la création de section");}
+          else{setErr("erreur");}
 
        } catch (err) { 
-        setErr("Une erreur est survenue lors de la création de section");
+        setErr("erreur");
         }
       }
       const handleSubmit1 = async (e) => {
@@ -373,31 +375,26 @@ const handleUpdatesec = async (title) => {
        (<>
         <Button className='btn-event'  onClick={() => setShow(!show)}>Nouveau chapitre</Button>
       {
-          sections.map(section => 
+          sections?.map(section => 
           (
            
 
           <div className='content-chapitre'>
               <Collapse  onChange={callback1}> 
-                <Panel header={section.title}  extra={[genExtra(section.title)
+                <Panel header={section?.title}  extra={[genExtra(section?.title)
                 //,genExtra1(section.title)
                 ]}>
                   <List>
-                    
-                    {sessions.map(session => //titlede session
+                    {/*section?.sessions?.map(session => */}
+                    {section?.sessions?.map(session => //titlede session
                         (<div className='content-chapitre'>
               <Collapse  onChange={callback1}>
-                <Panel header={session.title //titlede session
-                }  extra={[genExtra2(session.title) //,genExtra3(session.title)
+              {/*console.log('aaa');console.log('aaa');*/}
+                <Panel header={session?.title }  extra={[genExtra2(session?.title) //,genExtra3(session.title)
                 ]}>
                   <List>
  
-  { 
-                      sessions.map(session => 
-                        (session.texte //divn7otfiha les detailsfilew videow texte w questionnaire ba33ed(seesion.texte)
-                         ))
-                         }
-                     
+ 
                      <ListItemSecondaryAction>
                       <DeleteOutlineIcon className='icon-action'
        // onClick={showDeleteConfirm}
@@ -484,7 +481,7 @@ const handleUpdatesec = async (title) => {
           />
               </Form.Group>
               <div className="content-btn">
-              <Button className='btn-annnuler'>Annuler</Button>
+              <Button className='btn-annnuler' onClick={() => setShowFile(false)}>Annuler</Button>
               <Button  className='btn-confirme' >Sauvegarder</Button>
           </div>
                </Form>
@@ -518,7 +515,7 @@ const handleUpdatesec = async (title) => {
               />
             </Form.Group>
               <div className="content-btn">
-              <Button className='btn-annnuler'>Annuler</Button>
+              <Button className='btn-annnuler' onClick={() => setShowText(false)}>Annuler</Button>
               <Button  className='btn-confirme' onClick={handleSubmit1} >Sauvegarder</Button>
           </div>
                </Form>
@@ -533,7 +530,7 @@ const handleUpdatesec = async (title) => {
                <Form>
                <Questionnaire />
               <div className="content-btn">
-              <Button className='btn-annnuler'>Annuler</Button>
+              <Button className='btn-annnuler' onClick={() => setShowQuest(false)}>Annuler</Button>
               <Button  className='btn-confirme' >Sauvegarder</Button>
           </div>
                </Form>
@@ -547,5 +544,19 @@ const handleUpdatesec = async (title) => {
        
     <div >
   </div>
+  <Snackbar autoHideDuration={1500} open={ err === "" ? false : true } onClose={()=>{ setErr("") }}  >
+        <Alert variant="filled" severity="error" onClose={()=>{ setErr("") }} >
+          {
+            err
+          }
+        </Alert>
+      </Snackbar>
+      <Snackbar autoHideDuration={1500} open={ success === "" ? false : true } onClose={()=>{ setSuccess("") }}  >
+        <Alert variant="filled" severity="success" onClose={()=>{ setSuccess("") }} >
+          {
+            success
+          }
+        </Alert>
+      </Snackbar>
       </div>
  )}

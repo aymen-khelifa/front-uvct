@@ -18,6 +18,11 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useDispatch } from "react-redux";
 import { Snackbar, Alert } from "@mui/material";
 import { Link } from "react-router-dom";
+import SkeletonImage from 'antd/lib/skeleton/Image'
+
+
+
+
 const key = "updatable";
 const openMessage = () => {
   message.loading({ content: "Loading...", key });
@@ -54,7 +59,10 @@ function Profil() {
   const [telError, setTelError] = useState(false);
   const [err, setErr] = useState("");
   const [success, setSuccess] = useState("");
-  const { user, isError, isSuccess, message } = useSelector(
+  const[image,setImage]=useState("");
+  //const [data, setData] = useState(initialState)
+  const[preview,setPreview]=useState("");
+  const { isError, isSuccess, message } = useSelector(
     (state) => state.auth
   );
   const handleChange = (e) => {
@@ -62,56 +70,46 @@ function Profil() {
 
     setData({ ...data, [name]: value, err: "", success: "" });
   };
-  const changeAvatar = async (e) => {
-    e.preventDefault();
+  const user = useSelector(state => state.auth.user)
+
+  const changeAvatar = async(e) => {
+    e.preventDefault()
     try {
-      const avatar = e.target.files[0];
+        const image= e.target.files[0]
+        setImage(image);
+        setPreview(URL.createObjectURL(image));
 
-      if (!avatar)
-        return setData({
-          ...data,
-          err: "No files were uploaded.",
-          success: "",
+        if(!image) return setData({...data, err: "Aucun fichier n'a été téléchargé." , success: 'Photo téléchargée'})
+
+        if(image.size > 1024 * 1024)
+            return setData({...data, err: "Taille trop grande." , success: 'Photo téléchargée'})
+
+        if(image.type !== 'image/jpeg' && image.type !== 'image/png')
+            return setData({...data, err: "Le format de fichier est incorrect." , success: 'Photo téléchargée'})
+
+        let formData =  new FormData()
+        formData.append('file', image)
+
+        setLoading(true)
+        const res = await axios.patch(`http://localhost:5000/users/ajouterimage/${user.UUid}`, formData, {
+             headers: {'X-Requested-With': 'XMLHttpRequest', 
+            "content-type":"multipart/form-data", "Access-Control-Allow-Origin": "http://localhost:5000", 
+            "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
+           "withCredentials": true ,// Authorization: token
         });
+        setSuccess('image ajoutée!');
 
-      if (avatar.size > 1024 * 1024)
-        return setData({ ...data, err: "Size too large.", success: "" });
-
-      if (avatar.type !== "image/jpeg" && avatar.type !== "image/png")
-        return setData({
-          ...data,
-          err: "File format is incorrect.",
-          success: "",
-        });
-
-      let formData = new FormData();
-      formData.append("file", avatar);
-
-      setLoading(true);
-      const res = await axios.post(
-        "http://localhost:5000/users/ajoutavatar",
-        avatar,
-        {
-          headers: {
-            Accept: "*/*",
-            AcceptEncoding: "gzip, deflate, br",
-            "X-Requested-With": "XMLHttpRequest",
-            "content-type": "multipart/form-data",
-            boundary: <calculated when request is sent></calculated>,
-            "Access-Control-Allow-Origin": "http://localhost:5000",
-            "Access-Control-Request-Methods":
-              "POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS",
-          },
-          withCredentials: true,
-        }
-      );
-
-      setLoading(false);
-      setAvatar(res.data.url);
+        setLoading(false)
+        SkeletonImage(res.data.url)
+        
+        
     } catch (err) {
-      setData({ ...data, err: err.response.data.msg, success: "" });
+      setErr('Une erreur est survenue ');
+       
+
     }
-  };
+}
+
   const updateInfor = () => {
     try {
       axios.patch(
@@ -176,9 +174,9 @@ function Profil() {
         <div className="content-profil">
           <Form className="form-profil">
             <Form.Group>
-              {loading && openMessage()}
+             
               <div className="profile-pic-div">
-                <img  alt="" className="avatar-img" />
+                <img src={user?.url1} alt="" className="avatar-img" />
                 <div className="uploadBtn">
                   <Form.Label htmlFor="file">
                     <PhotoCameraIcon className="icon-camera" />
@@ -196,12 +194,12 @@ function Profil() {
             <div className="content-candidat">
               <h5 className="info-candidat">
                 <AccountCircleIcon className="icon-details" />
-                
+                {user?.name}
               </h5>
 
               <h5 className="info-candidat">
                 <MailOutlineIcon className="icon-details" />
-                
+                {user?.email}
               </h5>
             </div>
             {/* loginUser.role==="instructeur" &&

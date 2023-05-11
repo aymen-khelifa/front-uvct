@@ -58,7 +58,7 @@ function InstructeurAdd() {
         //  if(isLength(password))
         //      return setData({...data, err: "Password must be at least 6 characters.", success: ''}) ;
         try {
-        const response=await axios.post('http://localhost:5000/users/ajouterinstr', {
+        const res=await axios.post('http://localhost:5000/users/ajouterinstr', {
               name: name,
               email:email,
               password:password,
@@ -71,13 +71,19 @@ function InstructeurAdd() {
               "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
              "withCredentials": true 
             });
-              
+          
+            
+            if (res.data.message==='Mail sent successfully')
+            {setSuccess('instructeur created and Mail sent successfully');}
+            if (res.data.message==='instructeur déjà exist')
+            {setErr('instructeur déjà exist');}
+            
                         
-                setSuccess("instructeur created and Mail sent successfully");
+                //setSuccess("instructeur created and Mail sent successfully");
                 
          
         } catch (err) {
-          setErr('instructeur déjà exist');
+          setErr('ERREUR');
         }
       }
       const isFormValid = () => {
@@ -169,7 +175,7 @@ function InstructeurAdd() {
                 value={speciality}
                 onChange={handleSpecialityChange}
                 isInvalid={specialityError}>
-               
+               <option value="Développement web">choisissez votre specialité</option>
                 <option value="Développement web">Développement web</option>
                 <option value="Développement mobile">Développement mobile</option>
                 <option value="Développement personnel">Développement personnel</option>

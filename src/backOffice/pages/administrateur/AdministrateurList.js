@@ -17,6 +17,11 @@ import SnackbarErr from '../../components/Snackbar/SnackbarErr';
 import {Snackbar,Alert} from "@mui/material";
 import { Link } from 'react-router-dom';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import LockOpenIcon from '@mui/icons-material/LockOpen';
+import BlockIcon from '@mui/icons-material/Block';
+import Tooltip from "@mui/material/Tooltip";
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+
 
 const { confirm } = Modal;
 const initialState = {
@@ -59,14 +64,14 @@ function AdministrateurList() {
 
     const rowData= users?.map(user => {
       return{
-        id:user.uuid,
-        name:user.name,
-        email:user.email,
-        tele  :user.tel,
-        message:user.message,
-        date:user.createdAt,  
-        status:user.status,       
-          //avatar:user.avatar,
+        id:user?.uuid,
+        name:user?.name,
+        email:user?.email,
+        tele  :user?.tel,
+        message:user?.message,
+        date:user?.createdAt,  
+        status:user?.status,       
+          avatar:user?.url1,
          
           
       }
@@ -90,7 +95,7 @@ function AdministrateurList() {
                   }).then((response) => {
                     const message = response.data.message;console.log(message)
                     if (message==='administrateur activé !')
-                          {setSuccess('administrateur activé !');}
+                          {setSuccess('administrateur activé !');window.location.reload()}
                           if (message==='activation echouée')
                           {setErr('activation echouée');}
                           else{setErr("erreur");}})
@@ -112,7 +117,7 @@ function AdministrateurList() {
                   }).then((response) => {
                     const message = response.data.message;console.log(message)
                     if (message==='administrateur bloqué !')
-                          {setSuccess('administrateur bloqué !');}
+                          {setSuccess('administrateur bloqué !');window.location.reload();}
                           if (message==='bloquation echouée')
                           {setErr('opération echouée');}
                           else{setErr("erreur");}})
@@ -147,7 +152,7 @@ function AdministrateurList() {
                     }).then((response) => {
                       const message = response.data.message;console.log(message)
                       if (message==='administrateur supprimé !')
-                            {setSuccess('administrateur supprimé !');}
+                            {setSuccess('administrateur supprimé !');window.location.reload()}
                             if (message==='suppression echouée')
                             {setErr('suppression echouée');}
                             else{setErr("erreur");}})
@@ -166,7 +171,7 @@ function AdministrateurList() {
         {
           field: 'avatar',
           headerName: 'Nom',
-          flex:2,
+          flex:1.7,
           renderCell(params){
             return(
               <div className='userList'>
@@ -180,7 +185,7 @@ function AdministrateurList() {
           field: 'email',
           headerName: 'Email',
           type: 'email',
-          flex:2,
+          flex:1.7,
         },
         {
             field: 'tele',
@@ -190,7 +195,7 @@ function AdministrateurList() {
         {
           field: 'date',
           headerName: 'Date création',
-          flex:2,
+          flex:1.4,
           renderCell(params){
             return(
               <DayJS format="DD-MM-YYYY / HH:mm:ss">{params.row.date}</DayJS>
@@ -257,27 +262,13 @@ function AdministrateurList() {
                 <Link to={`/admin/${params.row.id}`}>
                 <VisibilityIcon className='icon-action'/>
                 </Link>
-                <Button aria-describedby={id} className="btn-action" onClick={handleClick}>⋮</Button>
-                    <Popover
-                          id={id}
-                          open={open}
-                          anchorEl={anchorEl}
-                          onClose={handleClose1}
-                          anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'center',
-                          }}
-                          transformOrigin={{
-                            vertical: 'top',
-                            horizontal: 'center',
-                          }}
-                        >
-                        <Nav.Link className="actionNav" onClick={showbloquerConfirm}>Bloqué administrateur</Nav.Link>
-                        <Divider />
-                        <Nav.Link className="actionNav" onClick={showactiverConfirm}>Activer administrateur</Nav.Link>
-                        <Divider />
-                        <Nav.Link className="actionNav" onClick={showDeleteConfirm}>Supprimer administrateur</Nav.Link>
-                    </Popover> 
+                <Tooltip title="bloquer">
+                <BlockIcon className='icon-action' onClick={showbloquerConfirm} /></Tooltip>
+                 <Tooltip title="activer">
+                 <LockOpenIcon className='icon-action' onClick={showactiverConfirm} /></Tooltip>
+                 <Tooltip title="supprimer">
+                 <DeleteOutlineIcon className='icon-action' onClick={showDeleteConfirm} /></Tooltip>
+            
                 </>
               )
             }

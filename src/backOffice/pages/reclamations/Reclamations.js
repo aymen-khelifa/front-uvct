@@ -18,7 +18,7 @@ function Reclamations() {
   const user= useSelector(state => state.auth.user)
  
   const [callback, setCallback] = useState(false)
-  const reclamations1 = useSelector(state => state.myreclamation.myreclamation1)
+  const reclamations1 = useSelector(state => state.myreclamation.myreclamationn)
       console.log(reclamations1)
   const dispatch = useDispatch()
 console.log(user)
@@ -33,11 +33,11 @@ console.log(user)
     
       const rowData= reclamations1?.map(reclamation => {
         return{
-            id:reclamation.uuid,
-            sujet:reclamation.sujet,
-            message:reclamation.message,
-            reponse:reclamation.reponse,
-            date:reclamation.createdAt,
+            id:reclamation?.uuid,
+            sujet:reclamation?.sujet,
+            message:reclamation?.message,
+            reponse:reclamation?.reponse,
+            date:reclamation?.createdAt,
             
         }
     })

@@ -21,7 +21,7 @@ function PlanifierCours() {
     const token = useSelector(state => state.token)
     const [data, setData] = useState(initialState)
     //const {objectif,prerequis,intendedFor, err, success} = data
-    const {titre1} = useParams();
+    const {id} = useParams();
     const navigate = useNavigate();
 
     const formations = useSelector(state => state.formations)
@@ -60,7 +60,7 @@ function PlanifierCours() {
     const isFormValid = () => {
       // add validation rules here
       return  objectif !== ''   && intendedFor !== '' && prerequis !== '' 
-      && title !== '' && !objectifError && !titleError && !intendedForError && !prerequisError ;
+      && !objectifError &&  !intendedForError && !prerequisError ;
     };
 
        
@@ -69,7 +69,7 @@ function PlanifierCours() {
         const updateInfor = async(e) => {
           e.preventDefault() ;
               
-                axios.patch(`http://localhost:5000/formations/objectifFormation/${title}`, {
+                axios.patch(`http://localhost:5000/formations/objectifFormation/${id}`, {
                      objectif: objectif,
                      prerequis : prerequis , 
                      intendedFor : intendedFor ,
@@ -82,14 +82,14 @@ function PlanifierCours() {
                "withCredentials": true , }
                ).then((response)=>{console.log(response.data.msg)
                 if(response.data.message==='ajoutée avec succès')
-                {setSuccess('ajoutée avec succès')}
+                {setSuccess('ajoutée avec succès');setTimeout(()=>{ navigate(`/maFormation/${response.data.msg}`)},1500)}
                 if(response.data.message==='vérifiez les champs')
                 {setErr('vérifiez les champs');}
 
 
                 //setData({...data, err: '' , success: "Success!"})
               //  setOpen(true);
-              navigate(`/maFormation/${response.data.msg}`)
+             
               }
            ).catch( (err) =>{
               
@@ -107,21 +107,10 @@ function PlanifierCours() {
           setTitleError(value.length < 4);
         };
   return (
+    
     <div className='content'>
       <>
-      <Form.Group className="mb-3" >
-                <Form.Label className="label">Titre du cours relié a ce formulaire </Form.Label>
-                  <Form.Control type="text" 
-                  //defaultValue={titre1}
-                  name="title"
-                  placeholder='saisir le titre du cours à ajouté'
-                  style={{ width: '500px' }}
-                  onChange={handleTitleChange}
-                    isInvalid={titleError}                            
-                    /><Form.Control.Feedback type="invalid">
-              Title is required and at least 4 character
-               </Form.Control.Feedback>
-            </Form.Group>
+      
         <h3>Participants cibles</h3>
         <span className='paragraphe'>
             Les descriptions suivantes seront publiquement visibles sur la page d'accueil de votre cours <br /> et auront une incidence directe sur les performances de votre cours. <br />

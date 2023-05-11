@@ -68,7 +68,7 @@ function ArchiveFormation() {
          "withCredentials": true 
          }).then((response)=>{
            if(response.data.message==='formation supprimé !')
-           {setSuccess('formation supprimé !')}
+           {setSuccess('formation supprimé !');window.location.reload()}
            if(response.data.message==='suppression echouée')
            {setErr('suppression echouée')}
            }
@@ -95,7 +95,7 @@ function ArchiveFormation() {
                  // {Authorization: token}
               }).then((res)=>{console.log(res.data.message)
                 if(res.data.message==='formation acceptée !')
-                {setSuccess('formation acceptée !')}
+                {setSuccess('formation acceptée !');window.location.reload()}
                 if(res.data.message==='acceptation echouée')
                 {setErr('acceptation echouée')}
               
@@ -165,7 +165,7 @@ function ArchiveFormation() {
                       okType: 'danger',
                       cancelText: 'Annuler',
                       closable:true,
-                      content: (
+                      /*content: (
                         <Form onClick={()=>handleDelete(params.row.id)}>
                           <Form.Group className="mb-3">
                             <Form.Label className="label">motif de refus</Form.Label>
@@ -183,10 +183,10 @@ function ArchiveFormation() {
                           </Form.Group>
                           <Button type='submit'>ffff</Button>
                         </Form>
-                      ),
-                     /* onOk() {
+                      ),*/
+                      onOk() {
                         handleDelete(params.row.id)
-                      },*/
+                      },
                       onCancel() {
                         console.log('Cancel');
                       },

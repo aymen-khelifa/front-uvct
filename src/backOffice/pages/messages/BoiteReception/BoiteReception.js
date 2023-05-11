@@ -11,6 +11,7 @@ import Table from '../../../components/table/Table';
 import { getmymessage } from '../../../../redux/features/getmymsgSlice';
 import { Link } from "react-router-dom";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import { Snackbar, Alert} from "@mui/material";
 
 const { confirm } = Modal;
 
@@ -20,6 +21,8 @@ function BoiteReception() {
   const message2 = useSelector(state => state.mymessage.mymessage1)
   const [callback, setCallback] = useState(false)
   const dispatch = useDispatch()
+  const [err , setErr] = useState("");
+  const [success , setSuccess] = useState("");
   const user = useSelector(state => state.auth.user)
 console.log(user)
 console.log(message2)
@@ -43,14 +46,25 @@ console.log(message2)
      const handleDelete = async (id) => {
       try {
           
-                  await axios.delete(`/deleteReclamation/${id}`, {
-                    headers: {Authorization: token}
-                })
+                  await axios.delete(`http://localhost:5000/messages/deletemessage/${id}`, {
+                    //headers: {Authorization: token}
+                    headers: {'X-Requested-With': 'XMLHttpRequest', 
+                    "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
+                    "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
+                   "withCredentials": true  
+                  }).then((response) => {
+                    const message = response.data.message;console.log(message)
+        
+                   if (message==='message supprimée !')
+                      {setSuccess('message supprimé !');window.location.reload()}
+                      if (message==='suppression echouée')
+                      {setErr('suppression echouée');}
+                      else{setErr("suppression echouée");}})
                   
-                  setCallback(!callback)
+               
           
       } catch (err) {
-          setReclamation({...reclamation, err: err.response.data.msg , success: ''})
+          setErr("suppression echouée");
       }
       }
 
@@ -122,9 +136,26 @@ console.log(message2)
 
 
   return (
+    <div>
     <div style={{ height: 550, width: '100%' , backgroundColor:'white'}}>
      <Table row={rowData} columns={columns}/>
      </div>
+     <Snackbar autoHideDuration={1500} open={ err === "" ? false : true } onClose={()=>{ setErr("") }}  >
+        <Alert variant="filled" severity="error" onClose={()=>{ setErr("") }} >
+          {
+            err
+          }
+        </Alert>
+      </Snackbar>
+      <Snackbar autoHideDuration={1500} open={ success === "" ? false : true } onClose={()=>{ setSuccess("") }}  >
+        <Alert variant="filled" severity="success" onClose={()=>{ setSuccess("") }} >
+          {
+            success
+          }
+        </Alert>
+      </Snackbar>
+  </div>
+  
   )
 }
 

@@ -96,7 +96,7 @@ function EditUserApprenant() {
    
         const updateInfor = () => {
             try {
-                axios.patch(`http://localhost:5000/users/editprofileapprenant/${id}`, {
+              const res =axios.patch(`http://localhost:5000/users/editprofileapprenant/${id}`, {
                     name: name ,
                     //avatar: avatar ,
                     tel: tel ,
@@ -109,14 +109,15 @@ function EditUserApprenant() {
                     "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
                     "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
                    "withCredentials": true 
-                })
+                });
 
-                setData({...data, err: '' , success: "Profile modifié!"})
-                setOpen(true);
-                window.location.reload(false);
+                if (res.data.message==='profile modifié !')
+                {setSuccess('profile modifié !');}
+                if (res.data.message==='Une erreur est survenue ')
+                {setErr('Une erreur est survenue ');}
+                else{setErr("erreur");}
             } catch (err) {
-                setData({...data, err: err.response.data.msg , success: ''})
-                setOpen2(true);
+              setErr('Une erreur est survenue ')
             }
         }
 
@@ -148,7 +149,7 @@ function EditUserApprenant() {
        <Form className='form-profil'>
        <Form.Group className="mb-3">
          <div className='profile-pic-div'>
-         <img src={ apprenant.avatar} alt="" className="avatar-img" />
+         <img src={ apprenant.url1} alt="" className="avatar-img" />
            <div className="uploadBtn">
            <Form.Label htmlFor="file"> 
             <PhotoCameraIcon className='icon-camera'/>
@@ -166,8 +167,8 @@ function EditUserApprenant() {
             <Form.Label className="label">Nom complet</Form.Label>
               <Form.Control type="text" 
                 name="name" 
-                required 
-                //defaultValue={apprenant.name}
+                required placeholder={apprenant?.name}
+                //defaultValue={apprenant.name} 
                 onChange={handleNameChange}
                     isInvalid={nameError}                            
                     /><Form.Control.Feedback type="invalid">
@@ -177,7 +178,7 @@ function EditUserApprenant() {
           <Form.Group className="mb-3" >
             <Form.Label className="label">Adresse e-mail</Form.Label>
               <Form.Control type="email"  
-                name="email" 
+                name="email"  placeholder={apprenant?.email}
               // defaultValue={apprenant.email}
                onChange={handleEmailChange}
             isInvalid={emailError} 
@@ -192,7 +193,7 @@ function EditUserApprenant() {
                 name="phone" 
               //defaultValue={apprenant.tel}
               onChange={handleTelChange}
-                    
+              placeholder={apprenant?.tel}
                     isInvalid={telError}
          />
           <Form.Control.Feedback type="invalid">

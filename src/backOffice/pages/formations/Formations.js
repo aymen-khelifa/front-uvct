@@ -77,12 +77,12 @@ console.log(formations)
 console.log(user.UUid)
   const data= formations?.map(formation => {
     return{
-        id:formation.uuid,
-        title:formation.title,
-        price:formation.price,
-        affiche:formation.affiche,
-        status:formation.status,
-        date:formation.createdAt,
+        id:formation?.uuid,
+        title:formation?.title,
+        price:formation?.price,
+        affiche:formation?.url,
+        status:formation?.status,
+        date:formation?.createdAt,
         inscription:0,
     }
   })
@@ -115,7 +115,7 @@ console.log(user.UUid)
         
        
 
-        const handleDelete = async (id) => {console.log(id);console.log('zzz')
+        const handleDelete = async (id) => {
           try {console.log('aa')
              
                       await axios.delete(`http://localhost:5000/formations/supprimerformation/${id}`, {
@@ -198,7 +198,7 @@ console.log(user.UUid)
           {
             field: 'affiche',
             headerName: 'Miniature',
-            flex:1,
+            flex:1.6,
             renderCell: (params) =>{
               return(
                 <> 

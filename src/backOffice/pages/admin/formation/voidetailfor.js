@@ -4,6 +4,8 @@ import {
     getformation,
 
 } from "../../../../redux/features/detailsforSlice";
+import {  Form,  } from 'react-bootstrap'
+
 import { Link, useParams } from "react-router-dom";
 import PhoneIcon from "@material-ui/icons/Phone";
 import WorkOutlineIcon from "@material-ui/icons/WorkOutline";
@@ -50,6 +52,23 @@ function Voirdetailfor() {
       
      {/*style={{width:'400px'}}*/}
       <div  className="content-candidat">
+      <Form >
+           
+            
+          
+           <Form.Group className="mb-3" >
+          
+           <Form.Label className="label">Image du cours:</Form.Label>
+           <div className="content-affiche" style={{width:'50%' ,marginLeft:'25%'}}>
+           <Form.Label htmlFor="file" style={{width:'500%',height: '20%'  }}> 
+           {/*src={affiche ? affiche : formations.affiche}*/}
+             <img src={formation?.url} alt="" className="affiche-img" style={{width:'100%'  }}/>
+          {/* <p> <PhotoSizeSelectActualIcon /> Séléctionnez une image </p>*/}
+           </Form.Label>
+           </div>
+        
+           </Form.Group>
+           </Form>
       <h5  className="info-candidat">
       <AccountCircleIcon className="icon-details" />
          {formation.title}
@@ -68,7 +87,7 @@ function Voirdetailfor() {
         </h5>
         <h5 className="info-candidat">
           <DescriptionIcon className="icon-details" />
-          {formation.user.name}
+          {formation.user?.name}
         </h5>
         <h5 className="info-candidat" >
           <MessageIcon className="icon-details" />

@@ -39,19 +39,9 @@ function PublierCours() {
     const [priceError, setPriceError] = useState(false);
     const [categorie, setCategorie] = useState("");
     const [level, setLevel] = useState("");
-    const [ref, setReference] = useState("");
-    const [refError, setReferenceError] = useState(false);
+   
     const {id}=useParams()
-        /*useEffect(() => {
-          fetchFormation(token,titre1).then(res =>{
-                dispatch(dispatchGetFormation(res))
-            })
-          },[token,titre1, dispatch, callback])*/
-
-       /* const handleChange = e => {
-            const {name, value} = e.target
-            setData({...data, [name]:value, err:'', success: ''})
-        }*/
+       
 
         const changeAffiche = async(e) => {
           e.preventDefault()
@@ -116,11 +106,7 @@ function PublierCours() {
           setDescription(value);
           setDescriptionError(value.length < 4);
         };
-        const handleReferenceChange = (event) => {
-          const { value } = event.target;
-          setReference(value);
-          setReferenceError(value.length < 4);
-        };
+       
         const handlePriceChange = (event) => {
           const { value } = event.target;
           setPrice(value);
@@ -151,7 +137,7 @@ function PublierCours() {
                    price : price , 
                    categorie : categorie,
                    level : level  ,
-                   ref:ref,
+                   
                    //free : free , 
                    //affiche , 
                    //videopromo
@@ -161,10 +147,11 @@ function PublierCours() {
              "withCredentials": true ,}
              ).then((response)=>{console.log(response.data.message)
               if(response.data.message==='Formation créée avec succès')
-              {setSuccess('Formation créée avec succès')}
+              {setSuccess('Formation créée avec succès');setTimeout(()=>{ navigate(`/completerFormation/${response.data.msg}`)},1500)}
               if(response.data.message==='vérifiez les champs')
               {setErr('vérifiez les champs')}
-              //navigate(`/maFormation/${titre1}`)
+              if(response.data.message==='La formation existe déjà')
+              {setErr('La formation existe déjà')}
             }
          ).catch((err)=> {
               setErr('erreur')
@@ -178,10 +165,10 @@ function PublierCours() {
         const isFormValid = () => {
           // add validation rules here
           return  title  !== ''  && description !== '' && price !== ''  && categorie !== '' && level !== '' 
-          && ref !== '' && !titleError && !descriptionError && !priceError  && !refError  ;
+          &&  !titleError && !descriptionError && !priceError    ;
         };
   return (
-    <div className="publier">
+    <div className="content-admin"  style={{marginLeft:'10%',marginTop:'5%',marginRight:'10%'  }}>
         <h5>Page d'accueil du cours</h5>
         <Form >
             <Form.Group className="mb-3" >
@@ -190,7 +177,7 @@ function PublierCours() {
                   //defaultValue={titre1}
                   name="title"
                   placeholder='saisir le titre du cours'
-                  style={{ width: '500px' }}
+                  style={{ width: '100%' }}
                   onChange={handleTitleChange}
                     isInvalid={titleError}                            
                     /><Form.Control.Feedback type="invalid">
@@ -212,36 +199,8 @@ function PublierCours() {
               description is required and at least 4 character
                </Form.Control.Feedback>
             </Form.Group>
-              <Form.Group className="mb-3" >
-              {loading && <Spinner animation="border" variant="secondary" />}
-              <Form.Label className="label">Images du cours</Form.Label>
-              <div className="content-affiche">
-              <Form.Label htmlFor="file" > 
-              {/*src={affiche ? affiche : formations.affiche}*/}
-                <img  alt="" className="affiche-img" />
-              <p> <PhotoSizeSelectActualIcon /> Séléctionnez une image </p>
-              </Form.Label>
-              </div>
-            <Form.Control type="file" id="file"
-                onChange={changeAffiche}
-                style={{display:"none"}}
-              />
-              </Form.Group>
-              <Form.Group className="mb-3" >
-                <Form.Label className="label">Vidéo promotionnelle</Form.Label>
-                <div className="content-affiche">
-                  <Form.Label htmlFor="file" > 
-                  {/*url={[{src: videopromo ? videopromo : formations.videopromo}]}*/}
-                  <ReactPlayer 
-                  controls playing muted width='80%' height='60%' ></ReactPlayer>
-                  <p> <MovieIcon /> Séléctionnez un vidéo </p>
-                  </Form.Label>
-                  </div>
-                <Form.Control type="file" id="file2"
-                    onChange={changeVideoPromo}
-                    style={{display:"none"}}
-              />
-              </Form.Group>
+             
+              
               <Form.Group className="mb-3" >
                 <Form.Label className="label">Catégorie</Form.Label>
                 <Form.Select 
@@ -277,20 +236,7 @@ function PublierCours() {
                     <option value="Tous les niveaux">Tous les niveaux</option>
             </Form.Select>
               </Form.Group>
-              <Form.Group className="mb-3" >
-                <Form.Label className="label">Reference</Form.Label>
-                  <Form.Control type="text" 
-                    placeholder="Saisissez la reference du formation." 
-                    name="Reference"
-                    //onChange={handleChange}
-                    //defaultValue={formations.subTitle}
-                     
-                    onChange={handleReferenceChange}
-                    isInvalid={refError}                            
-                    /><Form.Control.Feedback type="invalid">
-              Reference is required and at least 4 character
-               </Form.Control.Feedback>
-            </Form.Group>
+              
               <Form.Group className="mb-3" >
                 <Form.Label className="label">Prix
               

@@ -33,7 +33,6 @@ import CandidatAccepted from "../../backOffice/pages/instructeurs/candidatList/C
 import Categories from "../../backOffice/pages/categories/Categories";
 import AddAdmin from "../../backOffice/pages/administrateur/AddAdmin";
 import AddCategorie from "../../backOffice/pages/categories/AddCategorie";
-import FormationList from "../../backOffice/pages/formations/ListFormation/FormationList";
 import AdministrateurList from "../../backOffice/pages/administrateur/AdministrateurList";
 import Administrateur from "../../backOffice/pages/administrateur/Admin/Administrateur";
 import ApprenantAdd from "../../backOffice/pages/apprenants/ApprenantAdd";
@@ -68,6 +67,7 @@ import InstructeurDetails from "../../pages/instructeurs/instructeurDetails/Inst
 import UpdateEvent from "../../backOffice/pages/evenements/updateEvent/UpdateEvent";
 import Candidat from "../../backOffice/pages/instructeurs/candidat/Candidat";
 import { CoursPage } from "../../pages/cours/cours";
+import  CoursPage1  from "../../pages/cours/cours1";
 import { CourseDetails } from "../../pages/cours/course-details/course-details";
 import { CourseVideos } from "../../pages/cours/course-videos/course-videos";
 import Activationpage from "../../pages/auth/inscrire/Activationpage"
@@ -78,6 +78,13 @@ import Acceptforcan from "../../backOffice/pages/admin/formation/acceptforcan"
 import AddMessage from "../../backOffice/pages/messages/addMessage/AddMessage";
 import Msgdet from "../../backOffice/pages/messages/messagedetails";
 import Msgdetinst from "../../backOffice/pages/messages/messagedetailsinst";
+import Candidat1 from "../../backOffice/pages/instructeurs/candidat/refuscandidat"
+import Commentairedet from '../../backOffice/pages/admin/formation/editfor/commentdet'
+
+import PublierCours from "../../backOffice/pages/AddFormation/PublierCours";
+import Instructeurs1a  from "../../pages/instructeurs/Instructeurs1a";
+
+
 function Body() {
   const user = useSelector((state) => state.auth.user); 
   //const {  isAdmin, isInstr, isSuperAdmin,loginUser } = auth ;
@@ -115,6 +122,10 @@ function Body() {
             <Route
               path="/messagedet/:id"
               element={ <Msgdetinst /> }
+            />
+            <Route
+              path="/commentairedet/:id"
+              element={ <Commentairedet /> }
             />
             <Route
               path="/msgdet/:id"
@@ -181,6 +192,11 @@ function Body() {
               element={<Candidat />}//voir details
             />
             <Route
+              path="/refusinst/:id"
+              element={<Candidat1 />}//voir details
+            />
+
+            <Route
               path="/tableau-bord"
               element={ <Dashbord />}
             />
@@ -196,7 +212,7 @@ function Body() {
             <Route path="/newMessage" element={<AddMessage />} />
             <Route path="/reclamations" element={<Reclamations />} />
            
-        
+            
           
             <Route
              // path="/user/acceptInstr/:token"
@@ -204,20 +220,13 @@ function Body() {
               element={<CandidatAccepted />}
             />
             {/*path="/formation/:titre1"*/}
-            <Route path="/ajouterformation/:id" element={<AddFormation />} />
+            <Route path="/completerFormation/:id" element={<AddFormation />} />
+            <Route path="/ajouterformation/:id" element={<PublierCours />} />
             <Route path="/categorie/:id" element={<UpdateCategorie />} />
-            <Route
-              path="/categorie/sousCategories/:id"
-              element={<SousCategorie />}
-            />
-            <Route
-              path="/addSousCategorie/:id"
-              element={<AddSousCategorie />}
-            />
-            <Route
-              path="/sousCategorie/:id"
-              element={<UpdateSousCategorie />}
-            />
+           
+          
+
+
             <Route path="/add-reclamation" element={<AddReclamation />} />
             <Route path="/reclamation/:id" element={<Reclamation />} />
             <Route path="/all-reclamation" element={<Reclamations1 />} />
@@ -233,6 +242,14 @@ function Body() {
               path="/devenir-instructeur"
               element={user!==null  ? <HeaderInstructeur /> : <HeaderInstructeur1 />}
             />
+            <Route path="/allInstructeurs" element={user!==null  ? <Instructeurs1 /> : <Instructeurs1a />} />
+            <Route path="/cours" element={user!==null  ? <CoursPage1 />    : <CoursPage />} />
+
+
+
+
+
+
           </Routes>
         
           </LeftList>
@@ -263,12 +280,12 @@ function Body() {
           
             <Route path="/panier" element={<Panier />} />
             <Route path="/events" element={<AllEvents />} />
-            <Route path="/cours" element={<CoursPage />} />
+            
             <Route path="/event/:id" element={<EventDetails />} />
             <Route path="/cours/:id" element={<CourseDetails />} />
             <Route path="/cours/:id/videos" element={<CourseVideos />} />
             <Route path="/partner" element={<PartnerPage />} />
-            <Route path="/allInstructeurs" element={<Instructeurs1 />} />
+            
             <Route path="/instructeurDet" element={<InstructeurDetails />} />
             <Route path="/aaaa" element={<EditUser />} />
           </Routes>

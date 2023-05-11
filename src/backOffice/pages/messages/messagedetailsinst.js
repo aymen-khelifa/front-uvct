@@ -22,7 +22,7 @@ const initialState = {
 
 function Reclamation() {
     
-    const msg = useSelector(state => state.messagebyid.msgbyid)
+    const msg = useSelector(state => state.messagebyid.msgbyid1)
     const dispatch = useDispatch()
     const {id} = useParams()
     const [response, setReponse] = useState("")
@@ -82,8 +82,8 @@ function Reclamation() {
         <Link to="/msginst">
         <ArrowBackIcon className="icon-back" />
       </Link>
-        <h4>Envoyé par:<h5>Name:<h6>{msg.user.name}</h6></h5><h5>Email:<h6>{msg.user.email}</h6></h5></h4>
-        <h4>Objectif: {msg.objectif}</h4>
+        <h4>Envoyé par:<h5>Name:<h6>{msg?.user?.name}</h6></h5><h5>Email:<h6>{msg?.user?.email}</h6></h5></h4>
+        <h4>Objectif: {msg?.objectif}</h4>
         <div className='header-reclamation'>
         
        
@@ -91,14 +91,14 @@ function Reclamation() {
         <h4>Message:</h4>
         <Form.Group className="mb-3" >
                 <Form.Control as="textarea" rows={7} 
-                defaultValue={msg.message}
+                defaultValue={msg?.message}
                 required  disabled
               />
             </Form.Group>
             <h4>Reponse:</h4>
             <Form.Group className="mb-3" >
                 <Form.Control as="textarea" rows={7} 
-                defaultValue={msg.response}
+                defaultValue={msg?.response}
                 required  disabled
               />
             </Form.Group>

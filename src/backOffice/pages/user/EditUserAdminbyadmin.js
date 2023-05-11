@@ -100,7 +100,7 @@ function EditUserAdmin() {
    
         const updateInfor = () => {
             try {
-                axios.patch(`http://localhost:5000/users/editprofileadmin/${id}`, {
+              const res = axios.patch(`http://localhost:5000/users/editprofileadmin/${id}`, {
                     name: name ,
                     //avatar: avatar ,
                     tel: tel ,
@@ -114,14 +114,14 @@ function EditUserAdmin() {
                     "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
                     "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
                    "withCredentials": true 
-                })
-
-                setData({...data, err: '' , success: "Profile modifié!"})
-                setOpen(true);
-                window.location.reload(false);
+                });
+                if (res.data.message==='profile modifié !')
+                {setSuccess('profile modifié !');}
+                if (res.data.message==='Une erreur est survenue ')
+                {setErr('Une erreur est survenue ');}
+                else{setErr("erreur");}
             } catch (err) {
-                setData({...data, err: err.response.data.msg , success: ''})
-                setOpen2(true);
+              setErr('Une erreur est survenue ')
             }
         }
 
@@ -165,7 +165,7 @@ function EditUserAdmin() {
        <Form className='form-profil'>
        <Form.Group className="mb-3">
          <div className='profile-pic-div'>
-         <img src={ admins.avatar} alt="" className="avatar-img" />
+         <img src={ admins.url1} alt="" className="avatar-img" />
            <div className="uploadBtn">
            <Form.Label htmlFor="file"> 
             <PhotoCameraIcon className='icon-camera'/>
@@ -185,7 +185,7 @@ function EditUserAdmin() {
                 name="name" 
                 required 
                // defaultValue={admins.name}
-                onChange={handleNameChange}
+                onChange={handleNameChange} placeholder={admins?.name}
                     isInvalid={nameError}                            
                     /><Form.Control.Feedback type="invalid">
               Name is required and at least 3 character
@@ -194,7 +194,7 @@ function EditUserAdmin() {
           <Form.Group className="mb-3" >
             <Form.Label className="label">Adresse e-mail</Form.Label>
               <Form.Control type="email" 
-                name="email" 
+                name="email"  placeholder={admins?.email}
               // defaultValue={admins.email}
                onChange={handleEmailChange}
             isInvalid={emailError} 
@@ -208,7 +208,7 @@ function EditUserAdmin() {
               <Form.Control type="text" 
                 name="phone" 
               //defaultValue={admins.tel}
-              onChange={handleTelChange}
+              onChange={handleTelChange} placeholder={admins?.tel}
                     
                     isInvalid={telError}
          />

@@ -15,6 +15,8 @@ import myrecSlice from '../redux/features/myrecSlice';
 import mymessageSlice from '../redux/features/getmymsgSlice'
 import mymessageinstSlice from '../redux/features/mymsginstSlice'
 import messagebyidSlice from '../redux/features/msgbyid'
+import commentaireSlice from '../redux/features/commentaireSlice'
+
 import {
     persistStore,
     persistReducer,
@@ -48,8 +50,7 @@ import {
      mymessage:mymessageSlice,
      mymessageinst:mymessageinstSlice,
      messagebyid:messagebyidSlice,
-
-
+     commentaire:commentaireSlice,
 
   })
 

@@ -7,7 +7,7 @@ const initialState = {
     
     instructeur:[],
     instructeurs:[],
-    candidat:[],
+    candidats1:[],
     candidats:[],
     admin:[],
     admins:[],
@@ -154,7 +154,7 @@ const UserSlice = createSlice({
         },
         [getcandidatbyId.fulfilled]: (state, action) => {
             state.loading = false
-            state.candidat = action.payload
+            state.candidats1 = action.payload
             state.error = ''
         },
 

@@ -77,7 +77,7 @@ const handleMessageChange = (event) => {
       okText: 'Refuser',
       okType: 'danger',
       cancelText: 'Annuler',
-      content: (
+      /*content: (
         <Form>
           <Form.Group className="mb-3">
             <Form.Label className="label">motif de refus</Form.Label>
@@ -94,7 +94,7 @@ const handleMessageChange = (event) => {
             </Form.Control.Feedback>
           </Form.Group>
         </Form>
-      ),
+      ),*/
       onOk() {
         handleDelete(id);
       },
@@ -122,7 +122,7 @@ const handleMessageChange = (event) => {
   
   
   const handleDelete = async (id) => {
-    await axios.get(`http://localhost:5000/formations/supprformation/${id}`,{message:message}, {
+    await axios.get(`http://localhost:5000/formations/supprformation/${id}`, {
         // headers: {Authorization: token}
         headers: {'X-Requested-With': 'XMLHttpRequest', 
         "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
@@ -130,9 +130,10 @@ const handleMessageChange = (event) => {
        "withCredentials": true 
        }).then((response)=>{
          if(response.data.message==='formation supprimé !')
-         {setSuccess('formation supprimé !')}
+         {setSuccess('formation supprimé !');window.location.reload()}
          if(response.data.message==='suppression echouée')
          {setErr('suppression echouée')}
+         else{setErr('suppression echouée')}
          }
           ).catch( (err)=> {
             setErr('erreur')
@@ -149,7 +150,7 @@ const handleMessageChange = (event) => {
           // {Authorization: token}
        }).then((res)=>{console.log(res.data.message)
          if(res.data.message==='formation acceptée !')
-         {setSuccess('formation acceptée !')}
+         {setSuccess('formation acceptée !');window.location.reload()}
          if(res.data.message==='acceptation echouée')
          {setErr('acceptation echouée')}
        
@@ -180,6 +181,23 @@ const handleMessageChange = (event) => {
         </Button>
       </div>
       <div className="content-candidat">
+      <Form >
+           
+            
+          
+           <Form.Group className="mb-3" >
+          
+           <Form.Label className="label">Images du cours:</Form.Label>
+           <div className="content-affiche" style={{width:'50%' ,marginLeft:'25%'}}>
+           <Form.Label htmlFor="file" style={{width:'500%',height: '20%'  }}> 
+           {/*src={affiche ? affiche : formations.affiche}*/}
+             <img src={formation?.url} alt="" className="affiche-img" style={{width:'100%'  }}/>
+          {/* <p> <PhotoSizeSelectActualIcon /> Séléctionnez une image </p>*/}
+           </Form.Label>
+           </div>
+        
+           </Form.Group>
+           </Form>
       <h5  className="info-candidat">
       <AccountCircleIcon className="icon-details" />
          {formation.title}

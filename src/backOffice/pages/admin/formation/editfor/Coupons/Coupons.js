@@ -3,14 +3,11 @@ import {useSelector} from 'react-redux'
 import axios from 'axios'
 import { Button ,Modal ,Form } from 'react-bootstrap';
 import AllCoupons from './allCoupons/AllCoupons';
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
 import { useParams } from 'react-router-dom';
 import AddIcon from '@material-ui/icons/Add';
+import { Snackbar, Alert} from "@mui/material";
 
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
+
 const initialState = {
   code:'', 
   number:'',
@@ -24,13 +21,32 @@ const initialState = {
 function Coupons() {
     const token = useSelector(state => state.token)
     const [coupon, setCoupon ]= useState(initialState);
-    const { code,number,discount,dateStart,dateEnd,err, success} = coupon
+    //const { code,number,discount,dateStart,dateEnd} = coupon
     const [open, setOpen] = React.useState(false);
     const [open1, setOpen1] = React.useState(false);
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    const {titre1} = useParams()
+    const {id} = useParams()
+    const [err , setErr] = useState("");
+    const [success , setSuccess] = useState("");
+    const [code, setCode] = useState("");
+    const [codeError, setCodeError] = useState(false);
+  const [number, setNumber] = useState("");
+  const [numberError, setNumberError] = useState(false);
+  const [discount, setDiscount] = useState("");
+  const [discountError, setDiscountError] = useState(false);
+  const [dateStart, setDateStart] = useState("");
+  const [dateEnd, setDateEnd] = useState("");
+
+  
+  const handleDateEndChange = (event) => {
+    setDateEnd(event.target.value);
+  }
+  const handleDateStartChange = (event) => {
+    setDateStart(event.target.value);
+  }
+
 
     const handleClose2 = (event, reason) => {
       if (reason === 'clickaway') {
@@ -51,24 +67,50 @@ function Coupons() {
       setCoupon({...coupon, [name]:value, err: '', success: ''})
     }
 
+    const handleCodeChange = (event) => {
+      const { value } = event.target;
+      setCode(value);
+      setCodeError(value.length < 3 );
+    };
+    const handleNumberChange = (event) => {
+      const { value } = event.target;
+      setNumber(value);
+    };
+    const handleDiscountChange = (event) => {
+      const { value } = event.target;
+      setDiscount(value);
+    
+    };
+   
+   
+
     const handleSubmit = async e => {
       e.preventDefault()
-      try {
-          const res = await axios.post(`/ajoutCoupon/${titre1}`, {
-            code,number,discount,dateStart,dateEnd
+      try {console.log(id)
+           await axios.post(`http://localhost:5000/coupons/addcoupon/${id}`, {
+            code:code,
+            number:number,
+            discount:discount,
+            dateStart:dateStart,
+            dateEnd:dateEnd
           },{
-            headers: {Authorization: token}
-        })
-          setCoupon({...coupon, err: '', success: res.data.msg})
-          setOpen(true);
-          window.location.reload(false);
-
+           // headers: {Authorization: token}
+           headers: {'X-Requested-With': 'XMLHttpRequest', 
+           "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
+           "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
+          "withCredentials": true 
+        }).then((res)=>{console.log(res.data.message)
+          if(res.data.message==='coupons ajouté !')
+          {setSuccess('coupons ajouté !');window.location.reload()}
+          if(res.data.message==='deja existe')
+          {setErr('deja existe')}})
       } catch (err) {
-          err.response.data.msg && 
-          setCoupon({...coupon, err: err.response.data.msg, success: ''})
-          setOpen1(true);
+        setErr('erreur')
       }
 }
+
+
+
   return (
     <div className="coupon">
       <Button className='btn-event' onClick={handleShow}><AddIcon />Ajouter un nouveau coupon</Button>
@@ -78,33 +120,30 @@ function Coupons() {
           <Modal.Title>Ajouter un nouveau coupon</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleSubmit}>
+          <Form >
           <Form.Group className="mb-3" >
             <Form.Label className="label">Pourcentage de remise</Form.Label>
             <Form.Select    
                 required 
                 name="discount"
-                value={discount}
-                onChange={handleChangeInput} 
+                
+                onChange={handleDiscountChange} 
                 >
                 <option value="5%">5%</option>
                 <option value="10%">10%</option>
+                <option value="15%">10%</option>
+                <option value="20%">10%</option>
         </Form.Select>
           </Form.Group>
-          <Form.Group className="mb-3" >
-                <Form.Check 
-                type="switch"
-                id="custom-switch"
-                label="Remise privée"
-                />
-          </Form.Group>
+         
           <Form.Group className="mb-3" >
             <Form.Label className="label">Code de coupon</Form.Label>
             <Form.Control type="text"
             placeholder="Entrez votre code"
             name="code"
-            value={code}
-            onChange={handleChangeInput} 
+            
+            onChange={handleCodeChange}
+              isInvalid={codeError}
             />
           </Form.Group>
           <Form.Group className="mb-3" >
@@ -112,47 +151,51 @@ function Coupons() {
             <Form.Control type="number"
             placeholder="100"
             name="number"
-            value={number}
-            onChange={handleChangeInput} 
+            
+            onChange={handleNumberChange} 
+            isInvalid={numberError}
             />
           </Form.Group>
           <Form.Group className="mb-3" >
             <Form.Label className="label">Valable après</Form.Label>
-            <Form.Control type="datetime-local"
+            <Form.Control //type="datetime-local"
                 name="dateStart"
-                value={dateStart}
-                onChange={handleChangeInput} 
-                required/>
+                type='date'
+                onChange={handleDateStartChange}
+              
+            />
           </Form.Group>
           <Form.Group className="mb-3" >
             <Form.Label className="label">Valable jusqu'au</Form.Label>
-            <Form.Control type="datetime-local"
+            <Form.Control //type="datetime-local"
                 name="dateEnd"
-                value={dateEnd}
-                onChange={handleChangeInput}  
+                type='date'
+                onChange={handleDateEndChange}  
                 required  />
           </Form.Group>
           <Button className='btn-annnuler' onClick={handleClose}>
             Annuler
           </Button>
-          <Button className='btn-confirme' type="submit">
+          <Button className='btn-confirme' type="submit" onClick={handleSubmit}>
             Créer
           </Button>
           </Form>
         </Modal.Body>
       </Modal>
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose2}
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'center'}}>
-                <Alert onClose={handleClose2} severity="success">
-                {success}
-                </Alert>
-        </Snackbar>
-        <Snackbar open={open1} autoHideDuration={6000} onClose={handleClose3}
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'center'}}>
-                <Alert onClose={handleClose3} severity="error">
-                {err}
-                </Alert>
-        </Snackbar>
+      <Snackbar autoHideDuration={1500} open={ err === "" ? false : true } onClose={()=>{ setErr("") }}  >
+        <Alert variant="filled" severity="error" onClose={()=>{ setErr("") }} >
+          {
+            err
+          }
+        </Alert>
+      </Snackbar>
+      <Snackbar autoHideDuration={1500} open={ success === "" ? false : true } onClose={()=>{ setSuccess("") }}  >
+        <Alert variant="filled" severity="success" onClose={()=>{ setSuccess("") }} >
+          {
+            success
+          }
+        </Alert>
+      </Snackbar>
     </div>
   )
 }

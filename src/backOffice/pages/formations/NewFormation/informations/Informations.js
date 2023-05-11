@@ -9,6 +9,7 @@ import PhotoSizeSelectActualIcon from '@material-ui/icons/PhotoSizeSelectActual'
 import MovieIcon from '@material-ui/icons/Movie';
 import { useParams } from 'react-router-dom'
 import ReactPlayer from 'react-player'
+import {Snackbar,Alert} from "@mui/material";
 
 const initialState = {
   title:'',
@@ -25,7 +26,7 @@ const initialState = {
 function Informations() {
     const token = useSelector(state => state.token)
     const [data, setData] = useState(initialState)
-    const {description,price,categorie,level, err, success} = data
+    const {description,price,categorie,level} = data
     const {titre1} = useParams();
     const [free, setFree] = useState(false);
     const [affiche, setAffiche] = useState(false);
@@ -34,7 +35,10 @@ function Informations() {
     const formations = useSelector(state => state.formations)
     const [callback, setCallback] = useState(false)
     const dispatch = useDispatch()
-        
+    const [err , setErr] = useState("");
+    const [success , setSuccess] = useState("");
+
+    
         useEffect(() => {
           fetchFormation(token,titre1).then(res =>{
                 dispatch(dispatchGetFormation(res))
@@ -45,6 +49,8 @@ function Informations() {
             const {name, value} = e.target
             setData({...data, [name]:value, err:'', success: ''})
         }
+
+        
 
         const changeAffiche = async(e) => {
           e.preventDefault()
@@ -74,28 +80,7 @@ function Informations() {
               setAffiche({...data, err: err.response.data.msg , success: ''})
           }
         }
-        const changeVideoPromo = async(e) => {
-          e.preventDefault()
-          try {
-              const file2 = e.target.files[0]
     
-              if(!file2) return setData({...data, err: "No files were uploaded." , success: ''})
-    
-              let formData =  new FormData()
-              formData.append('file2', file2)
-    
-              setLoading(true)
-              const res = await axios.post('/api/uploadVideo', formData, {
-                  headers: {'content-type': 'multipart/form-data', Authorization: token}
-              })
-    
-              setLoading(false)
-              setVideopromo(res.data.url)
-              
-          } catch (err) {
-              setVideopromo({...data, err: err.response.data.msg , success: ''})
-          }
-        }
 
         const updateInfor = async() => {
           try {
@@ -155,20 +140,7 @@ function Informations() {
                 style={{display:"none"}}
           />
               </Form.Group>
-              <Form.Group className="mb-3" >
-                <Form.Label className="label">Vidéo promotionnelle</Form.Label>
-                <div className="content-affiche">
-                  <Form.Label htmlFor="file" > 
-                  <ReactPlayer /*url={videopromo ? videopromo : formations.videopromo}*/
-                  controls playing muted width='80%' height='60%' ></ReactPlayer>
-                  <p> <MovieIcon /> Séléctionnez un vidéo </p>
-                  </Form.Label>
-                  </div>
-                <Form.Control type="file" id="file2"
-                    style={{display:"none"}}
-                    onChange={changeVideoPromo}
-              />
-              </Form.Group>
+            
               <Form.Group className="mb-3" >
                 <Form.Label className="label">Catégorie</Form.Label>
                 <Form.Select 

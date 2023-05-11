@@ -13,6 +13,8 @@ import { Snackbar, Alert} from "@mui/material";
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import SkeletonImage from 'antd/lib/skeleton/Image'
+
         const initialState = {
             name: '',
             phone:'',
@@ -52,39 +54,42 @@ function EditUserAdmin() {
 
 
     
-        useEffect(() => {
+        /*useEffect(() => {
          
                 dispatch(getadminbyId(id))
           
         },[token,id, dispatch, callback])
-        console.log(admins)
-
+        console.log(admins)*/
+        const[image,setImage]=useState("");
+        const[preview,setPreview]=useState("");
         
 
         const changeAvatar = async(e) => {
             e.preventDefault()
             try {
-                const file = e.target.files[0]
+              const image= e.target.files[0]
+              setImage(image);
+              setPreview(URL.createObjectURL(image));
 
-                if(!file) return setData({...data, err: "Aucun fichier n'a été téléchargé." , success: 'Photo téléchargée'})
+              if(!image) return setData({...data, err: "Aucun fichier n'a été téléchargé." , success: 'Photo téléchargée'})
 
-                if(file.size > 1024 * 1024)
-                    return setData({...data, err: "Taille trop grande." , success: 'Photo téléchargée'})
+              if(image.size > 1024 * 1024)
+                  return setData({...data, err: "Taille trop grande." , success: 'Photo téléchargée'})
 
-                if(file.type !== 'image/jpeg' && file.type !== 'image/png')
-                    return setData({...data, err: "Le format de fichier est incorrect." , success: 'Photo téléchargée'})
+              if(image.type !== 'image/jpeg' && image.type !== 'image/png')
+                  return setData({...data, err: "Le format de fichier est incorrect." , success: 'Photo téléchargée'})
 
-                let formData =  new FormData()
-                formData.append('file', file)
-
-                setLoading(true)
-                const res = await axios.post('/api/upload_avatar', formData, {
-                    headers: {'content-type': 'multipart/form-data', Authorization: token}
+              let formData =  new FormData()
+              formData.append('file', image)
+                const res = await axios.patch(`http://localhost:5000/users/ajouterimage/${admins.UUid}`, formData, {
+                  headers: {'X-Requested-With': 'XMLHttpRequest', 
+                  "content-type":"multipart/form-data", "Access-Control-Allow-Origin": "http://localhost:5000", 
+                  "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
+                 "withCredentials": true ,// Authorization: token
                 })
-
+                setSuccess('image ajoutée!');
                 setLoading(false)
-                setAvatar(res.data.url)
-                setOpen(true);
+                SkeletonImage(res.data.url)
                 
             } catch (err) {
                 setData({...data, err: err.response.data.msg , success: ''})
@@ -95,7 +100,7 @@ function EditUserAdmin() {
    
         const updateInfor = () => {
             try {
-                axios.patch(`http://localhost:5000/users/editprofileadmin/${admins.UUid}`, {
+              const res = axios.patch(`http://localhost:5000/users/editprofileadmin/${admins.UUid}`, {
                     name: name ,
                     //avatar: avatar ,
                     tel: tel ,
@@ -109,14 +114,15 @@ function EditUserAdmin() {
                     "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
                     "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
                    "withCredentials": true 
-                })
+                });
 
-                setData({...data, err: '' , success: "Profile modifié!"})
-                setOpen(true);
-                window.location.reload(false);
+                if (res.data.message==='profile modifié !')
+                {setSuccess('profile modifié !');}
+                if (res.data.message==='Une erreur est survenue ')
+                {setErr('Une erreur est survenue ');}
+                else{setErr("Une erreur est survenue ");}
             } catch (err) {
-                setData({...data, err: err.response.data.msg , success: ''})
-                setOpen2(true);
+              setErr('Une erreur est survenue ')
             }
         }
 
@@ -160,7 +166,7 @@ function EditUserAdmin() {
        <Form className='form-profil'>
        <Form.Group className="mb-3">
          <div className='profile-pic-div'>
-         <img src={ admins.avatar} alt="" className="avatar-img" />
+         <img src={ admins.url1} alt="" className="avatar-img" />
            <div className="uploadBtn">
            <Form.Label htmlFor="file"> 
             <PhotoCameraIcon className='icon-camera'/>
@@ -180,7 +186,7 @@ function EditUserAdmin() {
                 name="name" 
                 required 
                // defaultValue={admins.name}
-                onChange={handleNameChange}
+                onChange={handleNameChange} placeholder={admins?.name}
                     isInvalid={nameError}                            
                     /><Form.Control.Feedback type="invalid">
               Name is required and at least 3 character
@@ -192,7 +198,7 @@ function EditUserAdmin() {
                 name="email" 
               // defaultValue={admins.email}
                onChange={handleEmailChange}
-            isInvalid={emailError} 
+            isInvalid={emailError} placeholder={admins?.email}
              />
               <Form.Control.Feedback type="invalid">
               saisir un  email addresse valide
@@ -205,7 +211,7 @@ function EditUserAdmin() {
               //defaultValue={admins.tel}
               onChange={handleTelChange}
                     
-                    isInvalid={telError}
+                    isInvalid={telError} placeholder={admins?.tel}
          />
           <Form.Control.Feedback type="invalid">
           saisir un numero de  telephone valide
@@ -213,11 +219,11 @@ function EditUserAdmin() {
           </Form.Group>
           <Form.Group className="mb-3" >
                 <Form.Label className="label">Genre</Form.Label>
-                  <Form.Select type="text" placeholder="" 
+                  <Form.Select type="text" 
                     name="tele" 
                     
                     //value={tel}
-                    onChange={handlegenreChange} 
+                    onChange={handlegenreChange}  
                      
                     
                     

@@ -4,7 +4,7 @@ import axios from "axios";
 
 const initialState = {
     loading: false,
-    myreclamation1:{},
+    myreclamationn:{},
     error: ''
 }
 
@@ -27,7 +27,7 @@ const myrecSlice = createSlice({
        
         [getmyreclamation.fulfilled]: (state, action) => {
             state.loading = false
-            state.myreclamation1 = action.payload
+            state.myreclamationn = action.payload
             state.error = ''
         },
         

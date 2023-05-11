@@ -10,7 +10,7 @@ import {getformations} from '../../redux/features/formationSlice'
 import { Typography } from "antd";
 import { StarSharp } from "@material-ui/icons";
 
-export const CoursPage = () => {
+ const CoursPage1 = () => {
   //const [data, setData] = useState([]);
   const formations = useSelector((state) => state.formation.formatiozn)
   const [callback, setCallback] = useState(false)
@@ -22,9 +22,9 @@ export const CoursPage = () => {
 },[dispatch]) ; 
 
   return (
-    <div className={"cours-page"} style={{ width: '120%',marginTop: '-3.5%',backgroundColor:'white' }}>
+    <div className={"cours-page"}>
       <QuickNavigation />
-      <div className={"filter-container"} style={{marginLeft: '-23%'}}>
+      <div className={"filter-container"} style={{marginLeft:'-31%'}}>
         <div className={"search-input-container"}>
           <input
             className={"search-input"}
@@ -49,7 +49,7 @@ export const CoursPage = () => {
         </div>
        
       </div>
-      <div className={"courses-container"} style={{marginLeft: '10%'}}>
+      <div className={"courses-container"} style={{}}>
         {formations.map((formation) => {
           return  (<div key={formation?.uuid} className={"course-item"}>
       <img alt={`course ${formation?.title}`} src={formation?.url} />
@@ -81,3 +81,5 @@ export const CoursPage = () => {
     </div>
   );
 };
+export default CoursPage1;
+

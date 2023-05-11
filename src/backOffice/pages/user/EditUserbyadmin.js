@@ -90,7 +90,7 @@ function EditUser() {
    const uuid=instructeur.UUid
         const updateInfor = () => {
             try {
-                axios.patch(`http://localhost:5000/users/editprofileinst/${id}`, {
+              const res = axios.patch(`http://localhost:5000/users/editprofileinst/${id}`, {
                     name: name ,
                     //avatar: avatar ,
                     tel: tel ,
@@ -103,13 +103,17 @@ function EditUser() {
                 "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
                "withCredentials": true 
                     //headers: {Authorization: token}
-                })
+                });
 
-                setData({...data, err: '' , success: "Profile modifié!"})
+                if (res.data.message==='profile modifié !')
+                {setSuccess('profile modifié !');}
+                if (res.data.message==='Une erreur est survenue ')
+                {setErr('Une erreur est survenue ');}
+                else{setErr("Une erreur est survenue ");}
                 
                 
             } catch (err) {
-                setData({...data, err: err.response.data.msg , success: ''})
+              setErr('Une erreur est survenue ')
                
             }
         }
@@ -157,7 +161,7 @@ function EditUser() {
        <Form className='form-profil'>
        <Form.Group className="mb-3">
          <div className='profile-pic-div'>
-         <img src={ instructeur.avatar} alt="" className="avatar-img" />
+         <img src={ instructeur.url1} alt="" className="avatar-img" />
            <div className="uploadBtn">
            <Form.Label htmlFor="file"> 
             <PhotoCameraIcon className='icon-camera'/>
@@ -175,9 +179,9 @@ function EditUser() {
             <Form.Label className="label">Nom complet</Form.Label>
               <Form.Control type="text"  
                 name="name" 
-                required 
-                //Value={instructeur.name}
-                onChange={handleNameChange}
+                required  placeholder={instructeur?.name}
+                //Value={instructeur.name} 
+                onChange={handleNameChange} 
                     isInvalid={nameError}                            
                     /><Form.Control.Feedback type="invalid">
               Name is required and at least 3 character
@@ -190,7 +194,7 @@ function EditUser() {
                 name="email" 
               //Value={instructeur.email}
                onChange={handleEmailChange}
-            isInvalid={emailError} 
+            isInvalid={emailError}  placeholder={instructeur?.email}
              />
               <Form.Control.Feedback type="invalid">
               saisir un  email addresse valide
@@ -202,7 +206,7 @@ function EditUser() {
                 name="phone" 
               //Value={instructeur.tel}
               onChange={handleTelChange}
-                    
+              placeholder={instructeur?.tel}
                     isInvalid={telError}
          />
           <Form.Control.Feedback type="invalid">

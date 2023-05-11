@@ -40,19 +40,19 @@ console.log(reclamations2)
         <Link to="/reclamations">
         <ArrowBackIcon className="icon-back" />
       </Link>
-        <h4>Sujet: {reclamations2.sujet}</h4>
+        <h4>Sujet: {reclamations2?.sujet}</h4>
        
         <h4>Message:</h4>
         <Form.Group className="mb-3" >
                 <Form.Control as="textarea" rows={7} 
-                defaultValue={reclamations2.message}
+                defaultValue={reclamations2?.message}
                 required  disabled
               />
             </Form.Group>
             <h4>Reponse:</h4>
             <Form.Group className="mb-3" >
                 <Form.Control as="textarea" rows={7} 
-                defaultValue={reclamations2.reponse}
+                defaultValue={reclamations2?.reponse}
                 required  disabled
               />
             </Form.Group>

@@ -227,8 +227,14 @@ function CandidatList() {
                       <VisibilityIcon className='icon-action'/>
                     </Link>
                   </OverlayTrigger>
+                  <OverlayTrigger placement="bottom" 
+                    overlay={<Tooltip id="button-tooltip-2">refuser</Tooltip>}>
+                    <Link to={"/refusinst/"+params.row.id}>
+                      <CancelIcon className='icon-action'/>
+                    </Link>
+                  </OverlayTrigger>
                   <CheckCircleOutlineIcon className="icon-candidat2" onClick={showAccepte} />
-                  <CancelIcon className="icon-candidat3" onClick={showRefuse}/>      
+                        
                 </div>
               )
             }

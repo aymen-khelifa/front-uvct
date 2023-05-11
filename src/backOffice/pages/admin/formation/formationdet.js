@@ -8,6 +8,8 @@ import Coupons from './editfor/Coupons/Coupons'
 import Curriculum from '../../formations/NewFormation/Curriculum/Curriculum'
 import Etudiants from './editfor/Etudiants'
 import Informations from './editfor/Informations'
+
+
 function formationdet() {
    
   return (

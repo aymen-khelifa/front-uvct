@@ -68,7 +68,7 @@ function Formation() {
                          "withCredentials": true 
                         }).then((response)=>{
                           if(response.data.message==='formation supprimé !')
-                          {setSuccess('formation supprimé !')}
+                          {setSuccess('formation supprimé !');window.location.reload()}
                           if(response.data.message==='suppression echouée')
                           {setErr('suppression echouée')}
                           }
@@ -101,27 +101,7 @@ function Formation() {
           { field:'instructeur',
             headerName: 'Instructeur',
             flex:2,
-            /*renderCell: (params) =>{
-                function Instructeur(instructeur){
-                    const users = useSelector(state => state.users)
-                    const [callback1] = useState(false)
-                    const dispatch1 = useDispatch()
-                    useEffect(() => {
-                        fetchUserById(instructeur).then(res =>{
-                              dispatch1(dispatchGetAllUserById(res))
-                          })
-                    },[dispatch1,instructeur, callback1])
-                    return users
-                }
-                return(
-                  <> 
-                  <div className='userList'>
-                    <Avatar1 src={Instructeur(params.row.instructeur).avatar}/>
-                    {Instructeur(params.row.instructeur).name}
-                  </div>
-                  </>
-                )
-              }*/
+          
           },
           {
             field: 'categorie',
@@ -163,10 +143,10 @@ function Formation() {
                     okType: 'danger',
                     cancelText: 'Annuler',
                     closable:true,
-                    content: (
+                    /*content: (
                       <Form>
                         <Form.Group className="mb-3">
-                          <Form.Label className="label">motif de refus</Form.Label>
+                          <Form.Label className="label">motifqq de refus</Form.Label>
                           <Form.Control
                             as="textarea"
                             rows={5}
@@ -180,7 +160,7 @@ function Formation() {
                           </Form.Control.Feedback>
                         </Form.Group>
                       </Form>
-                    ),
+                    ),*/
                     onOk() {
                       handleDelete(params.row.id)
                     },

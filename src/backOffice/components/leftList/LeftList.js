@@ -219,11 +219,7 @@ const routes2 = [
     name: "Se déconnecter",
     path: "/se-deconnecter",
   },
-  {
-    
-    name: "",
-    path: "",
-  },
+  
   
 ];
 // Routes super admin
@@ -313,7 +309,7 @@ export default function LeftList({ children }) {
          
         </Menu>
       </div>
-      <main className="children-content">{children}</main>
+      <main className="children-content" >{children}</main>
     </>
   );
 }

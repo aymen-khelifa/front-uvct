@@ -13,6 +13,8 @@ import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { Snackbar, Alert} from "@mui/material";
+import SkeletonImage from 'antd/lib/skeleton/Image'
+
         const initialState = {
             name: '',
             phone:'',
@@ -48,11 +50,11 @@ function EditUserApprenant() {
     const [success , setSuccess] = useState("");
     const [passwordError, setPasswordError] = useState(false);
     const [password, setPassword] = useState("");
-        useEffect(() => {
+      /*  useEffect(() => {
           
                 dispatch(getapprenantbyId(id))
             
-        },[token,id, dispatch, callback])
+        },[token,id, dispatch, callback])*/
        // console.log(apprenant)
        
     /*    const handleChange = e => {
@@ -61,31 +63,39 @@ function EditUserApprenant() {
 
             setData({...data, [name]:value, err:'', success: ''})
         }*/
-
+        const[image,setImage]=useState("");
+        const[preview,setPreview]=useState("");
         const changeAvatar = async(e) => {
             e.preventDefault()
             try {
-                const file = e.target.files[0]
+              const image= e.target.files[0]
+              setImage(image);
+              setPreview(URL.createObjectURL(image));
 
-                if(!file) return setData({...data, err: "Aucun fichier n'a été téléchargé." , success: 'Photo téléchargée'})
+              if(!image) return setData({...data, err: "Aucun fichier n'a été téléchargé." , success: 'Photo téléchargée'})
 
-                if(file.size > 1024 * 1024)
-                    return setData({...data, err: "Taille trop grande." , success: 'Photo téléchargée'})
+              if(image.size > 1024 * 1024)
+                  return setData({...data, err: "Taille trop grande." , success: 'Photo téléchargée'})
 
-                if(file.type !== 'image/jpeg' && file.type !== 'image/png')
-                    return setData({...data, err: "Le format de fichier est incorrect." , success: 'Photo téléchargée'})
+              if(image.type !== 'image/jpeg' && image.type !== 'image/png')
+                  return setData({...data, err: "Le format de fichier est incorrect." , success: 'Photo téléchargée'})
 
-                let formData =  new FormData()
-                formData.append('file', file)
+              let formData =  new FormData()
+              formData.append('file', image)
+
+              setLoading(true)
 
                 setLoading(true)
-                const res = await axios.post('/api/upload_avatar', formData, {
-                    headers: {'content-type': 'multipart/form-data', Authorization: token}
+                const res = await axios.post(`http://localhost:5000/users/ajouterimage/${apprenant.UUid}`, formData, {
+                  headers: {'X-Requested-With': 'XMLHttpRequest', 
+                  "content-type":"multipart/form-data", "Access-Control-Allow-Origin": "http://localhost:5000", 
+                  "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
+                 "withCredentials": true ,// Authorization: token
                 })
-
+                setSuccess('image ajoutée!');
                 setLoading(false)
-                setAvatar(res.data.url)
-                setOpen(true);
+                SkeletonImage(res.data.url)
+               
                 
             } catch (err) {
                 setData({...data, err: err.response.data.msg , success: ''})
@@ -96,7 +106,7 @@ function EditUserApprenant() {
    
         const updateInfor = () => {
             try {
-                axios.patch(`http://localhost:5000/users/editprofileapprenant/${apprenant.UUid}`, {
+              const res = axios.patch(`http://localhost:5000/users/editprofileapprenant/${apprenant.UUid}`, {
                     name: name ,
                     //avatar: avatar ,
                     tel: tel ,
@@ -109,14 +119,15 @@ function EditUserApprenant() {
                     "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
                     "Access-control-request-methods":"POST, GET, DELETE, PUT, PATCH, COPY, HEAD, OPTIONS"}, 
                    "withCredentials": true 
-                })
+                });
 
-                setData({...data, err: '' , success: "Profile modifié!"})
-                setOpen(true);
-                window.location.reload(false);
+                if (res.data.message==='profile modifié !')
+                {setSuccess('profile modifié !');}
+                if (res.data.message==='Une erreur est survenue ')
+                {setErr('Une erreur est survenue ');}
+                else{setErr("erreur");}
             } catch (err) {
-                setData({...data, err: err.response.data.msg , success: ''})
-                setOpen2(true);
+              setErr('Une erreur est survenue ')
             }
         }
 
@@ -148,7 +159,7 @@ function EditUserApprenant() {
        <Form className='form-profil'>
        <Form.Group className="mb-3">
          <div className='profile-pic-div'>
-         <img src={ apprenant.avatar} alt="" className="avatar-img" />
+         <img src={ apprenant.url1} alt="" className="avatar-img" />
            <div className="uploadBtn">
            <Form.Label htmlFor="file"> 
             <PhotoCameraIcon className='icon-camera'/>
@@ -166,7 +177,7 @@ function EditUserApprenant() {
             <Form.Label className="label">Nom complet</Form.Label>
               <Form.Control type="text" 
                 name="name" 
-                required 
+                required  placeholder={apprenant?.name}
                 //defaultValue={apprenant.name}
                 onChange={handleNameChange}
                     isInvalid={nameError}                            
@@ -179,7 +190,7 @@ function EditUserApprenant() {
               <Form.Control type="email"  
                 name="email" 
               // defaultValue={apprenant.email}
-               onChange={handleEmailChange}
+               onChange={handleEmailChange} placeholder={apprenant?.email}
             isInvalid={emailError} 
              />
               <Form.Control.Feedback type="invalid">
@@ -191,7 +202,7 @@ function EditUserApprenant() {
               <Form.Control type="text"  
                 name="phone" 
               //defaultValue={apprenant.tel}
-              onChange={handleTelChange}
+              onChange={handleTelChange} placeholder={apprenant?.tel}
                     
                     isInvalid={telError}
          />

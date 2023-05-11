@@ -1,7 +1,7 @@
 import React from 'react'
 import BreadcrumbHeader from '../../../components/breadcrumb/BreadcrumbHeader'
 import ScrollTab from '../../../components/ScrollTab/ScrollTab'
-import EditUserAdmin from '../../user/EditUserAdmin'
+import EditUserAdminbyadmin from '../../user/EditUserAdminbyadmin'
 import Activites from './Activites'
 
 function Administrateur() {
@@ -11,7 +11,7 @@ function Administrateur() {
      <BreadcrumbHeader item="Liste Administrteurs" link="/administrateurs" active="Admin"/>
      <div className='scrolltab'>
      <ScrollTab label1="Profile" label2="Ses activités"  
-     item1={<EditUserAdmin />} item2={<Activites />} 
+     item1={<EditUserAdminbyadmin />} item2={<Activites />} 
     />
      </div>
     </div>

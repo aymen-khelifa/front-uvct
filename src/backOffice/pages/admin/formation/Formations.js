@@ -6,7 +6,7 @@ function Formations1() {
   return (
     <div>
       <div className='eventTitleContainer'>
-        <h3 className="title-event">Mes formations</h3>
+        <h3 className="title-event">liste des formations</h3>
       </div>
       <div className="scrollTab">
         <ScrollTab label1="Formations" label2="liste d'attente" 

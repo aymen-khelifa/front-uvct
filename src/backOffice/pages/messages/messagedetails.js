@@ -17,7 +17,7 @@ const initialState = {
   }
 
 function Msgdet() {
-    const msg1 = useSelector(state => state.messagebyid.msgbyid)
+    const msg1 = useSelector(state => state.messagebyid.msgbyid1)
     const dispatch = useDispatch()
     const {id} = useParams()
 

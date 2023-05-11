@@ -33,7 +33,7 @@ const { confirm } = Modal;
 function Candidat() {
   const token = useSelector((state) => state.token);
   
-  const candidat = useSelector((state) => state.user.candidat);
+  const candidat = useSelector((state) => state.user.candidats1);
   const [open, setOpen] = React.useState(false);
   const [open1, setOpen1] = React.useState(false);
   const [callback] = useState(false);
@@ -44,6 +44,8 @@ function Candidat() {
   const [err , setErr] = useState("");
   const [success , setSuccess] = useState("");
   const navigate = useNavigate();
+
+  console.log(candidat)
   function showAccepte() {
     confirm({
       title:'Êtes-vous sûr de vouloir accepter ce candidat?',
@@ -96,10 +98,10 @@ function Candidat() {
 , [token,id, dispatch]);
 
   const handleSubmit=(e)=>
-  {
+  {console.log("aa")
     e.preventDefault()
-    if(candidat.cv!==null)
-    {setviewPdf(candidat.url)}
+    if(candidat?.cv!==null)
+    {console.log(candidat.url);setviewPdf(candidat?.url)}
     else {
       setviewPdf(null)
     }
@@ -108,7 +110,7 @@ function Candidat() {
   const handleDelete = async (id) => {
     try {
        
-                await axios.get(`http://localhost:5000/users/refusinst/${id}`, {
+                await axios.delete(`http://localhost:5000/users/refusinst/${id}`, {
                     
                 headers: {'X-Requested-With': 'XMLHttpRequest', 
                 "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
@@ -117,7 +119,7 @@ function Candidat() {
                 }).then((response) => {
                   const message = response.data.message;console.log(message)
                   if (message==='candidat refusé !')
-                        {setSuccess('candidat refusé !');}
+                        {setSuccess('candidat refusé !');setTimeout(()=>{navigate('/instructeurs')},1000);}
                         if (message==='refus echoué')
                         {setErr('refus echouée');}
                         else{setErr("erreur");}})
@@ -180,19 +182,19 @@ function Candidat() {
       <div className="content-candidat">
       <h5  className="info-candidat">
       <AccountCircleIcon className="icon-details" />
-         {candidat.name}
+         {candidat?.name}
       </h5>
         <h5 className="info-candidat">
           <WorkOutlineIcon className="icon-details" />
-          {candidat.speciality}
+          {candidat?.speciality}
         </h5>
         <h5 className="info-candidat">
           <PhoneIcon className="icon-details" />
-          {candidat.tel}
+          {candidat?.tel}
         </h5>
         <h5 className="info-candidat">
           <MailOutlineIcon className="icon-details" />
-          {candidat.email}
+          {candidat?.email}
         </h5>
         <h6 className="info-candidat">
         <MessageIcon className="icon-details" />
@@ -200,7 +202,7 @@ function Candidat() {
         </h6>
         <Form.Group className="mb-3" >
                 <Form.Control as="textarea" rows={8} 
-                defaultValue={candidat.message}
+                defaultValue={candidat?.message}
                 required  disabled
               />
             </Form.Group>

@@ -1,19 +1,17 @@
-
 import React,{useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux'
 import { Snackbar, Alert} from "@mui/material";
 
-import BreadcrumbHeader from '../../../components/breadcrumb/BreadcrumbHeader';
-import DayJS from 'react-dayjs';
+import BreadcrumbHeader from '../../../../components/breadcrumb/BreadcrumbHeader';
 import { useParams } from 'react-router-dom';
-import Avatar1 from '../../../../components/Avatar/Avatar';
-import './Reclamations.css'
+import '../../../../pages/admin/reclamations/Reclamations.css'
 import ReplyIcon from '@material-ui/icons/Reply';
 import { Button, Form } from 'react-bootstrap';
 import axios from 'axios'
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { Link } from "react-router-dom";
-import { getreclamationbyid } from '../../../../redux/features/recbyid';
+
+import { getcommentairebyid } from '../../../../../redux/features/commentaireSlice';
 
 const initialState = {
     message:'',
@@ -21,28 +19,23 @@ const initialState = {
     success: ''
   }
 
-function Reclamation() {
-    const [reclamation, setReclamation] = useState(initialState)
-    const reclamations2 = useSelector(state => state.reclamationbyid.reclamationid)
-    const [callback] = useState(false)
+function Comment() {
+    
+    const commentaire = useSelector(state => state.commentaire.commentaire)
     const dispatch = useDispatch()
     const {id} = useParams()
-    const [reponse, setReponse] = useState("")
+    const [response, setReponse] = useState("")
     const [reponseError, setReponseError] = useState(false);
 
     const [err , setErr] = useState("");
     const [success , setSuccess] = useState("");
-    //const {message,err,success} = reclamation
-    const users = useSelector(state => state.users)
-    const [callback1] = useState(false)
-    const dispatch1 = useDispatch()
     const [open, setOpen] = useState(false);
     const token = useSelector(state => state.token)
     const [open2, setOpen2] = useState(false);
 
       useEffect(() => {
      
-                dispatch(getreclamationbyid(id))
+                dispatch(getcommentairebyid(id))
             
       },[id,dispatch])
 
@@ -53,7 +46,7 @@ function Reclamation() {
       
   
         try {
-             await axios.patch(`http://localhost:5000/reclamations/addreponse/${id}`, {reponse:reponse}, { 
+             await axios.patch(`http://localhost:5000/commentaires/addreponse/${id}`, {response:response}, { 
           //    headers: {Authorization: token}
               headers: {'X-Requested-With': 'XMLHttpRequest', 
               "content-type":"application/json", "Access-Control-Allow-Origin": "http://localhost:5000", 
@@ -63,12 +56,12 @@ function Reclamation() {
   
              if (message==='reponse ajouté')
                 {setSuccess('reponse ajouté');}
-                if (message==='cette reclamation a une reponse')
-                {setErr('cette reclamation a une reponse');}
-                else{setErr("erreur");}})
+                if (message==='ce commentaire a une reponse')
+                {setErr('ce commentaire a une reponse');}
+                else{setErr("erreura");}})
   
         } catch (err) {
-          setErr("erreur");
+          setErr("erreurééé");
         }
       }
       const handleReponseChange = (event) => {
@@ -78,32 +71,36 @@ function Reclamation() {
       };
       const isFormValid = () => {
         // add validation rules here
-        return reponse !== ''  && !reponseError  ;
+        return response !== ''  && !reponseError  ;
       };
+      console.log(commentaire)
 
   return (
     <div className='add-admin'>
-      <BreadcrumbHeader item="réclamations" link="/all-reclamation" active="réclamation"/>
+    
+      <BreadcrumbHeader item=" Commentaires " link="/mes-formations" active="commentaire"/>
         <div className='content-admin'>
-        <Link to="/all-reclamation">
+        <Link to="/mes-formations">
         <ArrowBackIcon className="icon-back" />
       </Link>
-        <h4>Sujet: {reclamations2.sujet}</h4>
+        <h4>Envoyé par:<h5>Name:<h6>{commentaire?.user?.name}</h6></h5><h5>Email:<h6>{commentaire?.user?.email}</h6></h5></h4>
+        <h4>formation:<h5> {commentaire?.formation?.title}</h5></h4>
+        <h4>nom de leçon: <h5>{commentaire?.NomSession}</h5></h4>
         <div className='header-reclamation'>
         
-        {/*<div><DayJS format="dddd, MMMM D, YYYY h:mm A">{users.createdAt}</DayJS></div>*/}
+       
         </div>
         <h4>Message:</h4>
         <Form.Group className="mb-3" >
                 <Form.Control as="textarea" rows={7} 
-                defaultValue={reclamations2.message}
+                defaultValue={commentaire?.message}
                 required  disabled
               />
             </Form.Group>
             <h4>Reponse:</h4>
             <Form.Group className="mb-3" >
                 <Form.Control as="textarea" rows={7} 
-                defaultValue={reclamations2.reponse}
+                defaultValue={commentaire?.response}
                 required  disabled
               />
             </Form.Group>
@@ -130,7 +127,7 @@ function Reclamation() {
                     <Button  className='btn-annuler' onClick={() => setOpen(false)} size="lg" >
                         annuler
                     </Button>
-                    <Button onClick={handleSubmit} disabled={!isFormValid()} className='btn-confirmer' type="submit" size="lg" >
+                    <Button onClick={handleSubmit}  disabled={!isFormValid()} className='btn-confirmer' type="submit" size="lg" >
                         Envoyer
                     </Button>
                    </Form>
@@ -157,4 +154,4 @@ function Reclamation() {
   )
 }
 
-export default Reclamation
+export default Comment

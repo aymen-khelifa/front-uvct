@@ -12,6 +12,12 @@ import PublierCours from './PublierCours';
 import Programme from './Programme/Programme';
 import BreadcrumbHeader from '../../components/breadcrumb/BreadcrumbHeader';
 import { useParams } from 'react-router-dom'
+import Ajouterimage from '../AddFormation/ajouterimage'
+import Ajoutervideo from '../AddFormation/ajoutervideo'
+
+
+
+
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -27,14 +33,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-  return ['Créez votre contenu', 'Planifiez votre cours'];
+  return ['Ajouter image', 'Ajouter video promotive', 'Planifiez votre cours'];
 }
 
 function getStepContent(step) {
   switch (step) {
     case 0:
-      return <PublierCours />;
+      return <Ajouterimage />;
     case 1:
+      return <Ajoutervideo />;
+    case 2:
       return <PlanifierCours />;
     
     default:
@@ -72,13 +80,13 @@ export default function AddFormation() {
               <Typography>{getStepContent(index)}</Typography>
               <div className={classes.actionsContainer}>
                 <div>
-                  {/*<Button
+                  {<Button
                     disabled={activeStep === 0}
                     onClick={handleBack}
                     className={classes.button}
                   >
                     Arrière
-                  </Button>*/}
+                  </Button>}
                   <Button
                     variant="contained"
                     color="primary"
